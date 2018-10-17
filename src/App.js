@@ -29,9 +29,9 @@ function SimpleCard(props) {
   return (
     <Card className={classes.card}>
       <CardContent>
-        document.write("Card Content");
+        Card Content
       </CardContent>
-      
+
       <CardActions>
         <Button size="small">Learn More</Button>
       </CardActions>
@@ -40,7 +40,7 @@ function SimpleCard(props) {
 }
 
 SimpleCard.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default withStyles(styles)(SimpleCard);
