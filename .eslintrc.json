@@ -1,4 +1,13 @@
 {
-    "extends": "airbnb-base",
-    "parser": "babel-eslint"
+  "extends": "airbnb",
+  "rules": {
+    "no-param-reassign": ["warn", {"props": false}],
+    "no-use-before-define": ["error", {"classes": false, "functions": false}],
+    "react/jsx-filename-extension": ["error", { "extensions": [".js", ".jsx"] }]
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "mocha": true
+  }
 }
