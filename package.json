@@ -2,7 +2,7 @@
   "name": "tcr_simulator",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://tcr-simulator.github.io/tcr-webpage/",
+  "homepage": "https://tcr-simulator.github.io/TCR-Webpage/",
   "dependencies": {
     "@material-ui/core": "^3.2.2",
     "gh-pages": "^2.0.1",
