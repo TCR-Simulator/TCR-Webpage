@@ -50,7 +50,6 @@ const styles = {
 class Dashboard extends React.Component{
   render() {
     const { classes } = this.props;
-
     return (
       <MuiThemeProvider theme={theme}>
         <div className={classes.root}>
