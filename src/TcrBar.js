@@ -28,7 +28,7 @@ class TcrBar extends React.Component {
     }
     this.state = {
       chipData,
-      tcrDialogOpened: true,
+      tcrDialogOpened: false,
     };
   }
 
