@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 import { withStyles } from '@material-ui/core/styles';
+import TcrDialog from './TcrDialog';
 
 const styles = theme => ({
   tcrBar: {
@@ -27,6 +28,7 @@ class TcrBar extends React.Component {
     }
     this.state = {
       chipData,
+      tcrDialogOpened: false,
     };
   }
 
@@ -49,19 +51,26 @@ class TcrBar extends React.Component {
 
   handleAddClick() {
     return () => {
-      this.setState((state) => {
-        const chipData = [...state.chipData];
-        chipData.push({
-          key: Math.floor(Math.random() * 10000),
-        });
-        return { chipData };
-      });
+      this.setState({ tcrDialogOpened: true });
+      // this.setState((state) => {
+      //   const chipData = [...state.chipData];
+      //   chipData.push({
+      //     key: Math.floor(Math.random() * 10000),
+      //   });
+      //   return { chipData };
+      // });
+    };
+  }
+
+  handleTcrDialogClose() {
+    return () => {
+      this.setState({ tcrDialogOpened: false });
     };
   }
 
   render() {
     const { classes } = this.props;
-    const { chipData } = this.state;
+    const { chipData, tcrDialogOpened } = this.state;
 
     return (
       <Paper elevation={1} square className={classes.tcrBar}>
@@ -85,6 +94,7 @@ class TcrBar extends React.Component {
           onClick={this.handleAddClick()}
           color="primary"
         />
+        <TcrDialog open={tcrDialogOpened} handleClose={this.handleTcrDialogClose()} />
       </Paper>
     );
   }
