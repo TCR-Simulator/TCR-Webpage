@@ -123,7 +123,8 @@ const TcrDialog = (props) => {
              Each maintainer holds equal voting rights.
             </ListItemText>
             <Checkbox
-              checked="true" />
+              checked="true"
+            />
           </ListItem>
         </div>
         <div>
