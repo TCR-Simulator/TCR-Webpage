@@ -9,11 +9,12 @@ import teal from '@material-ui/core/colors/teal';
 import SettingsFrame from './SettingsFrame';
 import ResultsFrame from './ResultsFrame';
 
+
 const theme = createMuiTheme({
   palette: {
     primary: teal,
     secondary: {
-      main: '#5fd1d7',
+      main: '#444444',
     },
   },
 });
