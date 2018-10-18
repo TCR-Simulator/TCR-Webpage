@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import TcrBar from './TcrBar';
-import BaseCard from './BaseCard';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import TcrBar from './TcrBar';
+import BaseCard from './BaseCard';
 
 const agents = [
   {
@@ -31,9 +31,9 @@ const agents = [
 
 const styles = {
   agentsList: {
-		overflow: 'scroll',
-	},
-}
+    overflow: 'scroll',
+  },
+};
 
 const SettingsFrame = (props) => {
   const { classes, className } = props;
@@ -41,25 +41,26 @@ const SettingsFrame = (props) => {
     <div id="settings" className={className}>
       <TcrBar />
       <div id="maintainer" className={classes.agentsList}>
-	  		<List component="nav">
-					{agents.map(agent => ( 
-					        <ListItem>
-					          <BaseCard 
-					            type = {agent.type}
-					            population = {agent.population}
-					            quality_scale = {agent.quality_scale}
-					            frequency = {agent.frequency}
-					            acceptance_likelihood = {agent.acceptance_likelihood}
-					          /> 
-					        </ListItem>
-						))}
-	  		</List>
+        <List component="nav">
+          {agents.map(agent => (
+            <ListItem>
+              <BaseCard
+                type={agent.type}
+                population={agent.population}
+                quality_scale={agent.quality_scale}
+                frequency={agent.frequency}
+                acceptance_likelihood={agent.acceptance_likelihood}
+              />
+            </ListItem>
+          ))}
+        </List>
       </div>
-		</div>
+    </div>
   );
 };
 
 SettingsFrame.propTypes = {
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   className: PropTypes.string,
 };
 
