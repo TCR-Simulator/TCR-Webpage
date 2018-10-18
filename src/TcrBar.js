@@ -43,7 +43,6 @@ class TcrBar extends React.Component {
   handleAddClick() {
     return () => {
       this.setState(state => {
-        console.log('lasdgfjn;lakjf;l')
         const chipData = [...state.chipData];
         chipData.push({});
         return { chipData };
