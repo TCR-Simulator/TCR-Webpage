@@ -2,6 +2,7 @@
   "extends": "airbnb",
   "rules": {
     "no-param-reassign": ["warn", {"props": false}],
+    "no-plusplus": "off",
     "no-use-before-define": ["error", {"classes": false, "functions": false}],
     "react/jsx-filename-extension": ["error", { "extensions": [".js", ".jsx"] }]
   },
