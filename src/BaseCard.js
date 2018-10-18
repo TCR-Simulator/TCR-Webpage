@@ -1,11 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';import Card from '@material-ui/core/Card';
+import PropTypes from 'prop-types'; import Card from '@material-ui/core/Card';
 import { withStyles } from '@material-ui/core/styles';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 
-const styles =  { 
+const styles = {
   card: {
     minWidth: 275,
   },
@@ -19,28 +19,26 @@ const styles =  {
   },
   pos: {
     marginBottom: 12,
-  }
-}
+  },
+};
 
-class BaseCard extends React.Component {
-	render() {
-	  const { classes } = this.props;
-	  return (
-	    <Card className={classes.card}>
-	      <CardContent>
-	        document.write("Card Content");
-	      </CardContent>
-	      
-	      <CardActions>
-	        <Button size="small">Learn More</Button>
-	      </CardActions>
-	    </Card>
-		);
-	}
-}
+const BaseCard = (props) => {
+  const { classes } = props;
+  return (
+    <Card className={classes.card}>
+      <CardContent>
+        Card Content
+      </CardContent>
+
+      <CardActions>
+        <Button size="small">Learn More</Button>
+      </CardActions>
+    </Card>
+  );
+};
 
 BaseCard.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default withStyles(styles)(BaseCard);

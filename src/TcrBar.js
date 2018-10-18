@@ -5,9 +5,11 @@ import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = (theme) => ({
+const styles = theme => ({
   tcrBar: {
-    padding: '10px 20px',
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 1,
+    paddingBottom: theme.spacing.unit * 1,
   },
   chip: {
     margin: theme.spacing.unit / 2,
@@ -17,59 +19,66 @@ const styles = (theme) => ({
 class TcrBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      chipData: [],
-    };
-    for (var i = 0; i < 3; i++) {
-      this.state.chipData.push({});
+    const chipData = [];
+    for (let i = 0; i < 3; i++) {
+      chipData.push({
+        key: Math.floor(Math.random() * 10000),
+      });
     }
+    this.state = {
+      chipData,
+    };
   }
 
   handleDelete(data) {
     return () => {
-      this.setState(state => {
+      this.setState((state) => {
         const chipData = [...state.chipData];
         const chipToDelete = chipData.indexOf(data);
         chipData.splice(chipToDelete, 1);
         return { chipData };
       });
-    }
-  };
+    };
+  }
 
-  handleClick(data) {
-    console.log('hello');
+  handleClick(data) { // eslint-disable-line
+    return () => {
+      alert(`key: ${data.key}`); // eslint-disable-line no-alert
+    };
   }
 
   handleAddClick() {
     return () => {
-      this.setState(state => {
+      this.setState((state) => {
         const chipData = [...state.chipData];
-        chipData.push({});
+        chipData.push({
+          key: Math.floor(Math.random() * 10000),
+        });
         return { chipData };
       });
-    }
+    };
   }
 
   render() {
-    const { classes} = this.props;
+    const { classes } = this.props;
+    const { chipData } = this.state;
+
     return (
-      <Paper elevation={1} square={true} className={classes.tcrBar}>
-        <Typography variant="h6" component="h2" color='secondary'>
+      <Paper elevation={1} square className={classes.tcrBar}>
+        <Typography variant="h6" component="h2" color="secondary">
           TCR Mechanisms
         </Typography>
-        {this.state.chipData.map((data, i) => {
-          return (
-            <Chip
-              key={i}
-              label={'TCR' + (i + 1)}
-              onDelete={this.handleDelete(data)}
-              onClick={this.handleClick(data)}
-              className={classes.chip}
-              color="primary"
-              variant="outlined"
-            />
-          );
-        })}
+        {chipData.map((data, i) => (
+          <Chip
+            key={data.key}
+            label={`TCR${i + 1}`}
+            onDelete={this.handleDelete(data)}
+            onClick={this.handleClick(data)}
+            className={classes.chip}
+            color="primary"
+            variant="outlined"
+          />
+        ))}
         <Chip
           label="+"
           className={classes.chip}
@@ -82,7 +91,7 @@ class TcrBar extends React.Component {
 }
 
 TcrBar.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default withStyles(styles)(TcrBar);

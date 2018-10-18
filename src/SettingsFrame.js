@@ -1,25 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import TcrBar from './TcrBar';
 
-const styles = {
-	// styles
-}
-
-class SettingsFrame extends React.Component {
-
-	render() {
-		const { className } = this.props;
-		return (
-			<div id="settings" className={className}>
-        <TcrBar></TcrBar>
-      </div>);
-	}
-}
-
-SettingsFrame.propTypes = {
-  classes: PropTypes.object.isRequired,
+const SettingsFrame = (props) => {
+  const { className } = props;
+  return (
+    <div id="settings" className={className}>
+      <TcrBar />
+    </div>
+  );
 };
 
-export default withStyles(styles)(SettingsFrame);
+SettingsFrame.propTypes = {
+  className: PropTypes.string,
+};
+
+SettingsFrame.defaultProps = {
+  className: null,
+};
+
+export default SettingsFrame;
