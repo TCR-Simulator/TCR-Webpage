@@ -123,7 +123,7 @@ const TcrDialog = (props) => {
              Each maintainer holds equal voting rights.
             </ListItemText>
             <Checkbox
-              checked="true"
+              checked
             />
           </ListItem>
         </div>
@@ -157,7 +157,7 @@ const TcrDialog = (props) => {
 TcrDialog.propTypes = {
   open: PropTypes.bool,
   handleClose: PropTypes.func,
-  classes: PropTypes.isRequired,
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 TcrDialog.defaultProps = {
