@@ -6,12 +6,13 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import Slider from 'react-rangeslider';
+import Slider from '@material-ui/lab/Slider';
 import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const styles = {
   card: {
-    minWidth: 275,
+    width: '100%',
   },
   bullet: {
     display: 'inline-block',
@@ -24,65 +25,104 @@ const styles = {
   pos: {
     marginBottom: 12,
   },
+	slider: {
+		padding: '22px 0px',
+	},
 };
-
-const agents = [
-  {
-    type: 'maintainer',
-    population: 1,
-    behaviors: {
-      ignore_quality: false,
-      acceptance_likelihood: 0.5,
-    },
-  },
-  {
-    type: 'contributor',
-    population: 20,
-    behaviors: {
-      quality_scale: 0.7,
-      frequency: 15,
-    },
-  },
-  {
-    type: 'user',
-    population: 50,
-    behaviors: {
-      payment_likelihood: 0.1,
-    },
-  },
-];
 
 
 class BaseCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      agent: '',
-      pop: '',
+      type: this.props.type,
+      population: this.props.population ,
+		  ignore_quality: true,
+			quality_scale: this.props.quality_scale,
+		  acceptance_likelihood: this.props.acceptance_likelihood,
+			frequency: this.props.frequency,
     };
   }
 
-  handleChange = name => event => {
+	handleChange = name => event => {
     this.setState ({
       [name]: event.target.value,
     });
   };
+	
+	handleChangeQuality = name => event => { 
+    this.setState ({[name]: event.target.checked});
+  };
 
+  handleChangeFreqSlider = (event, value) => {
+	  console.log(value);
+    this.setState({frequency: value});
+  }; 
+ 
+	handleChangeQualSlider = (event, value) => {
+		this.setState({quality_scale: value});
+	};
+	getBehaviorComponents() {
+		const { classes } = this.props;
+		const { type, frequency, quality_scale } = this.state;
+					console.log('heeeey ' +  type)
+		if (type === 'maintainer') { 
+		 return(
+			<div>			 
+			<FormControlLabel
+				label="Ignore submission quality"
+				control=
+							<Checkbox
+								label = "Submission Quality"
+								checked = {this.state.ignore_quality}
+								onChange = {this.handleChangeQuality('ignore_quality')}
+								value = "ignore_quality"
+							/>
+		  />
+			<Typography>Frequency</Typography>
+      <Slider
+			  className={classes.slider}
+			  value={frequency}
+			  onChange={this.handleChangeFreqSlider}
+			  />
+		 </div> 
+		 );
+		} 
+		if (type === 'contributor'){
+		 return(
+			<div>
+				<Typography>Frequency</Typography>
+				<Slider
+					className = {classes.slider}	 
+			    value={frequency}
+			    onChange={this.handleChangeFreqSlider}
+			  />
+				<Typography>Quality</Typography>
+			  <Slider
+				  className = {classes.slider}
+			    value={quality_scale}
+			    onChange={this.handleChangeQualSlider}
+			  />	
+			</div>
+		 );
+		} 
+	} 
+  
   render() {
-    const { classes, renderInputs } = this.props;
-    const { agent, pop } = this.state;
+    const { classes } = this.props;
+    const { type, population } = this.state;
     return (
       <Card className={classes.card}>
         <CardContent>
           <Typography>
-            {agent}
+            {type}
           </Typography>
           <form className = {classes.container} noValidate autoComplete="off">
               <TextField
                 id = "standard_number"
                 label = "Number"
-                value = {this.state.pop}
-                onChange = {this.handleChange('pop')}
+                value = {this.state.population}
+                onChange = {this.handleChange('population')}
                 type = "number"
                 className = {classes.textField}
                 InputLabelProps = { {
@@ -90,62 +130,18 @@ class BaseCard extends React.Component {
                 }}
                 margin = "normal"
               />
-              {renderInputs().map((input) => input)}
-          </form>
+				 {this.getBehaviorComponents()}	
+					</form>
         </CardContent>
       </Card>
     );
   }
 }
 
-class MaintainerCard extends BaseCard { 
-  constructor (props) { 
-    super(props);
-    this.state = {
-      ...this.state,
-      agent: 'Maintainer',
-      ignore_quality: false,
-      acceptance_likelihood: 50,
-    };
-    this.props = {
-      ...this.props,
-      renderInputs: this.renderMaintainerInputs.bind(this),
-    }
-  }
-   handleChangeQuality = name => event => { 
-    this.setState ({[name]: event.target.checked});
-  };
 
-  handleChangeSlider = (event, value) => {
-    this.setState({value});
-  };
-
-  renderMaintainerInputs = () => {
-    
-    const { ignore_quality } = this.state;
-    return [
-      <Checkbox
-        checked = {ignore_quality}
-        onChange = {this.handleChangeQuality('ignore_quality')}
-        value = "ignore_quality"
-      />,
-      <Slider
-        min = {0}
-        max = {100}
-        value = "acceptance_likelihood"
-        onChange = {this.handleChangeSlider}
-      />,
-    ]
-  };
-}
 
 BaseCard.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  renderInputs: PropTypes.func.isRequired,
 };
-
-BaseCard.defaultProps = {
-  renderInputs: () => [],
-}
 
 export default withStyles(styles)(BaseCard);
