@@ -11,15 +11,15 @@ const agents = [
     type: 'maintainer',
     population: 1,
     behaviors: {
-      ignore_quality: false,
-      acceptance_likelihood: 50,
+      ignoreQuality: false,
+      acceptanceLikelihood: 50,
     },
   },
   {
     type: 'contributor',
     population: 20,
     behaviors: {
-      quality_scale: 70,
+      qualityScale: 70,
       frequency: 15,
     },
   },
@@ -47,9 +47,9 @@ const SettingsFrame = (props) => {
               <BaseCard
                 type={agent.type}
                 population={agent.population}
-                quality_scale={agent.quality_scale}
+                qualityScale={agent.qualityScale}
                 frequency={agent.frequency}
-                acceptance_likelihood={agent.acceptance_likelihood}
+                acceptanceLikelihood={agent.acceptanceLikelihood}
               />
             </ListItem>
           ))}
