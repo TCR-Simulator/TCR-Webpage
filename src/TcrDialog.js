@@ -18,7 +18,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import Checkbox from '@material-ui/core/Checkbox';
 
-
 const styles = theme => ({
   subtitle: {
     display: 'inline',
@@ -64,10 +63,8 @@ const styles = theme => ({
   },
 });
 
-
 const TcrDialog = (props) => {
   const { classes, open, handleClose } = props;
-
   return (
     <Dialog
       open={open}
