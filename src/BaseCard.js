@@ -26,10 +26,10 @@ const styles = {
   slider: {
     padding: '22px 0px',
   },
-	agent: {
-	  fontSize: '16px',
-		fontWeight: 500,
-	}
+  agent: {
+    fontSize: '16px',
+    fontWeight: 500,
+  },
 };
 
 class BaseCard extends React.Component {
