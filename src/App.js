@@ -29,6 +29,10 @@ const styles = {
     display: 'flex',
   },
   settingFrame: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    overflow: 'auto',
     boxShadow: '2px 0 2px rgba(0,0,0,.1)',
     borderRight: '1px solid rgba(0,0,0,.25)',
     zIndex: 10,

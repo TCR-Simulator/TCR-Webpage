@@ -31,7 +31,6 @@ const agents = [
 
 const styles = {
   agentsList: {
-    overflow: 'scroll',
   },
 };
 
@@ -40,7 +39,7 @@ const SettingsFrame = (props) => {
   return (
     <div id="settings" className={className}>
       <TcrBar />
-      <div id="maintainer" className={classes.agentsList}>
+      <div id="agents-list" className={classes.agentsList}>
         <List component="nav">
           {agents.map(agent => (
             <ListItem>
