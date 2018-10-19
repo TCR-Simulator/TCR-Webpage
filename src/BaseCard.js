@@ -26,6 +26,10 @@ const styles = {
   slider: {
     padding: '22px 0px',
   },
+  agent: {
+    fontSize: '16px',
+    fontWeight: 500,
+  },
 };
 
 class BaseCard extends React.Component {
@@ -52,7 +56,7 @@ class BaseCard extends React.Component {
               value="ignoreQuality"
             />
           />
-          <Typography>Frequency</Typography>
+          <Typography>Acceptance Likelihood</Typography>
           <Slider
             className={classes.slider}
             value={frequency}
@@ -64,13 +68,13 @@ class BaseCard extends React.Component {
     if (type === 'contributor') {
       return (
         <div>
-          <Typography>Frequency</Typography>
+          <Typography>Submission Frequency</Typography>
           <Slider
             className={classes.slider}
             value={frequency}
             onChange={this.handleChangeFreqSlider}
           />
-          <Typography>Quality</Typography>
+          <Typography>Submission Quality</Typography>
           <Slider
             className={classes.slider}
             value={qualityScale}
@@ -106,8 +110,8 @@ class BaseCard extends React.Component {
     return (
       <Card className={classes.card}>
         <CardContent>
-          <Typography>
-            {type}
+          <Typography className={classes.agent}>
+            {type.toUpperCase()}
           </Typography>
           <form className={classes.container} noValidate autoComplete="off">
             <TextField
