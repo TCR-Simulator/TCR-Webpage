@@ -13,10 +13,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 import { withStyles } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
 import Checkbox from '@material-ui/core/Checkbox';
+import InputAdornments from './InputAdornments';
 
 
 const styles = theme => ({
@@ -27,7 +25,7 @@ const styles = theme => ({
     position: 'absolute',
   },
   dialogBox: {
-    maxWidth: '70%',
+    maxWidth: '80%',
   },
   subtitleIcon: {
     display: 'inline',
@@ -40,24 +38,8 @@ const styles = theme => ({
     marginTop: 10,
     marginBottom: 17,
   },
-  textFieldContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    marginTop: -22,
-  },
   margin: {
     margin: theme.spacing.unit,
-  },
-  textFieldLabel: {
-    '&$textFieldFocused': {
-      color: grey[500],
-    },
-  },
-  textFieldFocused: {},
-  textFieldUnderline: {
-    '&:after': {
-      borderBottomColor: grey[500],
-    },
   },
   section: {
     borderBottom: '1px solid rgb(0,0,0,.25)',
@@ -89,25 +71,8 @@ const TcrDialog = (props) => {
             <ListItemText className={classes.listItemText}>
               Minimum Deposit
             </ListItemText>
-            <div className={classes.textFieldContainer}>
-              <FormControl className={classes.margin}>
-                <InputLabel
-                  htmlFor="minimum-deposit"
-                  FormLabelClasses={{
-                    root: classes.textFieldLabel,
-                    focused: classes.textFieldFocused,
-                  }}
-                >
-                  number of wei
-                </InputLabel>
-                <Input
-                  id="minimum-deposit"
-                  classes={{
-                    underline: classes.textFieldUnderline,
-                  }}
-                />
-              </FormControl>
-
+            <div>
+              <InputAdornments />
             </div>
           </ListItem>
         </div>
