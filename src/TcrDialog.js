@@ -82,7 +82,7 @@ const TcrDialog = (props) => {
           <div className={classes.section}>
             <AssignmentIcon className={classes.subtitleIcon} />
             <Typography variant="subtitle1" className={classes.subtitle}>
-              Application
+              Submission
             </Typography>
           </div>
           <ListItem className={classes.ListItem}>
@@ -131,12 +131,12 @@ const TcrDialog = (props) => {
           <div className={classes.section}>
             <PageviewIcon className={classes.subtitleIcon} />
             <Typography variant="subtitle1" className={classes.subtitle}>
-              Access
+              Subscription
             </Typography>
           </div>
           <ListItem className={classes.ListItem}>
             <ListItemText className={classes.listItemText}>
-             Consumer pays per access.
+             Consumer pays to subscribe to the list.
             </ListItemText>
             <Checkbox />
           </ListItem>
