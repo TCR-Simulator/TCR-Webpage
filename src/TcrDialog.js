@@ -169,7 +169,7 @@ TcrDialog.propTypes = {
   open: PropTypes.bool,
   handleClose: PropTypes.func,
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  tcrBar: PropTypes.object.isRequired,
+  tcrBar: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 TcrDialog.defaultProps = {
