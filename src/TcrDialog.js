@@ -78,6 +78,7 @@ function handleAdd(tcrBar) {
 
 const TcrDialog = (props) => {
   const { classes, open, handleClose, tcrBar } = props;
+
   return (
     <Dialog
       open={open}

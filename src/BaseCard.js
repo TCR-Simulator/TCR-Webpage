@@ -32,6 +32,7 @@ const styles = {
   },
 };
 
+
 class BaseCard extends React.Component {
   constructor(props) {
     super(props);
@@ -57,7 +58,6 @@ class BaseCard extends React.Component {
             />
           />
           <Typography>Acceptance Likelihood</Typography>
-          Frequency:
           {' '}
           {frequency}
           <Slider
@@ -72,7 +72,6 @@ class BaseCard extends React.Component {
       return (
         <div>
           <Typography>Submission Frequency</Typography>
-          Frequency:
           {' '}
           {frequency}
           <Slider
@@ -81,7 +80,6 @@ class BaseCard extends React.Component {
             onChange={this.handleChangeFreqSlider}
           />
           <Typography>Submission Quality</Typography>
-          Quality:
           {' '}
           {qualityScale}
           <Slider
@@ -148,10 +146,14 @@ BaseCard.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   type: PropTypes.string.isRequired,
   population: PropTypes.number.isRequired,
-  qualityScale: PropTypes.number.isRequired,
+  qualityScale: PropTypes.number,
   acceptanceLikelihood: PropTypes.number.isRequired,
-  frequency: PropTypes.number.isRequired,
+  frequency: PropTypes.number,
+};
+
+BaseCard.defaultProps = {
+  frequency: 0,
+  qualityScale: 0,
 };
 /* eslint-enable react/no-unused-prop-types */
-
 export default withStyles(styles)(BaseCard);
