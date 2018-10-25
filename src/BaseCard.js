@@ -41,6 +41,14 @@ class BaseCard extends React.Component {
     };
   }
 
+getValue(value) {
+  if (value) {
+	return value;
+  } else { 
+	return 0;
+  }
+}
+
   getBehaviorComponents() {
     const { classes } = this.props;
     const { type, frequency, ignoreQuality, qualityScale } = this.state;
@@ -57,7 +65,8 @@ class BaseCard extends React.Component {
             />
           />
           <Typography>Acceptance Likelihood</Typography>
-          <Slider
+		  Frequency: {frequency}
+		  <Slider
             className={classes.slider}
             value={frequency}
             onChange={this.handleChangeFreqSlider}
@@ -69,13 +78,15 @@ class BaseCard extends React.Component {
       return (
         <div>
           <Typography>Submission Frequency</Typography>
-          <Slider
+          Frequency: {frequency}
+		  <Slider
             className={classes.slider}
             value={frequency}
             onChange={this.handleChangeFreqSlider}
           />
           <Typography>Submission Quality</Typography>
-          <Slider
+          Quality: {qualityScale}
+		  <Slider
             className={classes.slider}
             value={qualityScale}
             onChange={this.handleChangeQualSlider}
