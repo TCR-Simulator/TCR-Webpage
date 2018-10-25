@@ -63,8 +63,22 @@ const styles = theme => ({
   },
 });
 
+function handleAdd(tcrBar) {
+  return () => {
+    tcrBar.setState((state) => {
+      const chipData = [...state.chipData];
+      chipData.push({
+        key: Math.floor(Math.random() * 10000),
+      });
+      return { chipData };
+    });
+    tcrBar.setState({ tcrDialogOpened: false });
+  };
+}
+
 const TcrDialog = (props) => {
-  const { classes, open, handleClose } = props;
+  const { classes, open, handleClose, tcrBar } = props;
+
   return (
     <Dialog
       open={open}
@@ -143,7 +157,7 @@ const TcrDialog = (props) => {
         <Button onClick={handleClose} color="primary">
           Cancel
         </Button>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleAdd(tcrBar)} color="primary">
           Add
         </Button>
       </DialogActions>
@@ -155,6 +169,7 @@ TcrDialog.propTypes = {
   open: PropTypes.bool,
   handleClose: PropTypes.func,
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  tcrBar: PropTypes.object.isRequired,
 };
 
 TcrDialog.defaultProps = {
