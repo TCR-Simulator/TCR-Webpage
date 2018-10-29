@@ -12,7 +12,6 @@ import PageviewIcon from '@material-ui/icons/Pageview';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 import { withStyles } from '@material-ui/core/styles';
-import grey from '@material-ui/core/colors/grey';
 import Checkbox from '@material-ui/core/Checkbox';
 import InputAdornments from './InputAdornments';
 
