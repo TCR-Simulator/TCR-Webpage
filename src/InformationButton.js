@@ -22,11 +22,12 @@ class CustomizedTooltips extends React.Component {
     if (content === 'acceptanceLikelihood') {
       return 'The probability that a maintainor will accept a submission';
     }
-
     if (content === 'submissionFreq') {
       return 'How frequently submissions are made in a set time frame';
     }
-
+    if (content === 'submissionFreq') {
+      return 'How frequently submissions are made in a set time frame';
+    }
     if (content === 'submissionQuality') {
       return 'The quality of the submission - i.e. submissions with higher quality are more likely to be accpted';
     }

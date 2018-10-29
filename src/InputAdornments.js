@@ -22,10 +22,6 @@ const styles = theme => ({
 });
 
 class InputAdornments extends React.Component {
-  state = {
-    minDeposit: '',
-  };
-
   handleChange = prop => (event) => {
     this.setState({ [prop]: event.target.value });
   };
@@ -40,7 +36,6 @@ class InputAdornments extends React.Component {
         >
           <Input
             id="min-deposit"
-            value={this.state.minDeposit}
             onChange={this.handleChange('minDeposit')}
             endAdornment={<InputAdornment position="end">Wei</InputAdornment>}
             inputProps={{
@@ -54,7 +49,7 @@ class InputAdornments extends React.Component {
 }
 
 InputAdornments.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired, // eslint-disable-line
 };
 
 export default withStyles(styles)(InputAdornments);
