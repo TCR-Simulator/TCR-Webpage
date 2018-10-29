@@ -49,14 +49,13 @@ class CustomizedTooltips extends React.Component {
     return (
       <div>
         <Tooltip title={this.getDialog()}>
-          <a><i className="material-icons">help</i></a>
+          <i className="material-icons">help</i>
         </Tooltip>
       </div>
     );
   }
 }
 CustomizedTooltips.propTypes = {
-  classes: PropTypes.object.isRequired,
   content: PropTypes.string.isRequired,
 };
 
