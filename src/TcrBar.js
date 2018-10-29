@@ -28,7 +28,7 @@ class TcrBar extends React.Component {
     }
     this.state = {
       chipData,
-      tcrDialogOpened: true,
+      tcrDialogOpened: false,
     };
   }
 
@@ -94,7 +94,7 @@ class TcrBar extends React.Component {
           onClick={this.handleAddClick()}
           color="primary"
         />
-        <TcrDialog open={tcrDialogOpened} handleClose={this.handleTcrDialogClose()} />
+        <TcrDialog open={tcrDialogOpened} handleClose={this.handleTcrDialogClose()} tcrBar={this} />
       </Paper>
     );
   }

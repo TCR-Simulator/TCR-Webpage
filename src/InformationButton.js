@@ -25,6 +25,9 @@ class CustomizedTooltips extends React.Component {
     if (content === 'submissionFreq') {
       return 'How frequently submissions are made in a set time frame';
     }
+    if (content === 'submissionFreq') {
+      return 'How frequently submissions are made in a set time frame';
+    }
     if (content === 'submissionQuality') {
       return 'The quality of the submission - i.e. submissions with higher quality are more likely to be accpted';
     }
@@ -47,7 +50,7 @@ class CustomizedTooltips extends React.Component {
     return (
       <div>
         <Tooltip title={this.getDialog()}>
-          <a><i className="material-icons">help</i></a>
+          <i className="material-icons">help</i>
         </Tooltip>
       </div>
     );

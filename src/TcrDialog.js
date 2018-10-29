@@ -14,7 +14,7 @@ import ListItem from '@material-ui/core/ListItem';
 import { withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import InputAdornments from './InputAdornments';
-
+import CustomizedTooltips from './InformationButton';
 
 const styles = theme => ({
   subtitle: {
@@ -45,9 +45,21 @@ const styles = theme => ({
   },
 });
 
+function handleAdd(tcrBar) {
+  return () => {
+    tcrBar.setState((state) => {
+      const chipData = [...state.chipData];
+      chipData.push({
+        key: Math.floor(Math.random() * 10000),
+      });
+      return { chipData };
+    });
+    tcrBar.setState({ tcrDialogOpened: false });
+  };
+}
 
 const TcrDialog = (props) => {
-  const { classes, open, handleClose } = props;
+  const { classes, open, handleClose, tcrBar } = props;
 
   return (
     <Dialog
@@ -57,7 +69,10 @@ const TcrDialog = (props) => {
       className={classes.dialogBox}
       fullWidth
     >
-      <DialogTitle id="form-dialog-title">TCR Mechanism</DialogTitle>
+      <DialogTitle id="form-dialog-title">
+TCR Mechanism
+        <CustomizedTooltips classes="" content="TCRMech" />
+      </DialogTitle>
       <DialogContent>
         <div>
           <div className={classes.section}>
@@ -69,6 +84,7 @@ const TcrDialog = (props) => {
           <ListItem className={classes.ListItem}>
             <ListItemText className={classes.listItemText}>
               Minimum Deposit
+              <CustomizedTooltips classes="" content="minimumDeposit" />
             </ListItemText>
             <div>
               <InputAdornments />
@@ -78,16 +94,17 @@ const TcrDialog = (props) => {
         <div>
           <div className={classes.section}>
             <AssignmentTurnedInIcon className={classes.subtitleIcon} />
-            <Typography variant="subtitle1" className={classes.subtitle}>
-              Curation
-            </Typography>
+            <Typography variant="subtitle1" className={classes.subtitle} />
           </div>
           <ListItem className={classes.ListItem}>
             <ListItemText className={classes.listItemText}>
              Each maintainer holds equal voting rights.
+             Curation
+              {' '}
+              <CustomizedTooltips classes="" content="curation" />
             </ListItemText>
             <Checkbox
-              checked="true"
+              defaultChecked
             />
           </ListItem>
         </div>
@@ -101,6 +118,9 @@ const TcrDialog = (props) => {
           <ListItem className={classes.ListItem}>
             <ListItemText className={classes.listItemText}>
              Consumer pays to subscribe to the list.
+              Curation
+              {' '}
+              <CustomizedTooltips classes="" content="access" />
             </ListItemText>
             <Checkbox />
           </ListItem>
@@ -110,7 +130,7 @@ const TcrDialog = (props) => {
         <Button onClick={handleClose} color="primary">
           Cancel
         </Button>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleAdd(tcrBar)} color="primary">
           Add
         </Button>
       </DialogActions>
@@ -121,7 +141,8 @@ const TcrDialog = (props) => {
 TcrDialog.propTypes = {
   open: PropTypes.bool,
   handleClose: PropTypes.func,
-  classes: PropTypes.isRequired,
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  tcrBar: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 TcrDialog.defaultProps = {
