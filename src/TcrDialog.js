@@ -13,10 +13,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 import { withStyles } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
 import Checkbox from '@material-ui/core/Checkbox';
+import InputAdornments from './InputAdornments';
+import CustomizedTooltips from './InformationButton';
 
 const styles = theme => ({
   subtitle: {
@@ -26,7 +25,7 @@ const styles = theme => ({
     position: 'absolute',
   },
   dialogBox: {
-    maxWidth: '70%',
+    maxWidth: '80%',
   },
   subtitleIcon: {
     display: 'inline',
@@ -39,24 +38,8 @@ const styles = theme => ({
     marginTop: 10,
     marginBottom: 17,
   },
-  textFieldContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    marginTop: -22,
-  },
   margin: {
     margin: theme.spacing.unit,
-  },
-  textFieldLabel: {
-    '&$textFieldFocused': {
-      color: grey[500],
-    },
-  },
-  textFieldFocused: {},
-  textFieldUnderline: {
-    '&:after': {
-      borderBottomColor: grey[500],
-    },
   },
   section: {
     borderBottom: '1px solid rgb(0,0,0,.25)',
@@ -87,51 +70,39 @@ const TcrDialog = (props) => {
       className={classes.dialogBox}
       fullWidth
     >
-      <DialogTitle id="form-dialog-title">TCR Mechanism</DialogTitle>
+      <DialogTitle id="form-dialog-title">
+TCR Mechanism
+        <CustomizedTooltips classes="" content="TCRMech" />
+      </DialogTitle>
       <DialogContent>
         <div>
           <div className={classes.section}>
             <AssignmentIcon className={classes.subtitleIcon} />
             <Typography variant="subtitle1" className={classes.subtitle}>
-              Application
+              Submission
             </Typography>
           </div>
           <ListItem className={classes.ListItem}>
             <ListItemText className={classes.listItemText}>
               Minimum Deposit
+              <CustomizedTooltips classes="" content="minimumDeposit" />
             </ListItemText>
-            <div className={classes.textFieldContainer}>
-              <FormControl className={classes.margin}>
-                <InputLabel
-                  htmlFor="minimum-deposit"
-                  FormLabelClasses={{
-                    root: classes.textFieldLabel,
-                    focused: classes.textFieldFocused,
-                  }}
-                >
-                  number of wei
-                </InputLabel>
-                <Input
-                  id="minimum-deposit"
-                  classes={{
-                    underline: classes.textFieldUnderline,
-                  }}
-                />
-              </FormControl>
-
+            <div>
+              <InputAdornments />
             </div>
           </ListItem>
         </div>
         <div>
           <div className={classes.section}>
             <AssignmentTurnedInIcon className={classes.subtitleIcon} />
-            <Typography variant="subtitle1" className={classes.subtitle}>
-              Curation
-            </Typography>
+            <Typography variant="subtitle1" className={classes.subtitle} />
           </div>
           <ListItem className={classes.ListItem}>
             <ListItemText className={classes.listItemText}>
              Each maintainer holds equal voting rights.
+             Curation
+              {' '}
+              <CustomizedTooltips classes="" content="curation" />
             </ListItemText>
             <Checkbox
               defaultChecked
@@ -142,12 +113,15 @@ const TcrDialog = (props) => {
           <div className={classes.section}>
             <PageviewIcon className={classes.subtitleIcon} />
             <Typography variant="subtitle1" className={classes.subtitle}>
-              Access
+              Subscription
             </Typography>
           </div>
           <ListItem className={classes.ListItem}>
             <ListItemText className={classes.listItemText}>
-             Consumer pays per access.
+             Consumer pays to subscribe to the list.
+              Curation
+              {' '}
+              <CustomizedTooltips classes="" content="access" />
             </ListItemText>
             <Checkbox />
           </ListItem>

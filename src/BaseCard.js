@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Slider from '@material-ui/lab/Slider';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import CustomizedTooltips from './InformationButton';
 
 const styles = {
   card: {
@@ -59,6 +60,7 @@ class BaseCard extends React.Component {
           />
           <Typography>Acceptance Likelihood</Typography>
           {' '}
+          <CustomizedTooltips classes="" content="acceptanceLikelihood" />
           {frequency}
           <Slider
             className={classes.slider}
@@ -72,6 +74,7 @@ class BaseCard extends React.Component {
       return (
         <div>
           <Typography>Submission Frequency</Typography>
+          <CustomizedTooltips classes="" content="submissionFreq" />
           {' '}
           {frequency}
           <Slider
@@ -80,6 +83,7 @@ class BaseCard extends React.Component {
             onChange={this.handleChangeFreqSlider}
           />
           <Typography>Submission Quality</Typography>
+          <CustomizedTooltips classes="" content="submissionQuality" />
           {' '}
           {qualityScale}
           <Slider
