@@ -13,6 +13,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import ListAltIcon from '@material-ui/icons/ListAlt';
+import AdminTCRPage from './AdminTCRPage';
 
 const drawerWidth = 240;
 
@@ -46,8 +47,18 @@ class Admin extends React.Component {
     super(props);
 
     this.state = {
-      selectedTcr: null,
-      tcrs: ['Users pay', 'Peaceful', 'IDK'],
+      selectedTcr: 0,
+      tcrs: [
+        {
+          name: 'Users pay',
+        },
+        {
+          name: 'Peaceful',
+        },
+        {
+          name: 'IDK',
+        },
+      ],
     };
   }
 
@@ -78,15 +89,15 @@ class Admin extends React.Component {
         >
           <div className={classes.toolbar} />
           <List subheader={<ListSubheader component="div">Deployed TCRs</ListSubheader>}>
-            {tcrs.map((text, index) => (
+            {tcrs.map((tcr, index) => (
               <ListItem
                 button
-                key={text}
+                key={tcr.name}
                 onClick={() => this.onTCRSelected(index)}
                 selected={selectedTcr === index}
               >
                 <ListItemIcon><ListAltIcon /></ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText primary={tcr.name} />
               </ListItem>
             ))}
           </List>
@@ -96,8 +107,7 @@ class Admin extends React.Component {
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <Typography variant="h6">TCR</Typography>
-          <Typography variant="h5">{tcrs[selectedTcr]}</Typography>
+          <AdminTCRPage tcr={tcrs[selectedTcr]} />
         </main>
       </div>
     );
