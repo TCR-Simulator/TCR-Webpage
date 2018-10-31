@@ -76,11 +76,7 @@ class CheckboxListSecondary extends React.Component {
 
     return (
       <div className={classes.root}>
-       <nav className="nav-add">
-                    <input type="text" id="input-add" />
-                    <button id="new-item"
-                        onClick={this.addItem.bind(this)}>New Item</button>
-        </nav>
+    
         <List>
           {this.state.items.map(value => (
             <ListItem key={value} dense button>
@@ -95,6 +91,10 @@ class CheckboxListSecondary extends React.Component {
             </ListItem>
           ))}
         </List>
+
+        <nav className="nav-add">
+          <ContributionBox/>
+        </nav>
       </div>
     );
   }
