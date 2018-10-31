@@ -64,11 +64,11 @@ const styles = theme => ({
 });
 
 const TcrDialog = (props) => {
-  const { classes, open, handleClose } = props;
+  const { classes, open, handleCancel, handleCreate } = props;
   return (
     <Dialog
       open={open}
-      onClose={handleClose}
+      onClose={handleCancel}
       aria-labelledby="form-dialog-title"
       className={classes.dialogBox}
       fullWidth
@@ -140,10 +140,10 @@ const TcrDialog = (props) => {
         </div>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleCancel} color="primary">
           Cancel
         </Button>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleCreate} color="primary">
           Add
         </Button>
       </DialogActions>
@@ -153,13 +153,15 @@ const TcrDialog = (props) => {
 
 TcrDialog.propTypes = {
   open: PropTypes.bool,
-  handleClose: PropTypes.func,
+  handleCancel: PropTypes.func,
+  handleCreate: PropTypes.func,
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 TcrDialog.defaultProps = {
   open: false,
-  handleClose: () => {},
+  handleCancel: () => {},
+  handleCreate: () => {},
 };
 
 export default withStyles(styles)(TcrDialog);

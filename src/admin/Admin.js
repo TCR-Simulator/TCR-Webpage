@@ -14,6 +14,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import AdminTCRPage from './AdminTCRPage';
+import TcrDialog from '../TcrDialog';
 
 const drawerWidth = 240;
 
@@ -66,6 +67,7 @@ class Admin extends React.Component {
       }
     ));
     this.state = {
+      tcrDialogOpened: false,
       selectedTcr: 0,
       tcrs,
     };
@@ -75,9 +77,41 @@ class Admin extends React.Component {
     this.setState({ selectedTcr: selectedIndex });
   }
 
+  showTcrDialog() {
+    this.setState({ tcrDialogOpened: true });
+  }
+
+  handleTcrDialogCancel() {
+    this.setState({ tcrDialogOpened: false });
+  }
+
+  handleTcrDialogCreate() {
+    const { tcrs } = this.state;
+    // TODO: should take tcr as an argument
+    const newLength = tcrs.push({
+      name: 'New TCR!',
+      parameters: [
+        {
+          key: 'Parameter #1',
+          value: 0.0001,
+        },
+        {
+          key: 'Parameter #2',
+          value: 'test',
+        },
+        {
+          key: 'Parameter #3',
+          value: 100,
+        },
+      ],
+    });
+    this.setState({ tcrs, tcrDialogOpened: false });
+    this.onTCRSelected(newLength - 1);
+  }
+
   render() {
     const { classes } = this.props;
-    const { selectedTcr, tcrs } = this.state;
+    const { tcrDialogOpened, selectedTcr, tcrs } = this.state;
 
     return (
       <div className={classes.root}>
@@ -110,7 +144,12 @@ class Admin extends React.Component {
               </ListItem>
             ))}
           </List>
-          <Button variant="contained" color="primary" className={classes.button}>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            onClick={() => this.showTcrDialog()}
+          >
             Create new TCR
           </Button>
         </Drawer>
@@ -118,6 +157,11 @@ class Admin extends React.Component {
           <div className={classes.toolbar} />
           <AdminTCRPage tcr={tcrs[selectedTcr]} />
         </main>
+        <TcrDialog
+          open={tcrDialogOpened}
+          handleCancel={() => this.handleTcrDialogCancel()}
+          handleCreate={() => this.handleTcrDialogCreate()}
+        />
       </div>
     );
   }
