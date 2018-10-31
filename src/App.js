@@ -7,6 +7,7 @@ import { MuiThemeProvider, createMuiTheme, withStyles } from '@material-ui/core/
 import teal from '@material-ui/core/colors/teal';
 import SettingsFrame from './SettingsFrame';
 import ResultsFrame from './ResultsFrame';
+import UserProfile from './UserProfile';
 
 
 const theme = createMuiTheme({
@@ -48,6 +49,7 @@ const styles = {
 
 const Dashboard = (props) => {
   const { classes } = props;
+  /*
   return (
     <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
@@ -62,6 +64,14 @@ const Dashboard = (props) => {
           <SettingsFrame className={classes.settingFrame} />
           <ResultsFrame className={classes.resultFrame} />
         </div>
+      </div>
+    </MuiThemeProvider>
+  );
+  */
+  return (
+    <MuiThemeProvider theme={theme}>
+      <div className={classes.root}>
+        <UserProfile />
       </div>
     </MuiThemeProvider>
   );
