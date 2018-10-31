@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Slider from '@material-ui/lab/Slider';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import CustomizedTooltips from './InformationButton';
 
 const styles = {
   card: {
@@ -26,7 +27,12 @@ const styles = {
   slider: {
     padding: '22px 0px',
   },
+  agent: {
+    fontSize: '16px',
+    fontWeight: 500,
+  },
 };
+
 
 class BaseCard extends React.Component {
   constructor(props) {
@@ -52,7 +58,10 @@ class BaseCard extends React.Component {
               value="ignoreQuality"
             />
           />
-          <Typography>Frequency</Typography>
+          <Typography>Acceptance Likelihood</Typography>
+          {' '}
+          <CustomizedTooltips classes="" content="acceptanceLikelihood" />
+          {frequency}
           <Slider
             className={classes.slider}
             value={frequency}
@@ -64,13 +73,19 @@ class BaseCard extends React.Component {
     if (type === 'contributor') {
       return (
         <div>
-          <Typography>Frequency</Typography>
+          <Typography>Submission Frequency</Typography>
+          <CustomizedTooltips classes="" content="submissionFreq" />
+          {' '}
+          {frequency}
           <Slider
             className={classes.slider}
             value={frequency}
             onChange={this.handleChangeFreqSlider}
           />
-          <Typography>Quality</Typography>
+          <Typography>Submission Quality</Typography>
+          <CustomizedTooltips classes="" content="submissionQuality" />
+          {' '}
+          {qualityScale}
           <Slider
             className={classes.slider}
             value={qualityScale}
@@ -106,8 +121,8 @@ class BaseCard extends React.Component {
     return (
       <Card className={classes.card}>
         <CardContent>
-          <Typography>
-            {type}
+          <Typography className={classes.agent}>
+            {type.toUpperCase()}
           </Typography>
           <form className={classes.container} noValidate autoComplete="off">
             <TextField
@@ -135,10 +150,14 @@ BaseCard.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   type: PropTypes.string.isRequired,
   population: PropTypes.number.isRequired,
-  qualityScale: PropTypes.number.isRequired,
+  qualityScale: PropTypes.number,
   acceptanceLikelihood: PropTypes.number.isRequired,
-  frequency: PropTypes.number.isRequired,
+  frequency: PropTypes.number,
+};
+
+BaseCard.defaultProps = {
+  frequency: 0,
+  qualityScale: 0,
 };
 /* eslint-enable react/no-unused-prop-types */
-
 export default withStyles(styles)(BaseCard);

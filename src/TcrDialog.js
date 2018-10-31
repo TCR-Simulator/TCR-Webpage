@@ -12,21 +12,20 @@ import PageviewIcon from '@material-ui/icons/Pageview';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 import { withStyles } from '@material-ui/core/styles';
-import grey from '@material-ui/core/colors/grey';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
 import Checkbox from '@material-ui/core/Checkbox';
+import InputAdornments from './InputAdornments';
+import CustomizedTooltips from './InformationButton';
 
 const styles = theme => ({
   subtitle: {
     display: 'inline',
     paddingLeft: 6,
     marginTop: 1,
-    position: 'absolute',
+    position: 'flex',
+    flexDirection: 'column',
   },
   dialogBox: {
-    maxWidth: '70%',
+    maxWidth: '80%',
   },
   subtitleIcon: {
     display: 'inline',
@@ -39,129 +38,168 @@ const styles = theme => ({
     marginTop: 10,
     marginBottom: 17,
   },
-  textFieldContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    marginTop: -22,
-  },
   margin: {
     margin: theme.spacing.unit,
   },
-  textFieldLabel: {
-    '&$textFieldFocused': {
-      color: grey[500],
-    },
-  },
-  textFieldFocused: {},
-  textFieldUnderline: {
-    '&:after': {
-      borderBottomColor: grey[500],
-    },
-  },
   section: {
+    display: 'flex',
     borderBottom: '1px solid rgb(0,0,0,.25)',
+  },
+  withSection: {
+    display: 'flex',
+    marginTop: 10,
+    marginBottom: -5,
+  },
+  selected: {
+    color: 'grey',
+    marginLeft: 10,
   },
 });
 
-const TcrDialog = (props) => {
-  const { classes, open, handleCancel, handleCreate } = props;
-  return (
-    <Dialog
-      open={open}
-      onClose={handleCancel}
-      aria-labelledby="form-dialog-title"
-      className={classes.dialogBox}
-      fullWidth
-    >
-      <DialogTitle id="form-dialog-title">TCR Mechanism</DialogTitle>
-      <DialogContent>
-        <div>
-          <div className={classes.section}>
-            <AssignmentIcon className={classes.subtitleIcon} />
-            <Typography variant="subtitle1" className={classes.subtitle}>
-              Application
-            </Typography>
-          </div>
-          <ListItem className={classes.ListItem}>
-            <ListItemText className={classes.listItemText}>
-              Minimum Deposit
-            </ListItemText>
-            <div className={classes.textFieldContainer}>
-              <FormControl className={classes.margin}>
-                <InputLabel
-                  htmlFor="minimum-deposit"
-                  FormLabelClasses={{
-                    root: classes.textFieldLabel,
-                    focused: classes.textFieldFocused,
-                  }}
-                >
-                  number of wei
-                </InputLabel>
-                <Input
-                  id="minimum-deposit"
-                  classes={{
-                    underline: classes.textFieldUnderline,
-                  }}
-                />
-              </FormControl>
+class TcrDialog extends React.Component {
+  state = {
+    enablePayment: true,
+    subsFeeColor: 'grey',
+  };
 
+  // handleAdd(tcrBar) {
+  //   return () => {
+  //     tcrBar.setState((state) => {
+  //       const chipData = [...state.chipData];
+  //       chipData.push({
+  //         key: Math.floor(Math.random() * 10000),
+  //       });
+  //       return { chipData };
+  //     });
+  //     tcrBar.setState({ tcrDialogOpened: false });
+  //   };
+  // }
+
+  handleCheck(enablePayment) {
+    return () => {
+      this.setState({ enablePayment: enablePayment === false,
+        subsFeeColor: enablePayment ? '#212121' : 'grey' });
+    };
+  }
+
+  render() {
+    const { classes, open, handleClose } = this.props;
+    const { enablePayment, subsFeeColor } = this.state;
+
+    return (
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+        className={classes.dialogBox}
+        fullWidth
+      >
+        <DialogTitle id="form-dialog-title">
+         TCR Mechanism
+        </DialogTitle>
+        <DialogContent>
+          <div>
+            <div className={classes.section}>
+              <AssignmentIcon className={classes.subtitleIcon} />
+              <Typography variant="subtitle1" className={classes.subtitle}>
+                Submission
+              </Typography>
             </div>
-          </ListItem>
-        </div>
-        <div>
-          <div className={classes.section}>
-            <AssignmentTurnedInIcon className={classes.subtitleIcon} />
-            <Typography variant="subtitle1" className={classes.subtitle}>
-              Curation
-            </Typography>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                Minimum Deposit
+                <CustomizedTooltips classes="" content="minimumDeposit" />
+              </ListItemText>
+              <div>
+                <InputAdornments unit="wei" />
+              </div>
+            </ListItem>
+            <ListItem className={classes.withSection}>
+              <ListItemText className={classes.listItemText}>
+                Submission Length Period
+                <CustomizedTooltips classes="" content="" />
+              </ListItemText>
+              <div>
+                <InputAdornments unit="day(s)" />
+              </div>
+            </ListItem>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                Submission could be challenged.
+                <CustomizedTooltips classes="" content="" />
+              </ListItemText>
+              <Checkbox />
+            </ListItem>
           </div>
-          <ListItem className={classes.ListItem}>
-            <ListItemText className={classes.listItemText}>
-             Each maintainer holds equal voting rights.
-            </ListItemText>
-            <Checkbox
-              defaultChecked
-            />
-          </ListItem>
-        </div>
-        <div>
-          <div className={classes.section}>
-            <PageviewIcon className={classes.subtitleIcon} />
-            <Typography variant="subtitle1" className={classes.subtitle}>
-              Access
-            </Typography>
+          <div>
+            <div className={classes.section}>
+              <AssignmentTurnedInIcon className={classes.subtitleIcon} />
+              <Typography variant="subtitle1" className={classes.subtitle}>
+                Curation
+              </Typography>
+            </div>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                Each maintainer holds equal voting rights.
+                <CustomizedTooltips classes="" content="curation" />
+              </ListItemText>
+              <Checkbox
+                defaultChecked
+              />
+            </ListItem>
           </div>
-          <ListItem className={classes.ListItem}>
-            <ListItemText className={classes.listItemText}>
-             Consumer pays per access.
-            </ListItemText>
-            <Checkbox />
-          </ListItem>
-        </div>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleCancel} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={handleCreate} color="primary">
-          Add
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-};
+          <div>
+            <div className={classes.section}>
+              <PageviewIcon className={classes.subtitleIcon} />
+              <Typography variant="subtitle1" className={classes.subtitle}>
+               Subscription
+              </Typography>
+            </div>
+            <ListItem className={classes.withSection}>
+              <ListItemText className={classes.listItemText}>
+                Consumer pays to subscribe to the list.
+                <CustomizedTooltips classes="" content="access" />
+              </ListItemText>
+              <Checkbox onChange={this.handleCheck(enablePayment)} />
+            </ListItem>
+            <ListItem className={classes.withSection}>
+              <ListItemText
+                disableTypography
+                primary={(
+                  <Typography
+                    variant="subtitle1"
+                    style={{ color: subsFeeColor, marginLeft: 10 }}
+                  >
+                    Subscription Fee
+                  </Typography>)}
+              />
+              <InputAdornments unit="wei" disabled={enablePayment} />
+            </ListItem>
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button color="primary">
+            Add
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
+}
 
 TcrDialog.propTypes = {
   open: PropTypes.bool,
-  handleCancel: PropTypes.func,
-  handleCreate: PropTypes.func,
+  handleClose: PropTypes.func,
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  // tcrBar: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 TcrDialog.defaultProps = {
   open: false,
-  handleCancel: () => {},
-  handleCreate: () => {},
+  handleClose: () => {},
 };
 
 export default withStyles(styles)(TcrDialog);

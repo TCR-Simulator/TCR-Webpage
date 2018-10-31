@@ -94,7 +94,7 @@ class TcrBar extends React.Component {
           onClick={this.handleAddClick()}
           color="primary"
         />
-        <TcrDialog open={tcrDialogOpened} handleClose={this.handleTcrDialogClose()} />
+        <TcrDialog open={tcrDialogOpened} handleClose={this.handleTcrDialogClose()} tcrBar={this} />
       </Paper>
     );
   }
