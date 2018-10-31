@@ -14,7 +14,7 @@ function ParametersCard(props) {
   return (
     <Card>
       <CardContent>
-        <Typography color="textSecondary" gutterBottom>Parameters</Typography>
+        <Typography variant="h6" gutterBottom>Parameters</Typography>
         <Table>
           <TableHead>
             <TableRow>
