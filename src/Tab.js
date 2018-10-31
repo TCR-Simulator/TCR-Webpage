@@ -6,6 +6,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
+import CheckboxListSecondary from './List';
 
 function TabContainer({ children, dir }) {
   return (
@@ -23,7 +24,7 @@ TabContainer.propTypes = {
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    width: 500,
+    width: 700,
     marginTop: 20,
   },
 });
@@ -54,9 +55,10 @@ class FullWidthTabs extends React.Component {
             textColor="primary"
             fullWidth
           >
-            <Tab label="Item One" />
-            <Tab label="Item Two" />
-            <Tab label="Item Three" />
+            <Tab label="Accepted" />
+            <Tab label="Pending" />
+            <Tab label="In Challenge" />
+            <Tab label="Rejected" />
           </Tabs>
         </AppBar>
         <SwipeableViews
@@ -64,9 +66,14 @@ class FullWidthTabs extends React.Component {
           index={this.state.value}
           onChangeIndex={this.handleChangeIndex}
         >
-          <TabContainer dir={theme.direction}>Item One</TabContainer>
+          <TabContainer dir={theme.direction}>
+
+          <CheckboxListSecondary/>
+          </TabContainer>
+
           <TabContainer dir={theme.direction}>Item Two</TabContainer>
           <TabContainer dir={theme.direction}>Item Three</TabContainer>
+          <TabContainer dir={theme.direction}>Item Four</TabContainer>
         </SwipeableViews>
       </div>
     );
