@@ -13,7 +13,9 @@
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-rangeslider": "^2.2.0",
-    "react-scripts": "2.0.5"
+    "react-scripts": "2.0.5",
+    "react-swipeable-views": "^0.13.0",
+    "react-tabs": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",

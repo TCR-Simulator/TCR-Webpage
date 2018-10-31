@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import { MuiThemeProvider, createMuiTheme, withStyles } from '@material-ui/core/styles';
 import teal from '@material-ui/core/colors/teal';
 import SettingsFrame from './SettingsFrame';
-import ResultsFrame from './ResultsFrame';
 
 
 const theme = createMuiTheme({
@@ -21,35 +20,22 @@ const theme = createMuiTheme({
 const styles = {
   root: {
     height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
   },
   content: {
     height: '100%',
-    display: 'flex',
   },
   settingFrame: {
-    display: 'flex',
-    flexDirection: 'column',
     height: '100%',
     overflow: 'auto',
-    boxShadow: '2px 0 2px rgba(0,0,0,.1)',
-    borderRight: '1px solid rgba(0,0,0,.25)',
     zIndex: 10,
-    flexBasis: '35%',
-    boxSizing: 'border-box',
   },
-  resultFrame: {
-    flexGrow: 1,
-    padding: '0 20px',
-  },
+
 
 };
 
 const Dashboard = (props) => {
   const { classes } = props;
   return (
-    <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
         <AppBar position="relative" color="primary" elevation={2}>
           <Toolbar>
@@ -58,12 +44,8 @@ const Dashboard = (props) => {
             </Typography>
           </Toolbar>
         </AppBar>
-        <div id="content" className={classes.content}>
           <SettingsFrame className={classes.settingFrame} />
-          <ResultsFrame className={classes.resultFrame} />
-        </div>
       </div>
-    </MuiThemeProvider>
   );
 };
 
