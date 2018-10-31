@@ -62,19 +62,6 @@ class TcrDialog extends React.Component {
     subsFeeColor: 'grey',
   };
 
-  // handleAdd(tcrBar) {
-  //   return () => {
-  //     tcrBar.setState((state) => {
-  //       const chipData = [...state.chipData];
-  //       chipData.push({
-  //         key: Math.floor(Math.random() * 10000),
-  //       });
-  //       return { chipData };
-  //     });
-  //     tcrBar.setState({ tcrDialogOpened: false });
-  //   };
-  // }
-
   handleCheck(enablePayment) {
     return () => {
       this.setState({ enablePayment: enablePayment === false,
@@ -83,13 +70,13 @@ class TcrDialog extends React.Component {
   }
 
   render() {
-    const { classes, open, handleClose } = this.props;
+    const { classes, open, handleCreate, handleCancel } = this.props;
     const { enablePayment, subsFeeColor } = this.state;
 
     return (
       <Dialog
         open={open}
-        onClose={handleClose}
+        onClose={handleCancel}
         aria-labelledby="form-dialog-title"
         className={classes.dialogBox}
         fullWidth
@@ -178,11 +165,11 @@ class TcrDialog extends React.Component {
           </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleCancel} color="primary">
             Cancel
           </Button>
-          <Button color="primary">
-            Add
+          <Button onClick={handleCreate} color="primary">
+            Create
           </Button>
         </DialogActions>
       </Dialog>
@@ -192,14 +179,16 @@ class TcrDialog extends React.Component {
 
 TcrDialog.propTypes = {
   open: PropTypes.bool,
-  handleClose: PropTypes.func,
+  handleCancel: PropTypes.func,
+  handleCreate: PropTypes.func,
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   // tcrBar: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 TcrDialog.defaultProps = {
   open: false,
-  handleClose: () => {},
+  handleCancel: () => {},
+  handleCreate: () => {},
 };
 
 export default withStyles(styles)(TcrDialog);
