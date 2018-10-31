@@ -10,8 +10,8 @@ const styles = theme => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
-    marginRight: -85,
     marginTop: -22,
+    flexDirection: 'row-reverse',
   },
   withoutLabel: {
     marginTop: theme.spacing.unit * 1.5,
@@ -27,7 +27,7 @@ class InputAdornments extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, unit, disabled } = this.props;
 
     return (
       <div className={classes.root}>
@@ -37,7 +37,8 @@ class InputAdornments extends React.Component {
           <Input
             id="min-deposit"
             onChange={this.handleChange('minDeposit')}
-            endAdornment={<InputAdornment position="end">Wei</InputAdornment>}
+            disabled={disabled}
+            endAdornment={<InputAdornment position="end">{unit}</InputAdornment>}
             inputProps={{
               'aria-label': 'MinDeposit',
             }}
@@ -50,6 +51,8 @@ class InputAdornments extends React.Component {
 
 InputAdornments.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line
+  unit: PropTypes.string.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(InputAdornments);
