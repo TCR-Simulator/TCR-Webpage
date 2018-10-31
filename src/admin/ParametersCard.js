@@ -10,6 +10,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 
 function ParametersCard(props) {
+  const { tcr } = props;
   return (
     <Card>
       <CardContent>
@@ -22,14 +23,12 @@ function ParametersCard(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow key={1}>
-              <TableCell component="th" scope="row">Parameter #1</TableCell>
-              <TableCell numeric>0.123</TableCell>
-            </TableRow>
-            <TableRow key={2}>
-              <TableCell component="th" scope="row">Parameter #2</TableCell>
-              <TableCell numeric>0.321</TableCell>
-            </TableRow>
+            {tcr.parameters.map(param => (
+              <TableRow key={param.key}>
+                <TableCell component="th" scope="row">{param.key}</TableCell>
+                <TableCell>{param.value}</TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </CardContent>
@@ -40,6 +39,12 @@ function ParametersCard(props) {
 ParametersCard.propTypes = {
   tcr: PropTypes.shape({
     name: PropTypes.string.isRequired,
+    parameters: PropTypes.arrayOf(
+      PropTypes.shape({
+        key: PropTypes.string.isRequired,
+        value: PropTypes.any.isRequired,
+      }),
+    ).isRequired,
   }).isRequired,
 };
 

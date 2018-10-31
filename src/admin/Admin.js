@@ -46,19 +46,28 @@ class Admin extends React.Component {
   constructor(props) {
     super(props);
 
+    const tcrs = ['Users pay', 'Peaceful', 'IDK'].map(name => (
+      {
+        name,
+        parameters: [
+          {
+            key: 'Parameter #1',
+            value: 0.123,
+          },
+          {
+            key: 'Parameter #2',
+            value: 0.32999991,
+          },
+          {
+            key: 'Parameter #3',
+            value: 'hello',
+          },
+        ],
+      }
+    ));
     this.state = {
       selectedTcr: 0,
-      tcrs: [
-        {
-          name: 'Users pay',
-        },
-        {
-          name: 'Peaceful',
-        },
-        {
-          name: 'IDK',
-        },
-      ],
+      tcrs,
     };
   }
 

@@ -14,10 +14,10 @@ function AdminTCRPage(props) {
 
       <Grid container spacing={24}>
         <Grid item xs={6}>
-          <ParametersCard />
+          <ParametersCard tcr={tcr} />
         </Grid>
         <Grid item xs={6}>
-          <ParametersCard />
+          <ParametersCard tcr={tcr} />
         </Grid>
       </Grid>
     </div>
