@@ -29,34 +29,36 @@ const styles = theme => ({
   },
 });
 
-function Inputs(props) {
-  const { classes } = props;
-  return (
-    <div className={classes.container}>
-      <Input
-        placeholder="Name"
-        className={classes.nameinput}
-        inputProps={{
-          'aria-label': 'Description',
-        }}
-      />
-      <Input
-        placeholder="URL"
-        className={classes.urlinput}
-        inputProps={{
-          'aria-label': 'Description',
-        }}
-      />
-      <Button variant="outlined" color="primary" className={classes.applybutton}>
-        Apply
+class ContributionBox extends React.Component {
+  render() {
+    const { classes } = this.props;
+    return (
+      <div className={classes.container}>
+        <Input
+          placeholder="Name"
+          className={classes.nameinput}
+          inputProps={{
+            'aria-label': 'Description',
+          }}
+        />
+        <Input
+          placeholder="URL"
+          className={classes.urlinput}
+          inputProps={{
+            'aria-label': 'Description',
+          }}
+        />
+        <Button variant="outlined" color="primary" className={classes.applybutton}>
+          Apply
       </Button>
-    </div>
-  );
+      </div>
+    );
+  }
 }
 
-Inputs.propTypes = {
+ContributionBox.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Inputs);
+export default withStyles(styles)(ContributionBox);
 
