@@ -7,6 +7,8 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import Avatar from '@material-ui/core/Avatar';
+import Input from '@material-ui/core/Input';
+import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   root: {
@@ -16,12 +18,12 @@ const styles = theme => ({
   },
 });
 
-class CheckboxListSecondary extends React.Component {
+class AcceptedList extends React.Component {
   constructor(props) { 
     super(props);
     this.state = {
       checked: [],
-      items: ['Stuff'],
+      items: [],
       deleted: false,
     }
   }
@@ -76,11 +78,10 @@ class CheckboxListSecondary extends React.Component {
 
     return (
       <div className={classes.root}>
-    
         <List>
           {this.state.items.map(value => (
             <ListItem key={value} dense button>
-              <Avatar alt="Remy Sharp" src="/static/images/remy.jpg" />
+              <img src="static/image/baseline_done_black_18dp.png" />
               <ListItemText primary={`${value}`} />
               <ListItemSecondaryAction>
                 <Checkbox
@@ -93,7 +94,10 @@ class CheckboxListSecondary extends React.Component {
         </List>
 
         <nav className="nav-add">
-          <ContributionBox/>
+            <input type="text" id="urlinput" placeholder="URL" />
+            <input type="text" id="nameinput" placeholder="Name" />
+            <button id="new-item"
+                        onClick={this.addItem.bind(this)}>Apply</button>
         </nav>
       </div>
     );
@@ -101,8 +105,8 @@ class CheckboxListSecondary extends React.Component {
 }
 
 
-CheckboxListSecondary.propTypes = {
+AcceptedList.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(CheckboxListSecondary);
+export default withStyles(styles)(AcceptedList);

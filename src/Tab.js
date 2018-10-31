@@ -6,7 +6,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
-import CheckboxListSecondary from './List';
+import AcceptedList from './AcceptedList';
 
 function TabContainer({ children, dir }) {
   return (
@@ -68,7 +68,7 @@ class FullWidthTabs extends React.Component {
         >
           <TabContainer dir={theme.direction}>
 
-          <CheckboxListSecondary/>
+          <AcceptedList/>
           </TabContainer>
 
           <TabContainer dir={theme.direction}>Item Two</TabContainer>
