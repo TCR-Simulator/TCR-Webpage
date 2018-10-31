@@ -16,10 +16,31 @@ const styles = theme => ({
     maxWidth: 700,
     backgroundColor: theme.palette.background.paper,
   },
+  challengebutton: {
+    margin: theme.spacing.unit,
+    backgroundColor: '#FFF',
+    '&:hover': {
+      variant: "cotained",
+      color: '#FFF',
+      backgroundColor: '#F00',
+    }
+  },
+  applybutton: {
+    margin: theme.spacing.unit,
+    backgroundColor: '#FFF',
+    '&:hover': {
+      variant: "cotained",
+      color: '#FFF',
+      backgroundColor: '#CCC',
+    }
+  },
+  input: {
+    display: 'none',
+  },
 });
 
 class AcceptedList extends React.Component {
-  constructor(props) { 
+  constructor(props) {
     super(props);
     this.state = {
       checked: [],
@@ -32,7 +53,7 @@ class AcceptedList extends React.Component {
     let currentItems = this.state.items;
     let textBox = event.target.previousElementSibling;
 
-    if (textBox.value) { 
+    if (textBox.value) {
         currentItems.push(textBox.value);
         textBox.value = '';
 
@@ -84,10 +105,14 @@ class AcceptedList extends React.Component {
               <img src="static/image/baseline_done_black_18dp.png" />
               <ListItemText primary={`${value}`} />
               <ListItemSecondaryAction>
-                <Checkbox
-                  onChange={this.handleToggle(value)}
-                  checked={this.state.checked.indexOf(value) !== -1}
-                />
+                <div align="right">
+                  <Button variant="outlined" color="secondary" className={classes.challengebutton}>
+                    Challenge
+                  </Button>
+                  <Button variant="outlined" color="default" className={classes.applybutton}>
+                    Withdraw
+                  </Button>
+                </div>
               </ListItemSecondaryAction>
             </ListItem>
           ))}
