@@ -29,7 +29,7 @@ const styles = {
   },
   dashboard: {
     width: '100%%',
-    height: '10cm',  
+    height: '10cm',
   },
 };
 

@@ -48,7 +48,9 @@ class UserProfileCard extends React.Component {
           <CardContent>
             <div className={classes.row}>
               <Avatar
+              /* eslint-disable global-require */
                 src={require('./user_profile.png')}
+              /* eslint-enable global-require */
                 className={classes.avatar}
               />
               <div className={classes.details}>
@@ -56,17 +58,29 @@ class UserProfileCard extends React.Component {
                   {this.state.userName}
                 </Typography>
                 <Typography color="textSecondary" gutterBottom>
-                  {' '} Account ID: {this.state.accountID} {' '}
+                  {' '}
+                  {' '}
+Account ID:
+                  {this.state.accountID}
+                  {' '}
+                  {' '}
                 </Typography>
                 <Typography color="textSecondary">
-                  {' '} Account Balance: {this.state.balance} {' '}
+                  {' '}
+                  {' '}
+Account Balance:
+                  {this.state.balance}
+                  {' '}
+                  {' '}
                 </Typography>
               </div>
             </div>
           </CardContent>
           <CardActions>
             <Button size="small">
-              Edit Profile {' '}
+              Edit Profile
+              {' '}
+              {' '}
               <Icon>edit_icon</Icon>
             </Button>
           </CardActions>
