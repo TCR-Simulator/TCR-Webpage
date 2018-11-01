@@ -14,11 +14,10 @@ const styles = {
     padding: 8 * 3,
   },
   card: {
-    maxWidth: '40%',
+    width: '100%',
   },
   row: {
     display: 'flex',
-    // justifyContent: 'center',
   },
   avatar: {
     width: 90,
@@ -27,7 +26,6 @@ const styles = {
   },
   details: {
     margin: '10px',
-
   },
 };
 
@@ -57,26 +55,18 @@ class UserProfileCard extends React.Component {
                 <Typography variant="h6" component="h2">
                   {this.state.userName}
                 </Typography>
-                <Typography className={classes.title} color="textSecondary" gutterBottom>
-                  {' '}
-Account ID:
-                  {this.state.accountID}
-                  {' '}
-
+                <Typography color="textSecondary" gutterBottom>
+                  {' '} Account ID: {this.state.accountID} {' '}
                 </Typography>
-                <Typography className={classes.pos} color="textSecondary">
-                  {' '}
-Account Balance:
-                  {this.state.balance}
-                  {' '}
-
+                <Typography color="textSecondary">
+                  {' '} Account Balance: {this.state.balance} {' '}
                 </Typography>
               </div>
             </div>
           </CardContent>
           <CardActions>
             <Button size="small">
-              Edit Profile
+              Edit Profile {' '}
               <Icon>edit_icon</Icon>
             </Button>
           </CardActions>

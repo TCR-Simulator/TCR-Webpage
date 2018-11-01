@@ -7,6 +7,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import Card from '@material-ui/core/Card';
 
 function TabContainer(props) {
   return (
@@ -28,8 +29,7 @@ const styles = {
   },
   dashboard: {
     width: '100%%',
-    height: '10cm',
-    backgroundColor: '#f2f6f7',
+    height: '10cm',  
   },
 };
 
@@ -90,7 +90,7 @@ class UserDashboard extends React.Component {
 
     return (
       <div className={classes.root}>
-        <div className={classes.dashboard}>
+        <Card className={classes.dashboard}>
           <AppBar position="static">
             <Tabs
               value={value}
@@ -102,7 +102,7 @@ class UserDashboard extends React.Component {
             </Tabs>
           </AppBar>
           <TabContainer>{this.getTabContent()}</TabContainer>
-        </div>
+        </Card>
       </div>
     );
   }
