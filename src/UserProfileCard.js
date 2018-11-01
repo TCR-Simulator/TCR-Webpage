@@ -10,35 +10,35 @@ import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
 
 const styles = {
-    root: {
-      padding: 8 * 3,
-    },
-	card: {
-	  maxWidth: '40%',
-	},
+  root: {
+    padding: 8 * 3,
+  },
+  card: {
+    maxWidth: '40%',
+  },
   row: {
     display: 'flex',
-    //justifyContent: 'center',
+    // justifyContent: 'center',
   },
   avatar: {
     width: 90,
     height: 90,
     margin: 10,
   },
-	details: {
-	  margin: '10px',
-    
-	}
- };
+  details: {
+    margin: '10px',
+
+  },
+};
 
 
 class UserProfileCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-			accountID: 8349573,
-			balance: 9.765,
-			userName: 'John Doe',
+      accountID: 8349573,
+      balance: 9.765,
+      userName: 'John Doe',
     };
   }
 
@@ -46,31 +46,43 @@ class UserProfileCard extends React.Component {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-      <Card className={classes.card}>
-		    <CardContent>
-		     <div className={classes.row}>
-					 <Avatar
-					   src={require('./user_profile.png')}
-					   className={classes.avatar}
-					 />
-					 <div className={classes.details}>
-		         <Typography variant="h6" component="h2">
-					     {this.state.userName}   
-				     </Typography>
-					   <Typography className={classes.title} color="textSecondary" gutterBottom> Account ID: {this.state.accountID} </Typography>
-		         <Typography className={classes.pos} color="textSecondary"> Account Balance: {this.state.balance} </Typography>
-				   </div>
-				 </div>
-		    </CardContent>
-		    <CardActions>
-		      <Button size="small">
-					  Edit Profile
-					  <Icon>edit_icon</Icon>
-					</Button>
-		    </CardActions>
-			</Card>
-        </div>
-	  );
+        <Card className={classes.card}>
+          <CardContent>
+            <div className={classes.row}>
+              <Avatar
+                src={require('./user_profile.png')}
+                className={classes.avatar}
+              />
+              <div className={classes.details}>
+                <Typography variant="h6" component="h2">
+                  {this.state.userName}
+                </Typography>
+                <Typography className={classes.title} color="textSecondary" gutterBottom>
+                  {' '}
+Account ID:
+                  {this.state.accountID}
+                  {' '}
+
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  {' '}
+Account Balance:
+                  {this.state.balance}
+                  {' '}
+
+                </Typography>
+              </div>
+            </div>
+          </CardContent>
+          <CardActions>
+            <Button size="small">
+              Edit Profile
+              <Icon>edit_icon</Icon>
+            </Button>
+          </CardActions>
+        </Card>
+      </div>
+    );
   }
 }
 

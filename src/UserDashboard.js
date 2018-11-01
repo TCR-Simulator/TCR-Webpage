@@ -39,9 +39,9 @@ class UserDashboard extends React.Component {
     super(props);
     this.state = {
       value: 0,
-      acceptedElements: ["Blank Space", "Swan Lake", "New York New York"],
-      rejectedElements: ["Love Yourself", "The Four Seasons"],
-      pendingElements: ["Perfect","Photograph","Baby","Losing My Religion"],
+      acceptedElements: ['Blank Space', 'Swan Lake', 'New York New York'],
+      rejectedElements: ['Love Yourself', 'The Four Seasons'],
+      pendingElements: ['Perfect', 'Photograph', 'Baby', 'Losing My Religion'],
     };
   }
 
