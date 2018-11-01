@@ -10,6 +10,9 @@ import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
 
 const styles = {
+    root: {
+      padding: 8 * 3,
+    },
 	card: {
 	  maxWidth: '40%',
 	},
@@ -42,6 +45,7 @@ class UserProfileCard extends React.Component {
   render() {
     const { classes } = this.props;
     return (
+      <div className={classes.root}>
       <Card className={classes.card}>
 		    <CardContent>
 		     <div className={classes.row}>
@@ -65,6 +69,7 @@ class UserProfileCard extends React.Component {
 					</Button>
 		    </CardActions>
 			</Card>
+        </div>
 	  );
   }
 }

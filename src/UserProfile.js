@@ -11,6 +11,10 @@ const styles = {
   media: {
     height: 140,
   },
+  centre: {
+    margin: 'auto',
+    width: '2000px',
+  },
 
 };
 
@@ -24,7 +28,7 @@ class UserProfile extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className={this.props.centre}>
         <UserProfileCard />
         <UserDashboard />
       </div>

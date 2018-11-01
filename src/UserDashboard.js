@@ -25,7 +25,7 @@ const styles = {
     marginright: 'auto',
   },
   dashboard: {
-    width: '75%',
+    width: '100%%',
     height: '10cm',
     backgroundColor: '#f2f6f7',
   },
