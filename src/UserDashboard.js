@@ -5,6 +5,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 
 function TabContainer(props) {
   return (
@@ -37,9 +39,9 @@ class UserDashboard extends React.Component {
     super(props);
     this.state = {
       value: 0,
-      acceptedElements: [],
-      rejectedElements: [],
-      pendingElements: [],
+      acceptedElements: ["Blank Space", "Swan Lake", "New York New York"],
+      rejectedElements: ["Love Yourself", "The Four Seasons"],
+      pendingElements: ["Perfect","Photograph","Baby","Losing My Religion"],
     };
   }
 
@@ -52,9 +54,9 @@ class UserDashboard extends React.Component {
       //     return 'Accepted Tab';
       return (
         <div>
-          <ul>
-            {this.state.acceptedElements.map(listElem => <li>{listElem}</li>)}
-          </ul>
+          <List>
+            {this.state.acceptedElements.map(listElem => <ListItem>{listElem}</ListItem>)}
+          </List>
         </div>
       );
     }
@@ -62,18 +64,18 @@ class UserDashboard extends React.Component {
       // return 'Rejected Tab';
       return (
         <div>
-          <ul>
-            {this.state.rejectedElements.map(listElem => <li>{listElem}</li>)}
-          </ul>
+          <List>
+            {this.state.rejectedElements.map(listElem => <ListItem>{listElem}</ListItem>)}
+          </List>
         </div>
       );
     }
     // return 'Pending Tab';
     return (
       <div>
-        <ul>
-          {this.state.pendingElements.map(listElem => <li>{listElem}</li>)}
-        </ul>
+        <List>
+          {this.state.pendingElements.map(listElem => <ListItem>{listElem}</ListItem>)}
+        </List>
       </div>
     );
   }
