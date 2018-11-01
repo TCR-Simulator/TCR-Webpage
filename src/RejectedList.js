@@ -3,12 +3,8 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import Checkbox from '@material-ui/core/Checkbox';
 import Avatar from '@material-ui/core/Avatar';
-import Input from '@material-ui/core/Input';
-import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   root: {
@@ -20,19 +16,19 @@ const styles = theme => ({
     margin: theme.spacing.unit,
     backgroundColor: '#FFF',
     '&:hover': {
-      variant: "cotained",
+      variant: 'cotained',
       color: '#FFF',
       backgroundColor: '#F00',
-    }
+    },
   },
   applybutton: {
     margin: theme.spacing.unit,
     backgroundColor: '#FFF',
     '&:hover': {
-      variant: "cotained",
+      variant: 'cotained',
       color: '#FFF',
       backgroundColor: '#CCC',
-    }
+    },
   },
   input: {
     display: 'none',
@@ -45,8 +41,7 @@ class RejectedList extends React.Component {
     this.state = {
       checked: [],
       items: [],
-      deleted: false,
-    }
+    };
   }
 
   handleToggle = value => () => {
@@ -71,12 +66,10 @@ class RejectedList extends React.Component {
     return (
       <div className={classes.root}>
         <List>
-          {this.state.items.map(value => (
+          {this.state.items.map(value => ( // eslint-disable-line react/destructuring-assignment
             <ListItem key={value} dense button>
-              <img src="image/rejected.png" />
+              <Avatar alt="Rejected" src="image/rejected.png" />
               <ListItemText primary={`${value}`} />
-              <ListItemSecondaryAction>
-              </ListItemSecondaryAction>
             </ListItem>
           ))}
         </List>
@@ -87,7 +80,7 @@ class RejectedList extends React.Component {
 
 
 RejectedList.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default withStyles(styles)(RejectedList);

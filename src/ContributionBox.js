@@ -22,14 +22,14 @@ const styles = theme => ({
     width: '10%',
     backgroundColor: '#FFF',
     '&:hover': {
-      variant: "cotained",
+      variant: 'cotained',
       color: '#FFF',
       backgroundColor: '#09F',
-    }
+    },
   },
 });
 
-class ContributionBox extends React.Component {
+class CBox extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     const { classes } = this.props;
     return (
@@ -50,15 +50,14 @@ class ContributionBox extends React.Component {
         />
         <Button variant="outlined" color="primary" className={classes.applybutton}>
           Apply
-      </Button>
+        </Button>
       </div>
     );
   }
 }
 
-ContributionBox.propTypes = {
-  classes: PropTypes.object.isRequired,
+CBox.propTypes = {
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-export default withStyles(styles)(ContributionBox);
-
+export default withStyles(styles)(CBox);

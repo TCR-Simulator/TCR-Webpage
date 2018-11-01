@@ -41,7 +41,7 @@ class FullWidthTabs extends React.Component {
     this.setState({ value });
   };
 
-  handleChangeIndex = index => {
+  handleChangeIndex = (index) => {
     this.setState({ value: index });
   };
 
@@ -52,7 +52,7 @@ class FullWidthTabs extends React.Component {
       <div className={classes.root}>
         <AppBar position="static" color="default">
           <Tabs
-            value={this.state.value}
+            value={this.state.value} // eslint-disable-line react/destructuring-assignment
             onChange={this.handleChange}
             indicatorColor="primary"
             textColor="primary"
@@ -66,23 +66,23 @@ class FullWidthTabs extends React.Component {
         </AppBar>
         <SwipeableViews
           axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-          index={this.state.value}
+          index={this.state.value} // eslint-disable-line react/destructuring-assignment
           onChangeIndex={this.handleChangeIndex}
         >
           <TabContainer dir={theme.direction}>
-          <AcceptedList/>
+            <AcceptedList />
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
-          <PendingList/>
+            <PendingList />
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
-          <ChallengeList/>
+            <ChallengeList />
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
-          <RejectedList/>
+            <RejectedList />
           </TabContainer>
         </SwipeableViews>
       </div>
@@ -91,8 +91,8 @@ class FullWidthTabs extends React.Component {
 }
 
 FullWidthTabs.propTypes = {
-  classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default withStyles(styles, { withTheme: true })(FullWidthTabs);

@@ -3,22 +3,13 @@ import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
-import { MuiThemeProvider, createMuiTheme, withStyles } from '@material-ui/core/styles';
-import teal from '@material-ui/core/colors/teal';
-import SettingsFrame from './SettingsFrame';
+import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import IconButton from'@material-ui/core/IconButton';
-import AccountCircle from '@material-ui/icons/AccountCircle'
+import IconButton from '@material-ui/core/IconButton';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import SettingsFrame from './SettingsFrame';
 
-const theme = createMuiTheme({
-  palette: {
-    primary: teal,
-    secondary: {
-      main: '#444444',
-    },
-  },
-});
 
 const styles = {
   root: {
@@ -38,7 +29,7 @@ const styles = {
   menuButton: {
     marginLeft: -12,
     marginRight: 20,
-  }
+  },
 };
 
 class Dashboard extends React.Component {
@@ -46,12 +37,12 @@ class Dashboard extends React.Component {
     anchorEl: null,
   };
 
-  handleMenu = event => {
-    this.setState({anchorEl: event.currentTarget });
+  handleMenu = (event) => {
+    this.setState({ anchorEl: event.currentTarget });
   }
 
   handleClose = () => {
-    this.setState({anchorEl: null});
+    this.setState({ anchorEl: null });
   };
 
   render() {
@@ -73,7 +64,7 @@ class Dashboard extends React.Component {
                 onClick={this.handleMenu}
                 color="inherit"
               >
-              <AccountCircle />
+                <AccountCircle />
               </IconButton>
               <Menu
                 id="menu-appbar"
@@ -95,11 +86,11 @@ class Dashboard extends React.Component {
             </div>
           </Toolbar>
         </AppBar>
-          <SettingsFrame className={classes.settingFrame} />
+        <SettingsFrame className={classes.settingFrame} />
       </div>
-    );  
+    );
   }
-};
+}
 
 Dashboard.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types

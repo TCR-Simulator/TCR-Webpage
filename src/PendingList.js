@@ -3,12 +3,8 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import Checkbox from '@material-ui/core/Checkbox';
 import Avatar from '@material-ui/core/Avatar';
-import Input from '@material-ui/core/Input';
-import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   root: {
@@ -20,19 +16,19 @@ const styles = theme => ({
     margin: theme.spacing.unit,
     backgroundColor: '#FFF',
     '&:hover': {
-      variant: "cotained",
+      variant: 'cotained',
       color: '#FFF',
       backgroundColor: '#F00',
-    }
+    },
   },
   applybutton: {
     margin: theme.spacing.unit,
     backgroundColor: '#FFF',
     '&:hover': {
-      variant: "cotained",
+      variant: 'cotained',
       color: '#FFF',
       backgroundColor: '#CCC',
-    }
+    },
   },
   input: {
     display: 'none',
@@ -45,37 +41,7 @@ class PendingList extends React.Component {
     this.state = {
       checked: [],
       items: [],
-      deleted: false,
-    }
-  }
-
-  addItem (event) {
-    let currentItems = this.state.items;
-    let textBox = event.target.previousElementSibling;
-
-    if (textBox.value) {
-        currentItems.push(textBox.value);
-        textBox.value = '';
-
-        this.setState({
-          items: currentItems,
-        });
-    }
-  }
-
-  removeItem (event) {
-      let currentItem = event.target.textContent;
-      let updatedItems = this.state.items.filter((item) => {
-        return currentItem !== item;
-      });
-
-      this.setState({
-        items: updatedItems,
-      });
-
-      !this.state.deleted && this.setState({
-        deleted: true
-      });
+    };
   }
 
   handleToggle = value => () => {
@@ -94,27 +60,40 @@ class PendingList extends React.Component {
     });
   };
 
+  addItem(event) {
+    const currentItems = this.state.items; // eslint-disable-line react/destructuring-assignment
+    const textBox = event.target.previousElementSibling;
+
+    if (textBox.value) {
+      currentItems.push(textBox.value);
+      textBox.value = '';
+
+      this.setState({
+        items: currentItems,
+      });
+    }
+  }
+
   render() {
     const { classes } = this.props;
 
     return (
       <div className={classes.root}>
         <List>
-          {this.state.items.map(value => (
+          {this.state.items.map(value => ( // eslint-disable-line react/destructuring-assignment
             <ListItem key={value} dense button>
-              <img src="/image/pending.png" />
+              <Avatar alt="Pending" src="/image/pending.png" />
               <ListItemText primary={`${value}`} />
-              <ListItemSecondaryAction>
-              </ListItemSecondaryAction>
             </ListItem>
           ))}
         </List>
 
         <nav className="nav-add">
-            <input type="text" id="urlinput" placeholder="URL" />
-            <input type="text" id="nameinput" placeholder="Name" />
-            <button id="new-item"
-                        onClick={this.addItem.bind(this)}>Apply</button>
+          <input type="text" id="urlinput" placeholder="URL" />
+          <input type="text" id="nameinput" placeholder="Name" />
+          <button type="submit" id="new-item" onClick={this.addItem.bind(this)}>
+          Apply
+          </button>
         </nav>
       </div>
     );
@@ -123,7 +102,7 @@ class PendingList extends React.Component {
 
 
 PendingList.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default withStyles(styles)(PendingList);

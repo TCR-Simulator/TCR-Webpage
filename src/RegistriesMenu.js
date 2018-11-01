@@ -15,7 +15,7 @@ const styles = theme => ({
   },
 });
 
-const options = [
+const op = [
   'TCR - 1',
   'TCR - 2',
   'TCR - 3',
@@ -25,15 +25,15 @@ const options = [
 class RegistriesMenu extends React.Component {
   state = {
     anchorEl: null,
-    selectedIndex: 1,
+    sI: 1,
   };
 
-  handleClickListItem = event => {
+  handleClickListItem = (event) => {
     this.setState({ anchorEl: event.currentTarget });
   };
 
   handleMenuItemClick = (event, index) => {
-    this.setState({ selectedIndex: index, anchorEl: null });
+    this.setState({ sI: index, anchorEl: null });
   };
 
   handleClose = () => {
@@ -56,7 +56,7 @@ class RegistriesMenu extends React.Component {
           >
             <ListItemText
               primary="Registries"
-              secondary={options[this.state.selectedIndex]}
+              secondary={op[this.state.sI]} // eslint-disable-line react/destructuring-assignment
             />
           </ListItem>
         </List>
@@ -66,11 +66,11 @@ class RegistriesMenu extends React.Component {
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
         >
-          {options.map((option, index) => (
+          {op.map((option, i) => (
             <MenuItem
               key={option}
-              selected={index === this.state.selectedIndex}
-              onClick={event => this.handleMenuItemClick(event, index)}
+              selected={i === this.state.sI} // eslint-disable-line react/destructuring-assignment
+              onClick={event => this.handleMenuItemClick(event, i)}
             >
               {option}
             </MenuItem>
@@ -82,7 +82,7 @@ class RegistriesMenu extends React.Component {
 }
 
 RegistriesMenu.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default withStyles(styles)(RegistriesMenu);
