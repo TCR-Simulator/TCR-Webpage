@@ -1,0 +1,98 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import SwipeableViews from 'react-swipeable-views';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+import AcceptedList from './AcceptedList';
+import PendingList from './PendingList';
+import RejectedList from './RejectedList';
+import ChallengeList from './ChallengeList';
+
+function TabContainer({ children, dir }) {
+  return (
+    <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>
+      {children}
+    </Typography>
+  );
+}
+
+TabContainer.propTypes = {
+  children: PropTypes.node.isRequired,
+  dir: PropTypes.string.isRequired,
+};
+
+const styles = theme => ({
+  root: {
+    backgroundColor: theme.palette.background.paper,
+    width: 700,
+    marginTop: 20,
+  },
+});
+
+class FullWidthTabs extends React.Component {
+  state = {
+    value: 0,
+  };
+
+  handleChange = (event, value) => {
+    this.setState({ value });
+  };
+
+  handleChangeIndex = (index) => {
+    this.setState({ value: index });
+  };
+
+  render() {
+    const { classes, theme } = this.props;
+
+    return (
+      <div className={classes.root}>
+        <AppBar position="static" color="default">
+          <Tabs
+            value={this.state.value} // eslint-disable-line react/destructuring-assignment
+            onChange={this.handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            fullWidth
+          >
+            <Tab label="Accepted" />
+            <Tab label="Pending" />
+            <Tab label="In Challenge" />
+            <Tab label="Rejected" />
+          </Tabs>
+        </AppBar>
+        <SwipeableViews
+          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+          index={this.state.value} // eslint-disable-line react/destructuring-assignment
+          onChangeIndex={this.handleChangeIndex}
+        >
+          <TabContainer dir={theme.direction}>
+            <AcceptedList />
+          </TabContainer>
+
+          <TabContainer dir={theme.direction}>
+            <PendingList />
+          </TabContainer>
+
+          <TabContainer dir={theme.direction}>
+            <ChallengeList />
+          </TabContainer>
+
+          <TabContainer dir={theme.direction}>
+            <RejectedList />
+          </TabContainer>
+        </SwipeableViews>
+      </div>
+    );
+  }
+}
+
+FullWidthTabs.propTypes = {
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+};
+
+export default withStyles(styles, { withTheme: true })(FullWidthTabs);
