@@ -42,12 +42,12 @@ class Player extends React.Component {
   }
 
   handleClose = () => {
-    this.props.history.push('/profile');
+    this.props.history.push('/profile'); // eslint-disable-line 
     this.setState({ anchorEl: null });
   }
 
   handleSwitch = () => {
-    this.props.history.push('/admin');
+    this.props.history.push('/admin'); // eslint-disable-line 
   }
 
   render() {
