@@ -7,6 +7,9 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import AcceptedList from './AcceptedList';
+import PendingList from './PendingList';
+import RejectedList from './RejectedList';
+import ChallengeList from './ChallengeList';
 
 function TabContainer({ children, dir }) {
   return (
@@ -67,13 +70,20 @@ class FullWidthTabs extends React.Component {
           onChangeIndex={this.handleChangeIndex}
         >
           <TabContainer dir={theme.direction}>
-
           <AcceptedList/>
           </TabContainer>
 
-          <TabContainer dir={theme.direction}>Item Two</TabContainer>
-          <TabContainer dir={theme.direction}>Item Three</TabContainer>
-          <TabContainer dir={theme.direction}>Item Four</TabContainer>
+          <TabContainer dir={theme.direction}>
+          <PendingList/>
+          </TabContainer>
+
+          <TabContainer dir={theme.direction}>
+          <ChallengeList/>
+          </TabContainer>
+
+          <TabContainer dir={theme.direction}>
+          <RejectedList/>
+          </TabContainer>
         </SwipeableViews>
       </div>
     );

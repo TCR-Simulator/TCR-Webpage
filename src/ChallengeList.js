@@ -39,29 +39,13 @@ const styles = theme => ({
   },
 });
 
-class AcceptedList extends React.Component {
+class ChallengeList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       checked: [],
-      items: ['Blank Space - Taylor Swift', 
-              'New Rules - Dua Lipa',
-              'There is nothing holding me back - Shawn Mendes'],
+      items: [],
       deleted: false,
-    }
-  }
-
-  addItem (event) {
-    let currentItems = this.state.items;
-    let textBox = event.target.previousElementSibling;
-
-    if (textBox.value) {
-        currentItems.push(textBox.value);
-        textBox.value = '';
-
-        this.setState({
-          items: currentItems,
-        });
     }
   }
   handleToggle = value => () => {
@@ -85,20 +69,12 @@ class AcceptedList extends React.Component {
 
     return (
       <div className={classes.root}>
-        <List id="AcceptedList">
+        <List>
           {this.state.items.map(value => (
             <ListItem key={value} dense button>
-              <img src="image/done.png" />
+              <img src="static/image/baseline_done_black_18dp.png" />
               <ListItemText primary={`${value}`} />
               <ListItemSecondaryAction>
-                <div align="right">
-                  <Button variant="outlined" color="secondary" className={classes.challengebutton} onClick={this.addItem.bind(this)}>
-                    Challenge
-                  </Button>
-                  <Button variant="outlined" color="default" className={classes.applybutton}>
-                    Withdraw
-                  </Button>
-                </div>
               </ListItemSecondaryAction>
             </ListItem>
           ))}
@@ -109,8 +85,8 @@ class AcceptedList extends React.Component {
 }
 
 
-AcceptedList.propTypes = {
+ChallengeList.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(AcceptedList);
+export default withStyles(styles)(ChallengeList);

@@ -39,14 +39,12 @@ const styles = theme => ({
   },
 });
 
-class AcceptedList extends React.Component {
+class PendingList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       checked: [],
-      items: ['Blank Space - Taylor Swift', 
-              'New Rules - Dua Lipa',
-              'There is nothing holding me back - Shawn Mendes'],
+      items: [],
       deleted: false,
     }
   }
@@ -64,6 +62,22 @@ class AcceptedList extends React.Component {
         });
     }
   }
+
+  removeItem (event) {
+      let currentItem = event.target.textContent;
+      let updatedItems = this.state.items.filter((item) => {
+        return currentItem !== item;
+      });
+
+      this.setState({
+        items: updatedItems,
+      });
+
+      !this.state.deleted && this.setState({
+        deleted: true
+      });
+  }
+
   handleToggle = value => () => {
     const { checked } = this.state;
     const currentIndex = checked.indexOf(value);
@@ -85,32 +99,31 @@ class AcceptedList extends React.Component {
 
     return (
       <div className={classes.root}>
-        <List id="AcceptedList">
+        <List>
           {this.state.items.map(value => (
             <ListItem key={value} dense button>
-              <img src="image/done.png" />
+              <img src="static/image/baseline_done_black_18dp.png" />
               <ListItemText primary={`${value}`} />
               <ListItemSecondaryAction>
-                <div align="right">
-                  <Button variant="outlined" color="secondary" className={classes.challengebutton} onClick={this.addItem.bind(this)}>
-                    Challenge
-                  </Button>
-                  <Button variant="outlined" color="default" className={classes.applybutton}>
-                    Withdraw
-                  </Button>
-                </div>
               </ListItemSecondaryAction>
             </ListItem>
           ))}
         </List>
+
+        <nav className="nav-add">
+            <input type="text" id="urlinput" placeholder="URL" />
+            <input type="text" id="nameinput" placeholder="Name" />
+            <button id="new-item"
+                        onClick={this.addItem.bind(this)}>Apply</button>
+        </nav>
       </div>
     );
   }
 }
 
 
-AcceptedList.propTypes = {
+PendingList.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(AcceptedList);
+export default withStyles(styles)(PendingList);
