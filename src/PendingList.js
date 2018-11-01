@@ -102,7 +102,7 @@ class PendingList extends React.Component {
         <List>
           {this.state.items.map(value => (
             <ListItem key={value} dense button>
-              <img src="static/image/baseline_done_black_18dp.png" />
+              <img src="/image/pending.png" />
               <ListItemText primary={`${value}`} />
               <ListItemSecondaryAction>
               </ListItemSecondaryAction>
