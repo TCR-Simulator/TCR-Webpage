@@ -42,6 +42,7 @@ class UserProfileCard extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { accountID, balance, userName } = this.state;
     return (
       <div className={classes.root}>
         <Card className={classes.card}>
@@ -55,13 +56,13 @@ class UserProfileCard extends React.Component {
               />
               <div className={classes.details}>
                 <Typography variant="h6" component="h2">
-                  {this.state.userName}
+                  {userName}
                 </Typography>
                 <Typography color="textSecondary" gutterBottom>
                   {' '}
                   {' '}
 Account ID:
-                  {this.state.accountID}
+                  {accountID}
                   {' '}
                   {' '}
                 </Typography>
@@ -69,7 +70,7 @@ Account ID:
                   {' '}
                   {' '}
 Account Balance:
-                  {this.state.balance}
+                  {balance}
                   {' '}
                   {' '}
                 </Typography>

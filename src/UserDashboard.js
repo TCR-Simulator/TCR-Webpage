@@ -10,9 +10,10 @@ import ListItem from '@material-ui/core/ListItem';
 import Card from '@material-ui/core/Card';
 
 function TabContainer(props) {
+  const { children } = props;
   return (
     <Typography component="div" style={{ padding: 8 * 3 }}>
-      {props.children}
+      {children}
     </Typography>
   );
 }
@@ -48,14 +49,14 @@ class UserDashboard extends React.Component {
   /* TODO: Implement a fetch function to get data for lists */
 
   getTabContent() {
-    const { value } = this.state;
+    const { value, acceptedElements, rejectedElements, pendingElements } = this.state;
 
     if (value === 0) {
       //     return 'Accepted Tab';
       return (
         <div>
           <List>
-            {this.state.acceptedElements.map(listElem => <ListItem>{listElem}</ListItem>)}
+            {acceptedElements.map(listElem => <ListItem>{listElem}</ListItem>)}
           </List>
         </div>
       );
@@ -65,7 +66,7 @@ class UserDashboard extends React.Component {
       return (
         <div>
           <List>
-            {this.state.rejectedElements.map(listElem => <ListItem>{listElem}</ListItem>)}
+            {rejectedElements.map(listElem => <ListItem>{listElem}</ListItem>)}
           </List>
         </div>
       );
@@ -74,7 +75,7 @@ class UserDashboard extends React.Component {
     return (
       <div>
         <List>
-          {this.state.pendingElements.map(listElem => <ListItem>{listElem}</ListItem>)}
+          {pendingElements.map(listElem => <ListItem>{listElem}</ListItem>)}
         </List>
       </div>
     );
