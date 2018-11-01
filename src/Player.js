@@ -44,58 +44,58 @@ class Player extends React.Component {
   handleClose = () => {
     this.props.history.push('/profile');
     this.setState({ anchorEl: null });
-  };
+  }
 
-	handleSwitch = () => {
-	  this.props.history.push('/admin');
-	}
+  handleSwitch = () => {
+    this.props.history.push('/admin');
+  }
 
-	render() {
-	  const { classes } = this.props;
-	  const { anchorEl } = this.state;
-	  const open = Boolean(anchorEl);
+  render() {
+    const { classes } = this.props;
+    const { anchorEl } = this.state;
+    const open = Boolean(anchorEl);
 
-	  return (
-  <div className={classes.root}>
-    <AppBar position="relative" color="primary" elevation={2}>
-      <Toolbar>
-        <Typography variant="h5" color="inherit" className={classes.grow}>
+    return (
+      <div className={classes.root}>
+        <AppBar position="relative" color="primary" elevation={2}>
+          <Toolbar>
+            <Typography variant="h5" color="inherit" className={classes.grow}>
               TCR Simulator
-        </Typography>
-        <div>
-          <Switch onChange={this.handleSwitch} />
-          <IconButton
-            aria-owns={open ? 'menu-appbar' : null}
-            aria-haspopup="true"
-            onClick={this.handleMenu}
-            color="inherit"
-          >
-            <AccountCircle />
-          </IconButton>
-          <Menu
-            id="menu-appbar"
-            anchorE1={anchorEl}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            getContentAnchorEl={null}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            open={open}
-            onClose={this.handleClose}
-          >
-            <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-          </Menu>
-        </div>
-      </Toolbar>
-    </AppBar>
-    <SettingsFrame className={classes.settingFrame} />
-  </div>
-	  );
-	}
+            </Typography>
+            <div>
+              <Switch onChange={this.handleSwitch} />
+              <IconButton
+                aria-owns={open ? 'menu-appbar' : null}
+                aria-haspopup="true"
+                onClick={this.handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorE1={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                getContentAnchorEl={null}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={open}
+                onClose={this.handleClose}
+              >
+                <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+              </Menu>
+            </div>
+          </Toolbar>
+        </AppBar>
+        <SettingsFrame className={classes.settingFrame} />
+      </div>
+    );
+  }
 }
 
 Player.propTypes = {

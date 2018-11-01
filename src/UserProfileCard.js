@@ -29,7 +29,6 @@ const styles = {
   },
 };
 
-
 class UserProfileCard extends React.Component {
   constructor(props) {
     super(props);

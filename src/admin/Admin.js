@@ -78,12 +78,8 @@ class Admin extends React.Component {
     this.setState({ selectedTcr: selectedIndex });
   }
 
-  showTcrDialog() {
-    this.setState({ tcrDialogOpened: true });
-  }
-
-  handleTcrDialogCancel() {
-    this.setState({ tcrDialogOpened: false });
+  handleSwitch = () => {
+    this.props.history.push('/player'); // eslint-disable-line 
   }
 
   handleTcrDialogCreate() {
@@ -110,68 +106,71 @@ class Admin extends React.Component {
     this.onTCRSelected(newLength - 1);
   }
 
-				handleSwitch = () => {
-				  this.props.history.push('/player');
-				}
+  handleTcrDialogCancel() {
+    this.setState({ tcrDialogOpened: false });
+  }
 
-				render() {
-				  const { classes } = this.props;
-				  const { tcrDialogOpened, selectedTcr, tcrs } = this.state;
+  showTcrDialog() {
+    this.setState({ tcrDialogOpened: true });
+  }
 
-				  return (
-  <div className={classes.root}>
-    <CssBaseline />
-    <AppBar position="fixed" className={classes.appBar}>
-      <Toolbar>
+  render() {
+    const { classes } = this.props;
+    const { tcrDialogOpened, selectedTcr, tcrs } = this.state;
 
-        <Typography variant="h6" color="inherit" noWrap>
+    return (
+      <div className={classes.root}>
+        <CssBaseline />
+        <AppBar position="fixed" className={classes.appBar}>
+          <Toolbar>
+            <Typography variant="h6" color="inherit" noWrap>
               TCR Playground
-        </Typography>
-        <Switch onChange={this.handleSwitch} />
-      </Toolbar>
-    </AppBar>
-    <Drawer
-      className={classes.drawer}
-      variant="permanent"
-      classes={{
-        paper: classes.drawerPaper,
-      }}
-    >
-      <div className={classes.toolbar} />
-      <List subheader={<ListSubheader component="div">Deployed TCRs</ListSubheader>}>
-        {tcrs.map((tcr, index) => (
-          <ListItem
-            button
-            key={tcr.name}
-            onClick={() => this.onTCRSelected(index)}
-            selected={selectedTcr === index}
+            </Typography>
+            <Switch onChange={this.handleSwitch} />
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          className={classes.drawer}
+          variant="permanent"
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+        >
+          <div className={classes.toolbar} />
+          <List subheader={<ListSubheader component="div">Deployed TCRs</ListSubheader>}>
+            {tcrs.map((tcr, index) => (
+              <ListItem
+                button
+                key={tcr.name}
+                onClick={() => this.onTCRSelected(index)}
+                selected={selectedTcr === index}
+              >
+                <ListItemIcon><ListAltIcon /></ListItemIcon>
+                <ListItemText primary={tcr.name} />
+              </ListItem>
+            ))}
+          </List>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            onClick={() => this.showTcrDialog()}
           >
-            <ListItemIcon><ListAltIcon /></ListItemIcon>
-            <ListItemText primary={tcr.name} />
-          </ListItem>
-        ))}
-      </List>
-      <Button
-        variant="contained"
-        color="primary"
-        className={classes.button}
-        onClick={() => this.showTcrDialog()}
-      >
             Create new TCR
-      </Button>
-    </Drawer>
-    <main className={classes.content}>
-      <div className={classes.toolbar} />
-      <AdminTCRPage tcr={tcrs[selectedTcr]} />
-    </main>
-    <TcrDialog
-      open={tcrDialogOpened}
-      handleCancel={() => this.handleTcrDialogCancel()}
-      handleCreate={() => this.handleTcrDialogCreate()}
-    />
-  </div>
-				  );
-				}
+          </Button>
+        </Drawer>
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <AdminTCRPage tcr={tcrs[selectedTcr]} />
+        </main>
+        <TcrDialog
+          open={tcrDialogOpened}
+          handleCancel={() => this.handleTcrDialogCancel()}
+          handleCreate={() => this.handleTcrDialogCreate()}
+        />
+      </div>
+    );
+  }
 }
 
 Admin.propTypes = {
