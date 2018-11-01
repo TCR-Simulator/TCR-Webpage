@@ -40,7 +40,7 @@ class PendingList extends React.Component {
     super(props);
     this.state = {
       checked: [],
-      items: [],
+      items: ['Love Yourself - BTS', 'Fancy - Iggy Azalea', 'Baby - Justin Bieber'],
     };
   }
 

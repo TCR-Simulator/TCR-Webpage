@@ -40,7 +40,7 @@ class ChallengeList extends React.Component {
     super(props);
     this.state = {
       checked: [],
-      items: [],
+      items: ['Work - Rihanna'],
     };
   }
 

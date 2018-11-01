@@ -40,7 +40,7 @@ class RejectedList extends React.Component {
     super(props);
     this.state = {
       checked: [],
-      items: [],
+      items: ['Pinapple Song', 'Shark Song', 'The Donald Trump Song'],
     };
   }
 

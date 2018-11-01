@@ -42,7 +42,7 @@ class AcceptedList extends React.Component {
     super(props);
     this.state = {
       checked: [],
-      items: ['Blank Space - Taylor Swift', 'New Rules - Dua Lipa', 'There is nothing holding me back - Shawn Mendes'],
+      items: ['Blank Space - Taylor Swift', 'New Rules - Dua Lipa', 'There is nothing holding me back - Shawn Mendes', 'Dive - Ed Sheeran', 'New Man - Ed Sheeran', 'Work - Rihanna'],
     };
   }
 
