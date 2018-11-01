@@ -2,18 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
+import HelpIcon from '@material-ui/icons/Help';
 
-const styles = theme => ({
-  button: {
-    margin: theme.spacing.unit,
+const styles = {
+  infoBut: {
+    display: 'inline',
+    marginLeft: 5,
   },
-  customWidth: {
-    maxWidth: 500,
+  icon: {
+    fontSize: 15,
+    marginBottom: -2,
   },
-  noMaxWidth: {
-    maxWidth: 'none',
-  },
-});
+};
 
 
 class CustomizedTooltips extends React.Component {
@@ -47,10 +47,11 @@ class CustomizedTooltips extends React.Component {
   }
 
   render() {
+    const { classes } = this.props;
     return (
-      <div>
+      <div className={classes.infoBut}>
         <Tooltip title={this.getDialog()}>
-          <i className="material-icons">help</i>
+          <HelpIcon className={classes.icon} />
         </Tooltip>
       </div>
     );
@@ -58,6 +59,7 @@ class CustomizedTooltips extends React.Component {
 }
 CustomizedTooltips.propTypes = {
   content: PropTypes.string.isRequired,
+  classes: PropTypes.object.isRequired, //eslint-disable-line
 };
 
 export default withStyles(styles)(CustomizedTooltips);

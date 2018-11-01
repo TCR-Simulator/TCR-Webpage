@@ -21,7 +21,8 @@ const styles = theme => ({
     display: 'inline',
     paddingLeft: 6,
     marginTop: 1,
-    position: 'absolute',
+    position: 'flex',
+    flexDirection: 'column',
   },
   dialogBox: {
     maxWidth: '80%',
@@ -41,113 +42,153 @@ const styles = theme => ({
     margin: theme.spacing.unit,
   },
   section: {
+    display: 'flex',
     borderBottom: '1px solid rgb(0,0,0,.25)',
+  },
+  withSection: {
+    display: 'flex',
+    marginTop: 10,
+    marginBottom: -5,
+  },
+  selected: {
+    color: 'grey',
+    marginLeft: 10,
   },
 });
 
-function handleAdd(tcrBar) {
-  return () => {
-    tcrBar.setState((state) => {
-      const chipData = [...state.chipData];
-      chipData.push({
-        key: Math.floor(Math.random() * 10000),
-      });
-      return { chipData };
-    });
-    tcrBar.setState({ tcrDialogOpened: false });
+class TcrDialog extends React.Component {
+  state = {
+    enablePayment: true,
+    subsFeeColor: 'grey',
   };
-}
 
-const TcrDialog = (props) => {
-  const { classes, open, handleClose, tcrBar } = props;
+  handleCheck(enablePayment) {
+    return () => {
+      this.setState({ enablePayment: enablePayment === false,
+        subsFeeColor: enablePayment ? '#212121' : 'grey' });
+    };
+  }
 
-  return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="form-dialog-title"
-      className={classes.dialogBox}
-      fullWidth
-    >
-      <DialogTitle id="form-dialog-title">
-TCR Mechanism
-        <CustomizedTooltips classes="" content="TCRMech" />
-      </DialogTitle>
-      <DialogContent>
-        <div>
-          <div className={classes.section}>
-            <AssignmentIcon className={classes.subtitleIcon} />
-            <Typography variant="subtitle1" className={classes.subtitle}>
-              Submission
-            </Typography>
-          </div>
-          <ListItem className={classes.ListItem}>
-            <ListItemText className={classes.listItemText}>
-              Minimum Deposit
-              <CustomizedTooltips classes="" content="minimumDeposit" />
-            </ListItemText>
-            <div>
-              <InputAdornments />
+  render() {
+    const { classes, open, handleCreate, handleCancel } = this.props;
+    const { enablePayment, subsFeeColor } = this.state;
+
+    return (
+      <Dialog
+        open={open}
+        onClose={handleCancel}
+        aria-labelledby="form-dialog-title"
+        className={classes.dialogBox}
+        fullWidth
+      >
+        <DialogTitle id="form-dialog-title">
+         TCR Mechanism
+        </DialogTitle>
+        <DialogContent>
+          <div>
+            <div className={classes.section}>
+              <AssignmentIcon className={classes.subtitleIcon} />
+              <Typography variant="subtitle1" className={classes.subtitle}>
+                Submission
+              </Typography>
             </div>
-          </ListItem>
-        </div>
-        <div>
-          <div className={classes.section}>
-            <AssignmentTurnedInIcon className={classes.subtitleIcon} />
-            <Typography variant="subtitle1" className={classes.subtitle} />
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                Minimum Deposit
+                <CustomizedTooltips classes="" content="minimumDeposit" />
+              </ListItemText>
+              <div>
+                <InputAdornments unit="wei" />
+              </div>
+            </ListItem>
+            <ListItem className={classes.withSection}>
+              <ListItemText className={classes.listItemText}>
+                Submission Length Period
+                <CustomizedTooltips classes="" content="" />
+              </ListItemText>
+              <div>
+                <InputAdornments unit="day(s)" />
+              </div>
+            </ListItem>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                Submission could be challenged.
+                <CustomizedTooltips classes="" content="" />
+              </ListItemText>
+              <Checkbox />
+            </ListItem>
           </div>
-          <ListItem className={classes.ListItem}>
-            <ListItemText className={classes.listItemText}>
-             Each maintainer holds equal voting rights.
-             Curation
-              {' '}
-              <CustomizedTooltips classes="" content="curation" />
-            </ListItemText>
-            <Checkbox
-              defaultChecked
-            />
-          </ListItem>
-        </div>
-        <div>
-          <div className={classes.section}>
-            <PageviewIcon className={classes.subtitleIcon} />
-            <Typography variant="subtitle1" className={classes.subtitle}>
-              Subscription
-            </Typography>
+          <div>
+            <div className={classes.section}>
+              <AssignmentTurnedInIcon className={classes.subtitleIcon} />
+              <Typography variant="subtitle1" className={classes.subtitle}>
+                Curation
+              </Typography>
+            </div>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                Each maintainer holds equal voting rights.
+                <CustomizedTooltips classes="" content="curation" />
+              </ListItemText>
+              <Checkbox
+                defaultChecked
+              />
+            </ListItem>
           </div>
-          <ListItem className={classes.ListItem}>
-            <ListItemText className={classes.listItemText}>
-             Consumer pays to subscribe to the list.
-              Curation
-              {' '}
-              <CustomizedTooltips classes="" content="access" />
-            </ListItemText>
-            <Checkbox />
-          </ListItem>
-        </div>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={handleAdd(tcrBar)} color="primary">
-          Add
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-};
+          <div>
+            <div className={classes.section}>
+              <PageviewIcon className={classes.subtitleIcon} />
+              <Typography variant="subtitle1" className={classes.subtitle}>
+               Subscription
+              </Typography>
+            </div>
+            <ListItem className={classes.withSection}>
+              <ListItemText className={classes.listItemText}>
+                Consumer pays to subscribe to the list.
+                <CustomizedTooltips classes="" content="access" />
+              </ListItemText>
+              <Checkbox onChange={this.handleCheck(enablePayment)} />
+            </ListItem>
+            <ListItem className={classes.withSection}>
+              <ListItemText
+                disableTypography
+                primary={(
+                  <Typography
+                    variant="subtitle1"
+                    style={{ color: subsFeeColor, marginLeft: 10 }}
+                  >
+                    Subscription Fee
+                  </Typography>)}
+              />
+              <InputAdornments unit="wei" disabled={enablePayment} />
+            </ListItem>
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancel} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleCreate} color="primary">
+            Create
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
+}
 
 TcrDialog.propTypes = {
   open: PropTypes.bool,
-  handleClose: PropTypes.func,
+  handleCancel: PropTypes.func,
+  handleCreate: PropTypes.func,
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  tcrBar: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  // tcrBar: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 TcrDialog.defaultProps = {
   open: false,
-  handleClose: () => {},
+  handleCancel: () => {},
+  handleCreate: () => {},
 };
 
 export default withStyles(styles)(TcrDialog);
