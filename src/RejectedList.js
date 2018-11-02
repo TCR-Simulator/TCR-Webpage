@@ -33,6 +33,11 @@ const styles = theme => ({
   input: {
     display: 'none',
   },
+  avatar: {
+    margin: 10,
+    width: 25,
+    height: 25,
+  },
 });
 
 class RejectedList extends React.Component {
@@ -68,7 +73,9 @@ class RejectedList extends React.Component {
         <List>
           {this.state.items.map(value => ( // eslint-disable-line react/destructuring-assignment
             <ListItem key={value} dense button>
-              <Avatar alt="Rejected" src="image/rejected.png" />
+              <Avatar className={classes.avatar}>
+                <i className="material-icons md-18">clear</i>
+              </Avatar>
               <ListItemText primary={`${value}`} />
             </ListItem>
           ))}

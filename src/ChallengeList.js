@@ -5,6 +5,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
+import InChallenge from '@material-ui/icons/Autorenew';
 
 const styles = theme => ({
   root: {
@@ -32,6 +33,11 @@ const styles = theme => ({
   },
   input: {
     display: 'none',
+  },
+  avatar: {
+    margin: 10,
+    width: 25,
+    height: 25,
   },
 });
 
@@ -68,7 +74,9 @@ class ChallengeList extends React.Component {
         <List>
           {this.state.items.map(value => ( // eslint-disable-line react/destructuring-assignment
             <ListItem key={value} dense button>
-              <Avatar alt="In Challenge" src="image/inchallenge.png" />
+              <Avatar className={classes.avatar}>
+                <InChallenge />
+              </Avatar>
               <ListItemText primary={`${value}`} />
             </ListItem>
           ))}

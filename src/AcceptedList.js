@@ -5,6 +5,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
+import Done from '@material-ui/icons/Done';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 
@@ -34,6 +35,11 @@ const styles = theme => ({
   },
   input: {
     display: 'none',
+  },
+  avatar: {
+    margin: 10,
+    width: 25,
+    height: 25,
   },
 });
 
@@ -85,7 +91,9 @@ class AcceptedList extends React.Component {
         <List id="AcceptedList">
           {this.state.items.map(value => ( // eslint-disable-line react/destructuring-assignment
             <ListItem key={value} dense button>
-              <Avatar alt="Accepted" src="image/done.png" />
+              <Avatar className={classes.avatar}>
+                <Done />
+              </Avatar>
               <ListItemText primary={`${value}`} />
               <ListItemSecondaryAction>
                 <div align="right">
