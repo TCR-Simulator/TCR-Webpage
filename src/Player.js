@@ -8,6 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import MenuIcon from '@material-ui/icons/Menu';
 import Switch from '@material-ui/core/Switch';
 import SettingsFrame from './SettingsFrame';
 
@@ -59,6 +60,13 @@ class Player extends React.Component {
       <div className={classes.root}>
         <AppBar position="relative" color="primary" elevation={2}>
           <Toolbar>
+            <IconButton
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="Menu"
+            >
+              <MenuIcon />
+            </IconButton>
             <Typography variant="h5" color="inherit" className={classes.grow}>
               TCR Simulator
             </Typography>

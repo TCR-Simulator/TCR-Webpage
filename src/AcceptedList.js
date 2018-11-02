@@ -52,6 +52,22 @@ class AcceptedList extends React.Component {
     };
   }
 
+  getChallengeButton() {
+    const { classes, type } = this.props;
+    if (type !== 'profile') {
+      return (
+        <Button
+          variant="outlined"
+          color="secondary"
+          className={classes.challengebutton}
+        >
+            Challenge
+        </Button>
+      );
+    }
+    return (<div />);
+  }
+
   handleToggle = value => () => {
     const { checked } = this.state;
     const currentIndex = checked.indexOf(value);
@@ -83,6 +99,7 @@ class AcceptedList extends React.Component {
     }
   }
 
+
   render() {
     const { classes } = this.props;
 
@@ -97,9 +114,7 @@ class AcceptedList extends React.Component {
               <ListItemText primary={`${value}`} />
               <ListItemSecondaryAction>
                 <div align="right">
-                  <Button variant="outlined" color="secondary" className={classes.challengebutton}>
-                    Challenge
-                  </Button>
+                  {this.getChallengeButton()}
                   <Button variant="outlined" color="default" className={classes.applybutton}>
                     Withdraw
                   </Button>
@@ -116,6 +131,7 @@ class AcceptedList extends React.Component {
 
 AcceptedList.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  type: PropTypes.string.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default withStyles(styles)(AcceptedList);
