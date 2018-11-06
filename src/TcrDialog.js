@@ -81,6 +81,10 @@ class TcrDialog extends React.Component {
     parameters: {
       minDeposit: 100,
       applyStageLen: 7,
+      commitStageLen: 7,
+      revealStageLen: 7,
+      voteQuorum: 50,
+      dispensationPct: 100,
     },
   };
 
@@ -188,6 +192,58 @@ class TcrDialog extends React.Component {
                 Curation
               </Typography>
             </div>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                Commit Stage Length
+                <CustomizedTooltips classes="" content="" />
+              </ListItemText>
+              <div>
+                <InputAdornments
+                  unit="day(s)"
+                  value={parameters.revealStageLen}
+                  onChange={this.handleChange('revealStageLen')}
+                />
+              </div>
+            </ListItem>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                Reveal Stage Length
+                <CustomizedTooltips classes="" content="" />
+              </ListItemText>
+              <div>
+                <InputAdornments
+                  unit="day(s)"
+                  value={parameters.commitStageLen}
+                  onChange={this.handleChange('commitStageLen')}
+                />
+              </div>
+            </ListItem>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                Voting Success Threshold
+                <CustomizedTooltips classes="" content="" />
+              </ListItemText>
+              <div>
+                <InputAdornments
+                  unit="%"
+                  value={parameters.voteQuorum}
+                  onChange={this.handleChange('voteQuorum')}
+                />
+              </div>
+            </ListItem>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                DispensationPct
+                <CustomizedTooltips classes="" content="" />
+              </ListItemText>
+              <div>
+                <InputAdornments
+                  unit="wei"
+                  value={parameters.dispensationPct}
+                  onChange={this.handleChange('dispensationPct')}
+                />
+              </div>
+            </ListItem>
             <ListItem className={classes.ListItem}>
               <ListItemText className={classes.listItemText}>
                 Each maintainer holds equal voting rights.
