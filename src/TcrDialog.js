@@ -78,6 +78,10 @@ class TcrDialog extends React.Component {
     loading: false,
     snackbarOpen: false,
     snackbarMessage: '',
+    parameters: {
+      minDeposit: 100,
+      applyStageLen: 7,
+    },
   };
 
   handleChange = name => (event) => {
@@ -96,7 +100,6 @@ class TcrDialog extends React.Component {
       const newTcr = await createTcr('Temp name', parameters || {});
       handleCreate(newTcr);
     } catch (e) {
-      console.log(e);
       this.setState({ snackbarOpen: true, snackbarMessage: e.toString() });
     } finally {
       this.setState({ loading: false });
@@ -116,7 +119,14 @@ class TcrDialog extends React.Component {
 
   render() {
     const { classes, open, handleCancel } = this.props;
-    const { enablePayment, subsFeeColor, loading, snackbarOpen, snackbarMessage } = this.state;
+    const {
+      enablePayment,
+      subsFeeColor,
+      parameters,
+      loading,
+      snackbarOpen,
+      snackbarMessage,
+    } = this.state;
 
     return (
       <Dialog
@@ -143,7 +153,11 @@ class TcrDialog extends React.Component {
                 <CustomizedTooltips classes="" content="minimumDeposit" />
               </ListItemText>
               <div>
-                <InputAdornments unit="wei" onChange={this.handleChange('minDeposit')} />
+                <InputAdornments
+                  unit="wei"
+                  value={parameters.minDeposit}
+                  onChange={this.handleChange('minDeposit')}
+                />
               </div>
             </ListItem>
             <ListItem className={classes.withSection}>
@@ -152,7 +166,11 @@ class TcrDialog extends React.Component {
                 <CustomizedTooltips classes="" content="" />
               </ListItemText>
               <div>
-                <InputAdornments unit="day(s)" onChange={this.handleChange('applyStageLen')} />
+                <InputAdornments
+                  unit="day(s)"
+                  value={parameters.applyStageLen}
+                  onChange={this.handleChange('applyStageLen')}
+                />
               </div>
             </ListItem>
             <ListItem className={classes.ListItem}>

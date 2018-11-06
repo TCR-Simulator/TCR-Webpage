@@ -22,7 +22,7 @@ const styles = theme => ({
 });
 
 const InputAdornments = (props) => {
-  const { classes, unit, disabled, onChange } = props;
+  const { classes, unit, value, disabled, onChange } = props;
 
   return (
     <div className={classes.root}>
@@ -30,6 +30,7 @@ const InputAdornments = (props) => {
         className={classNames(classes.withoutLabel, classes.textField)}
       >
         <Input
+          value={value}
           onChange={onChange}
           disabled={disabled}
           endAdornment={<InputAdornment position="end">{unit}</InputAdornment>}
@@ -42,11 +43,13 @@ const InputAdornments = (props) => {
 InputAdornments.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line
   unit: PropTypes.string.isRequired,
+  value: PropTypes.any, // eslint-disable-line react/forbid-prop-types
   disabled: PropTypes.bool,
   onChange: PropTypes.func,
 };
 
 InputAdornments.defaultProps = {
+  value: null,
   disabled: false,
   onChange: () => {},
 };
