@@ -1,9 +1,16 @@
+import axios from 'axios';
+
+const ax = axios.create({
+  baseURL: 'http://localhost:5000/tcrs', // temporary
+});
+
 /**
  * Get all TCRs in the backend.
  * @return {array} A list of all TCRs present in the backend.
  */
 export async function getAllTcrs() {
-  return [];
+  const response = await ax.get('/');
+  return response.data;
 }
 
 /**
@@ -12,7 +19,8 @@ export async function getAllTcrs() {
  * @return {TCR} TCR with the given ID, null if it doesn't exist
  */
 export async function getTcrById(tcrId) {
-  return null;
+  const response = await ax.get(`/${tcrId}/`);
+  return response.data;
 }
 
 /**
@@ -23,7 +31,12 @@ export async function getTcrById(tcrId) {
  * @return {TCR} The TCR created, null if creation fails
  */
 export async function createTcr(name, parameters) {
-  return null;
+  const data = {
+    name,
+    parameters,
+  };
+  const response = await ax.post('/', data);
+  return response.data;
 }
 
 /**
@@ -32,7 +45,8 @@ export async function createTcr(name, parameters) {
  * @return {TCR} The TCR deployed
  */
 export async function deployTcr(tcrId) {
-  return null;
+  const response = await ax.post(`/${tcrId}/deploy`);
+  return response.data;
 }
 
 /**
@@ -40,5 +54,5 @@ export async function deployTcr(tcrId) {
  * @param {string} tcrId ID of the TCR to delete.
  */
 export async function deleteTcr(tcrId) {
-
+  ax.delete(`/${tcrId}/`);
 }
