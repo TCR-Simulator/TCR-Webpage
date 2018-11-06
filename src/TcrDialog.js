@@ -15,6 +15,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
+import TextField from '@material-ui/core/TextField';
 
 import InputAdornments from './InputAdornments';
 import CustomizedTooltips from './InformationButton';
@@ -86,7 +87,13 @@ class TcrDialog extends React.Component {
       voteQuorum: 50,
       dispensationPct: 100,
     },
+    name: 'New TCR',
   };
+
+  handleNameChange = () => (event) => {
+    const name = event.target.value;
+    this.setState({ name });
+  }
 
   handleChange = name => (event) => {
     const newParam = { [name]: event.target.value };
@@ -98,10 +105,10 @@ class TcrDialog extends React.Component {
 
   handleCreate = () => async () => {
     const { handleCreate } = this.props;
-    const { parameters } = this.state;
+    const { name, parameters } = this.state;
     this.setState({ loading: true });
     try {
-      const newTcr = await createTcr('Temp name', parameters || {});
+      const newTcr = await createTcr(name, parameters || {});
       handleCreate(newTcr);
     } catch (e) {
       this.setState({ snackbarOpen: true, snackbarMessage: e.toString() });
@@ -126,6 +133,7 @@ class TcrDialog extends React.Component {
     const {
       enablePayment,
       subsFeeColor,
+      name,
       parameters,
       loading,
       snackbarOpen,
@@ -141,10 +149,24 @@ class TcrDialog extends React.Component {
         fullWidth
       >
         <DialogTitle id="form-dialog-title">
-         TCR Mechanism
+          Create New TCR
         </DialogTitle>
         <DialogContent>
           <div>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                TCR Name
+                <CustomizedTooltips classes="" content="minimumDeposit" />
+              </ListItemText>
+              <div>
+                <TextField
+                  value={name}
+                  margin="normal"
+                  onChange={this.handleNameChange()}
+                  autoFocus
+                />
+              </div>
+            </ListItem>
             <div className={classes.section}>
               <AssignmentIcon className={classes.subtitleIcon} />
               <Typography variant="subtitle1" className={classes.subtitle}>
