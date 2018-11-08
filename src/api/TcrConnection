@@ -1,0 +1,85 @@
+const Web3 = require('web3');
+const keccak = require('keccak');
+
+let pollID = '';
+
+const challenges = new Map();
+const polls = new Map();
+const votingSalt = '123';
+
+// const callback = function callback(error, result) {
+//   if (error) {
+//     throw new Error(error.toString());
+//   } else {
+//     results.push(result);
+//   }
+// };
+
+function portToAddr(port) {
+  return `http://localhost:${port}`;
+}
+
+export default class TcrConnection {
+  constructor(portNum, contractAddr, contractAbi) { // eslint-disable-line no-unused-vars
+    this.web3 = new Web3(new Web3.providers.HttpProvider(portToAddr(portNum)));
+    this.web3.eth.net.isListening(() => {
+      // TODO: uncomment when ready to integrate with deployed contracts.
+      if (!this.web3.utils.isAddress(contractAddr)) {
+        // throw new Error('Invalid contract address');
+      }
+      // this.contract = this.web3.eth.contract(contractAbi).at(contractAddr);
+    });
+  }
+
+  // Submit Action
+  submit(minDeposit, name, url) {
+    const information = `name:${name};url:${url}`;
+    const listingHash = keccak('keccak256').update(name);
+    this.contract.methods.apply().call(listingHash, minDeposit, information);
+  }
+
+  // Vote Action
+  vote(listingId, numTokens, voteOption, voterAddr) {
+    pollID = challenges.get(listingId);
+    const voting = this.contract.methods.voting().call((err, res) => res);
+    const secretHash = keccak('keccak256').update(`${voteOption.toString()}${votingSalt}`);
+    const prevPollID = voting.methods.getInsertPointForNumTokens()
+      .call(voterAddr, numTokens, pollID);
+    voting.methods.commitVote().call(pollID, secretHash, numTokens, prevPollID);
+  }
+
+  // Challenge Action
+  challenge(listingId, description) {
+    pollID = this.contract.methods.challenge().call(listingId, description);
+    challenges.set(listingId, pollID);
+    polls.set(pollID, []);
+  }
+
+  // Poke submission into registry by getting updates after application period passes
+  updateStatus(listingId) {
+    this.contract.methods.updateStatus().call(listingId);
+  }
+
+  // Request voting rights
+  requestVotingRights(numOfWei) {
+    this.contract.methods.requestVotingRights().call(numOfWei);
+  }
+
+  // Reveal vote
+  revealVote(voteOption, pollId) {
+    this.contract.methods.revealVote().call(pollId, voteOption, votingSalt);
+  }
+
+  /**
+   * Get the balance of an address.
+   * @param  {string} address - Address to get the balance of, with the format '0x...'
+   * @return {number} Balance of the address in wei.
+   */
+  async getBalance(address) {
+    if (!this.web3.utils.isAddress(address)) {
+      throw new Error('Invalid address');
+    }
+    const balance = await this.web3.eth.getBalance(address);
+    return Number(balance);
+  }
+}
