@@ -87,6 +87,18 @@ export default class TcrConnection {
     return this.contract.methods.listings().call(listingId);
   }
 
+  getAllRegistryListings() {
+    //TODO
+  }
+
+  getPendingListings() {
+    //TODO
+  }
+
+  getInChallengeListings() {
+    //TODO
+  }
+
   /**
    * Get the balance of an address.
    * @param  {string} address - Address to get the balance of, with the format '0x...'
