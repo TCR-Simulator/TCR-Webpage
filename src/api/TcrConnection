@@ -1,11 +1,11 @@
 const Web3 = require('web3');
 const keccak = require('keccak');
 
-let pollID = '';
+// let pollID = '';
 
-const challenges = new Map();
-const polls = new Map();
-const votingSalt = '123';
+// const challenges = new Map();
+// const polls = new Map();
+// const votingSalt = '123';
 
 // const callback = function callback(error, result) {
 //   if (error) {
@@ -31,18 +31,19 @@ export default class TcrConnection {
     });
   }
 
-  // Submit Action
+  // Submit Action - Complete 
   submit(minDeposit, name, url) {
-    const information = `name:${name};url:${url}`;
-    const listingHash = keccak('keccak256').update(name);
+    const information = `${name};${url}`;
+    const listingHash = generateHash(url);
     this.contract.methods.apply().call(listingHash, minDeposit, information);
   }
 
   // Vote Action
-  vote(listingId, numTokens, voteOption, voterAddr) {
-    pollID = challenges.get(listingId);
+  vote(name, url, numTokens, voteOption, voterAddr) {
+    const listingId = getListingId(name, url);
+    const pollID = getPollId(listingId);
     const voting = this.contract.methods.voting().call((err, res) => res);
-    const secretHash = keccak('keccak256').update(`${voteOption.toString()}${votingSalt}`);
+    const secretHash = generateHash(`${voteOption.toString()}${votingSalt}`);
     const prevPollID = voting.methods.getInsertPointForNumTokens()
       .call(voterAddr, numTokens, pollID);
     voting.methods.commitVote().call(pollID, secretHash, numTokens, prevPollID);
@@ -68,6 +69,27 @@ export default class TcrConnection {
   // Reveal vote
   revealVote(voteOption, pollId) {
     this.contract.methods.revealVote().call(pollId, voteOption, votingSalt);
+  }
+
+  generateHash(obj) {
+    return keccak('keccak256').update(obj);
+  } 
+
+  // get corresponding listing Id from listings on registry by parsing the listing data
+  getListingId(name, url) {
+    const listings = this.contract.methods.listings().call((err, res) => res);
+    for (var entry of listings.entries()) {
+      data = entry[1].split(';');
+      dataName = data[0];
+      dataURL = data[1];
+      if (dataName == name && dataURL == url) {
+        return entry[0];
+      }
+    } 
+  }
+
+  getPollId(listingId) {
+    return this.contract.methods.listings().call(listingId);
   }
 
   /**
