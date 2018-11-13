@@ -13,8 +13,13 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 import { withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Snackbar from '@material-ui/core/Snackbar';
+import TextField from '@material-ui/core/TextField';
+
 import InputAdornments from './InputAdornments';
 import CustomizedTooltips from './InformationButton';
+import { createTcr } from './api/BackendAPI';
 
 const styles = theme => ({
   subtitle: {
@@ -54,13 +59,67 @@ const styles = theme => ({
     color: 'grey',
     marginLeft: 10,
   },
+  submitWrapper: {
+    margin: theme.spacing.unit,
+    position: 'relative',
+  },
+  submitButtonProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
 });
 
 class TcrDialog extends React.Component {
   state = {
     enablePayment: true,
     subsFeeColor: 'grey',
+    loading: false,
+    snackbarOpen: false,
+    snackbarMessage: '',
+    parameters: {
+      minDeposit: 100,
+      applyStageLen: 7,
+      commitStageLen: 7,
+      revealStageLen: 7,
+      voteQuorum: 50,
+      dispensationPct: 100,
+    },
+    name: 'New TCR',
   };
+
+  handleNameChange = () => (event) => {
+    const name = event.target.value;
+    this.setState({ name });
+  }
+
+  handleChange = name => (event) => {
+    const newParam = { [name]: event.target.value };
+    this.setState((state) => {
+      const parameters = Object.assign({}, state.parameters, newParam);
+      return { parameters };
+    });
+  };
+
+  handleCreate = () => async () => {
+    const { handleCreate } = this.props;
+    const { name, parameters } = this.state;
+    this.setState({ loading: true });
+    try {
+      const newTcr = await createTcr(name, parameters || {});
+      handleCreate(newTcr);
+    } catch (e) {
+      this.setState({ snackbarOpen: true, snackbarMessage: e.toString() });
+    } finally {
+      this.setState({ loading: false });
+    }
+  };
+
+  handleSnackbarClose = () => () => {
+    this.setState({ snackbarOpen: false });
+  }
 
   handleCheck(enablePayment) {
     return () => {
@@ -70,8 +129,16 @@ class TcrDialog extends React.Component {
   }
 
   render() {
-    const { classes, open, handleCreate, handleCancel } = this.props;
-    const { enablePayment, subsFeeColor } = this.state;
+    const { classes, open, handleCancel } = this.props;
+    const {
+      enablePayment,
+      subsFeeColor,
+      name,
+      parameters,
+      loading,
+      snackbarOpen,
+      snackbarMessage,
+    } = this.state;
 
     return (
       <Dialog
@@ -82,10 +149,24 @@ class TcrDialog extends React.Component {
         fullWidth
       >
         <DialogTitle id="form-dialog-title">
-         TCR Mechanism
+          Create New TCR
         </DialogTitle>
         <DialogContent>
           <div>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                TCR Name
+                <CustomizedTooltips classes="" content="minimumDeposit" />
+              </ListItemText>
+              <div>
+                <TextField
+                  value={name}
+                  margin="normal"
+                  onChange={this.handleNameChange()}
+                  autoFocus
+                />
+              </div>
+            </ListItem>
             <div className={classes.section}>
               <AssignmentIcon className={classes.subtitleIcon} />
               <Typography variant="subtitle1" className={classes.subtitle}>
@@ -98,7 +179,11 @@ class TcrDialog extends React.Component {
                 <CustomizedTooltips classes="" content="minimumDeposit" />
               </ListItemText>
               <div>
-                <InputAdornments unit="wei" />
+                <InputAdornments
+                  unit="wei"
+                  value={parameters.minDeposit}
+                  onChange={this.handleChange('minDeposit')}
+                />
               </div>
             </ListItem>
             <ListItem className={classes.withSection}>
@@ -107,7 +192,11 @@ class TcrDialog extends React.Component {
                 <CustomizedTooltips classes="" content="" />
               </ListItemText>
               <div>
-                <InputAdornments unit="day(s)" />
+                <InputAdornments
+                  unit="day(s)"
+                  value={parameters.applyStageLen}
+                  onChange={this.handleChange('applyStageLen')}
+                />
               </div>
             </ListItem>
             <ListItem className={classes.ListItem}>
@@ -125,6 +214,58 @@ class TcrDialog extends React.Component {
                 Curation
               </Typography>
             </div>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                Commit Stage Length
+                <CustomizedTooltips classes="" content="" />
+              </ListItemText>
+              <div>
+                <InputAdornments
+                  unit="day(s)"
+                  value={parameters.revealStageLen}
+                  onChange={this.handleChange('revealStageLen')}
+                />
+              </div>
+            </ListItem>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                Reveal Stage Length
+                <CustomizedTooltips classes="" content="" />
+              </ListItemText>
+              <div>
+                <InputAdornments
+                  unit="day(s)"
+                  value={parameters.commitStageLen}
+                  onChange={this.handleChange('commitStageLen')}
+                />
+              </div>
+            </ListItem>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                Voting Success Threshold
+                <CustomizedTooltips classes="" content="" />
+              </ListItemText>
+              <div>
+                <InputAdornments
+                  unit="%"
+                  value={parameters.voteQuorum}
+                  onChange={this.handleChange('voteQuorum')}
+                />
+              </div>
+            </ListItem>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                DispensationPct
+                <CustomizedTooltips classes="" content="" />
+              </ListItemText>
+              <div>
+                <InputAdornments
+                  unit="wei"
+                  value={parameters.dispensationPct}
+                  onChange={this.handleChange('dispensationPct')}
+                />
+              </div>
+            </ListItem>
             <ListItem className={classes.ListItem}>
               <ListItemText className={classes.listItemText}>
                 Each maintainer holds equal voting rights.
@@ -165,13 +306,28 @@ class TcrDialog extends React.Component {
           </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCancel} color="primary">
+          <Button onClick={handleCancel} color="primary" disabled={loading}>
             Cancel
           </Button>
-          <Button onClick={handleCreate} color="primary">
-            Create
-          </Button>
+          <div className={classes.submitWrapper}>
+            <Button
+              onClick={this.handleCreate()}
+              variant="contained"
+              color="primary"
+              disabled={loading}
+            >
+              Create
+            </Button>
+            {loading && <CircularProgress size={24} className={classes.submitButtonProgress} />}
+          </div>
         </DialogActions>
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          autoHideDuration={3000}
+          open={snackbarOpen}
+          message={snackbarMessage}
+          onClose={this.handleSnackbarClose()}
+        />
       </Dialog>
     );
   }
@@ -182,7 +338,6 @@ TcrDialog.propTypes = {
   handleCancel: PropTypes.func,
   handleCreate: PropTypes.func,
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  // tcrBar: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 TcrDialog.defaultProps = {

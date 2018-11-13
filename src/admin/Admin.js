@@ -82,26 +82,9 @@ class Admin extends React.Component {
     this.props.history.push('/player'); // eslint-disable-line 
   }
 
-  handleTcrDialogCreate() {
+  handleTcrDialogCreate = () => (newTcr) => {
     const { tcrs } = this.state;
-    // TODO: should take tcr as an argument
-    const newLength = tcrs.push({
-      name: 'New TCR!',
-      parameters: [
-        {
-          key: 'Parameter #1',
-          value: 0.0001,
-        },
-        {
-          key: 'Parameter #2',
-          value: 'test',
-        },
-        {
-          key: 'Parameter #3',
-          value: 100,
-        },
-      ],
-    });
+    const newLength = tcrs.push(newTcr);
     this.setState({ tcrs, tcrDialogOpened: false });
     this.onTCRSelected(newLength - 1);
   }
@@ -166,7 +149,7 @@ class Admin extends React.Component {
         <TcrDialog
           open={tcrDialogOpened}
           handleCancel={() => this.handleTcrDialogCancel()}
-          handleCreate={() => this.handleTcrDialogCreate()}
+          handleCreate={this.handleTcrDialogCreate()}
         />
       </div>
     );

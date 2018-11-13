@@ -5,7 +5,7 @@
     "no-param-reassign": ["warn", {"props": false}],
     "no-plusplus": "off",
     "no-use-before-define": ["error", {"classes": false, "functions": false}],
-    "object-curly-newline": ["error", { "consistent": true, "minProperties": 5 }],
+    "object-curly-newline": ["error", { "consistent": true, "minProperties": 6 }],
     "react/jsx-filename-extension": ["error", { "extensions": [".js", ".jsx"] }]
   },
   "env": {

@@ -21,38 +21,37 @@ const styles = theme => ({
   },
 });
 
-class InputAdornments extends React.Component {
-  handleChange = prop => (event) => {
-    this.setState({ [prop]: event.target.value });
-  };
+const InputAdornments = (props) => {
+  const { classes, unit, value, disabled, onChange } = props;
 
-  render() {
-    const { classes, unit, disabled } = this.props;
-
-    return (
-      <div className={classes.root}>
-        <FormControl
-          className={classNames(classes.withoutLabel, classes.textField)}
-        >
-          <Input
-            id="min-deposit"
-            onChange={this.handleChange('minDeposit')}
-            disabled={disabled}
-            endAdornment={<InputAdornment position="end">{unit}</InputAdornment>}
-            inputProps={{
-              'aria-label': 'MinDeposit',
-            }}
-          />
-        </FormControl>
-      </div>
-    );
-  }
-}
+  return (
+    <div className={classes.root}>
+      <FormControl
+        className={classNames(classes.withoutLabel, classes.textField)}
+      >
+        <Input
+          value={value}
+          onChange={onChange}
+          disabled={disabled}
+          endAdornment={<InputAdornment position="end">{unit}</InputAdornment>}
+        />
+      </FormControl>
+    </div>
+  );
+};
 
 InputAdornments.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line
   unit: PropTypes.string.isRequired,
-  disabled: PropTypes.bool.isRequired,
+  value: PropTypes.any, // eslint-disable-line react/forbid-prop-types
+  disabled: PropTypes.bool,
+  onChange: PropTypes.func,
+};
+
+InputAdornments.defaultProps = {
+  value: null,
+  disabled: false,
+  onChange: () => {},
 };
 
 export default withStyles(styles)(InputAdornments);
