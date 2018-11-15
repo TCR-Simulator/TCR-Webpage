@@ -36,6 +36,9 @@ export default class TcrConnection {
   vote(name, url, numTokens, voteOption, voterAddr) {
     const votingSalt = Math.getRandomIntInclusive(0, 1000);
     const listingId = this.getListingId(name, url);
+    if (listingId < 0) {
+      throw new Error("No such listing");
+    }
     const pollID = this.getPollId(listingId);
     const voting = this.contract.methods.voting().call((err, res) => res);
     const secretHash = this.generateHash(`${voteOption.toString()}${votingSalt.toString()}`);
@@ -72,19 +75,20 @@ export default class TcrConnection {
   // get corresponding listing Id from listings on registry by parsing the listing data
   getListingId(name, url) {
     const listings = this.contract.methods.listings().call((err, res) => res);
-    listings.forEach((v, k) => {
-      const data = v.split(';');
-      const dataName = data[0];
-      const dataURL = data[1];
-      if (dataName === name && dataURL === url) {
-        return k;
-      }
-    });
+    // listings.forEach((v, k) => {
+    //   const data = v.split(';');
+    //   const dataName = data[0];
+    //   const dataURL = data[1];
+    //   if (dataName === name && dataURL === url) {
+    //     return k;
+    //   }
+    // });
     return -1;
   }
 
   getPollId(listingId) {
-    return this.contract.methods.listings().call(listingId);
+    const listings = this.contract.methods.listings().call((err, res) => res);
+    return listings[listingId].challengeId;
   }
 
   getAllRegistryListings() {
