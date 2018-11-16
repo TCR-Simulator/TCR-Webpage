@@ -1,4 +1,3 @@
-const Web3 = require('web3');
 const keccak = require('keccak');
 
 // const callback = function callback(error, result) {
@@ -15,7 +14,7 @@ function portToAddr(port) {
 
 export default class TcrConnection {
   constructor(portNum, contractAddr, contractAbi) { // eslint-disable-line no-unused-vars
-    this.web3 = new Web3(new Web3.providers.HttpProvider(portToAddr(portNum)));
+    this.web3 = window.web3;
     this.web3.eth.net.isListening(() => {
       // TODO: uncomment when ready to integrate with deployed contracts.
       if (!this.web3.utils.isAddress(contractAddr)) {

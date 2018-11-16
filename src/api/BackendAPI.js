@@ -1,33 +1,6 @@
 import axios from 'axios';
 import { getRegistryFactory, getToken } from '../config';
-
-const PARAM_KEYS = [
-  { key: 'minDeposit', defaultVal: 10000000000000000000 },
-  { key: 'pMinDeposit', defaultVal: 10000000000000000000 },
-  { key: 'applyStageLength', defaultVal: 600 },
-  { key: 'pApplyStageLength', defaultVal: 1200 },
-  { key: 'commitStageLength', defaultVal: 600 },
-  { key: 'pCommitStageLength', defaultVal: 1200 },
-  { key: 'revealStageLength', defaultVal: 600 },
-  { key: 'pRevealStageLength', defaultVal: 1200 },
-  { key: 'dispensationPct', defaultVal: 50 },
-  { key: 'pDispensationPct', defaultVal: 50 },
-  { key: 'voteQuorum', defaultVal: 50 },
-  { key: 'pVoteQuorum', defaultVal: 50 },
-  { key: 'exitTimeDelay', defaultVal: 600 },
-  { key: 'exitPeriodLen', defaultVal: 600 },
-];
-
-const EXPOSED_PARAMS = [
-  'minDeposit',
-  'applyStageLength',
-  'commitStageLength',
-  'revealStageLength',
-  'dispensationPct',
-  'voteQuorum',
-  'exitTimeDelay',
-  'exitPeriodLen',
-];
+import { PARAM_KEYS, EXPOSED_PARAMS } from './TcrUtils';
 
 const ax = axios.create({
   baseURL: 'http://localhost:5000/tcrs', // temporary
