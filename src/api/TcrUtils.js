@@ -44,7 +44,6 @@ export async function getAllTcrs() {
             .map((val, i) => ({ key: PARAM_KEYS[i].key, value: val.c[0] }))
             .filter(({ key }) => EXPOSED_PARAMS.includes(key)),
         }));
-        console.log(tcrs);
         resolve(tcrs);
       }
     });

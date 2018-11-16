@@ -23,12 +23,12 @@ export default class TcrConnection {
     this.contract = this.web3.eth.contract(registryAbi).at(tcr.address);
   }
 
-  generateHash(obj) {
-    const hash = keccak('keccak256').update(obj).digest("hex");
+  generateHash(obj) { // eslint-disable-line class-methods-use-this
+    const hash = keccak('keccak256').update(obj).digest('hex');
     return `0x${hash}`;
   }
 
-  getPollId(listingHash, listings) {
+  getPollId(listingHash, listings) { // eslint-disable-line class-methods-use-this
     return listings[listingHash].challengeId;
   }
 
@@ -39,6 +39,7 @@ export default class TcrConnection {
       url,
     };
     const information = JSON.stringify(infoObj);
+    // eslint-disable-next-line no-console
     this.contract.apply(deposit, information, error => console.error(error));
   }
 

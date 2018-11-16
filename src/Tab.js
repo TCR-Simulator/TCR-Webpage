@@ -105,7 +105,6 @@ FullWidthTabs.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   tcr: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  tcrConnection: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default withStyles(styles, { withTheme: true })(FullWidthTabs);

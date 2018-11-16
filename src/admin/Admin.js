@@ -58,7 +58,7 @@ class Admin extends React.Component {
   componentDidMount() {
     getAllTcrs()
       .then(tcrs => this.setState({ tcrs }))
-      .catch(console.error);
+      .catch(console.error); // eslint-disable-line no-console
   }
 
   onTCRSelected(selectedIndex) {

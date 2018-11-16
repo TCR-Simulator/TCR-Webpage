@@ -45,12 +45,11 @@ export async function createTcr(name, parameters) {
       token.address,
       params.map(({ value }) => value),
       name,
-      (error, result) => {
+      (error) => {
         if (error) {
-          console.error(error);
+          console.error(error); // eslint-disable-line no-console
           reject(error);
         } else {
-          console.log(result);
           resolve({
             name,
             parameters: params.filter(({ key }) => EXPOSED_PARAMS.includes(key)),
