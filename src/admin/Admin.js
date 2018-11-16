@@ -16,6 +16,7 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import Switch from '@material-ui/core/Switch';
 import AdminTCRPage from './AdminTCRPage';
 import TcrDialog from '../TcrDialog';
+import { getAllTcrs } from '../api/TcrUtils';
 
 const drawerWidth = 240;
 
@@ -47,31 +48,17 @@ const styles = theme => ({
 class Admin extends React.Component {
   constructor(props) {
     super(props);
-
-    const tcrs = ['Users pay', 'Peaceful', 'IDK'].map(name => (
-      {
-        name,
-        parameters: [
-          {
-            key: 'Parameter #1',
-            value: 0.123,
-          },
-          {
-            key: 'Parameter #2',
-            value: 0.32999991,
-          },
-          {
-            key: 'Parameter #3',
-            value: 'hello',
-          },
-        ],
-      }
-    ));
     this.state = {
       tcrDialogOpened: false,
       selectedTcr: 0,
-      tcrs,
+      tcrs: [],
     };
+  }
+
+  componentDidMount() {
+    getAllTcrs()
+      .then(tcrs => this.setState({ tcrs }))
+      .catch(console.error);
   }
 
   onTCRSelected(selectedIndex) {
@@ -144,7 +131,11 @@ class Admin extends React.Component {
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <AdminTCRPage tcr={tcrs[selectedTcr]} />
+          {
+            tcrs[selectedTcr]
+              ? <AdminTCRPage tcr={tcrs[selectedTcr]} />
+              : <div />
+          }
         </main>
         <TcrDialog
           open={tcrDialogOpened}
