@@ -47,7 +47,7 @@ export async function createTcr(name, parameters) {
       name,
       (error, result) => {
         if (error) {
-          console.err(error);
+          console.error(error);
           reject(error);
         } else {
           console.log(result);

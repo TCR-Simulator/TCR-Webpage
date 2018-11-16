@@ -10,6 +10,7 @@ import AcceptedList from './AcceptedList';
 import PendingList from './PendingList';
 import RejectedList from './RejectedList';
 import ChallengeList from './ChallengeList';
+import TcrConnection from './api/TcrConnection';
 
 function TabContainer({ children, dir }) {
   return (
@@ -37,6 +38,15 @@ class FullWidthTabs extends React.Component {
     value: 0,
   };
 
+  componentDidUpdate(prevProps) {
+    const { tcr } = this.props;
+    if (tcr && (!prevProps.tcr || tcr.address !== prevProps.tcr.address)) {
+      const tcrConnection = new TcrConnection();
+      tcrConnection.init(tcr);
+      this.setState({ tcrConnection }); // eslint-disable-line react/no-did-update-set-state
+    }
+  }
+
   handleChange = (event, value) => {
     this.setState({ value });
   };
@@ -47,6 +57,7 @@ class FullWidthTabs extends React.Component {
 
   render() {
     const { classes, theme } = this.props;
+    const { tcrConnection } = this.state;
 
     return (
       <div className={classes.root}>
@@ -74,7 +85,7 @@ class FullWidthTabs extends React.Component {
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
-            <PendingList />
+            <PendingList tcrConnection={tcrConnection} />
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
@@ -93,6 +104,8 @@ class FullWidthTabs extends React.Component {
 FullWidthTabs.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   theme: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  tcr: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  tcrConnection: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default withStyles(styles, { withTheme: true })(FullWidthTabs);

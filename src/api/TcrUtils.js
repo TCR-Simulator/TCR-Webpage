@@ -33,7 +33,7 @@ export async function getAllTcrs() {
   return new Promise((resolve, reject) => {
     registryFactory.NewRegistry({}, { fromBlock: 0, toBlock: 'latest' }).get((error, events) => {
       if (error) {
-        console.err(error); // eslint-disable-line no-console
+        console.error(error); // eslint-disable-line no-console
         reject(error);
       } else {
         const tcrs = events.map(({ args }) => ({

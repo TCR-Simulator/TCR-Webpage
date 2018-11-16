@@ -16,10 +16,12 @@ class App extends React.Component {
       window.web3 = new Web3(window.ethereum);
       // Request account access if needed
       window.ethereum.enable()
-        .catch(e => console.err(e)); // eslint-disable-line no-console
+        .then(() => [window.web3.eth.defaultAccount] = window.web3.eth.accounts)
+        .catch(e => console.error(e)); // eslint-disable-line no-console
     } else if (window.web3) {
       // Legacy dapp browsers...
       window.web3 = new Web3(window.web3.currentProvider);
+      [window.web3.eth.defaultAccount] = window.web3.eth.accounts;
     } else {
       // Non-dapp browsers...
       console.log('Non-Ethereum browser detected. You should consider trying MetaMask!'); // eslint-disable-line no-console

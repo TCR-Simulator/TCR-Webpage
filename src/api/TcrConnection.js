@@ -1,3 +1,5 @@
+import { getContractInfo } from '../config';
+
 const keccak = require('keccak');
 
 // const callback = function callback(error, result) {
@@ -8,24 +10,22 @@ const keccak = require('keccak');
 //   }
 // };
 
-function portToAddr(port) {
-  return `http://localhost:${port}`;
-}
-
 export default class TcrConnection {
-  constructor(portNum, contractAddr, contractAbi) { // eslint-disable-line no-unused-vars
+  constructor() { // eslint-disable-line no-unused-vars
     this.web3 = window.web3;
-    this.web3.eth.net.isListening(() => {
-      // TODO: uncomment when ready to integrate with deployed contracts.
-      if (!this.web3.utils.isAddress(contractAddr)) {
-        // throw new Error('Invalid contract address');
-      }
-      // this.contract = this.web3.eth.contract(contractAbi).at(contractAddr);
-    });
+  }
+
+  async init(tcr) {
+    const registryAbi = (await getContractInfo('Registry')).abi;
+    if (!this.web3.isAddress(tcr.address)) {
+      throw new Error('Invalid contract address');
+    }
+    this.contract = this.web3.eth.contract(registryAbi).at(tcr.address);
   }
 
   generateHash(obj) {
-    return keccak('keccak256').update(obj).digest("hex");
+    const hash = keccak('keccak256').update(obj).digest("hex");
+    return `0x${hash}`;
   }
 
   getPollId(listingHash, listings) {
@@ -33,14 +33,13 @@ export default class TcrConnection {
   }
 
   // Submit Action - Complete
-  submit(minDeposit, name, url) {
+  async submit(deposit, name, url) {
     const infoObj = {
       name,
       url,
     };
     const information = JSON.stringify(infoObj);
-    const listingHash = this.generateHash(information);
-    this.contract.methods.apply().call(listingHash, minDeposit, information);
+    this.contract.apply(deposit, information, error => console.error(error));
   }
 
   // Vote Action

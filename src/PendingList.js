@@ -66,12 +66,16 @@ class PendingList extends React.Component {
   };
 
   addItem(event) {
-    const currentItems = this.state.items; // eslint-disable-line react/destructuring-assignment
-    const textBox = event.target.previousElementSibling;
+    const { items: currentItems } = this.state;
+    const { tcrConnection } = this.props;
+    const nameTextbox = event.target.previousElementSibling;
+    const urlTextbox = nameTextbox.previousElementSibling;
 
-    if (textBox.value) {
-      currentItems.push(textBox.value);
-      textBox.value = '';
+    if (urlTextbox.value) {
+      tcrConnection.submit(100, nameTextbox.value, urlTextbox.value);
+      currentItems.push(nameTextbox.value);
+      urlTextbox.value = '';
+      nameTextbox.value = '';
 
       this.setState({
         items: currentItems,
@@ -110,6 +114,7 @@ class PendingList extends React.Component {
 
 PendingList.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  tcrConnection: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default withStyles(styles)(PendingList);
