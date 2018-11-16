@@ -69,7 +69,7 @@ export default class TcrConnection {
   }
 
   generateHash(obj) {
-    return keccak('keccak256').update(obj);
+    return keccak('keccak256').update(obj).digest('hex');
   }
 
   // get corresponding listing Id from listings on registry by parsing the listing data
