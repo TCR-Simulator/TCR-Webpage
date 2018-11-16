@@ -15,6 +15,7 @@ class SettingsFrame extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      selectedTcr: 0,
       tcrs: [],
     };
   }
@@ -23,14 +24,22 @@ class SettingsFrame extends React.Component {
     getAllTcrs().then(tcrs => this.setState({ tcrs }));
   }
 
+  handleSelectTcr = () => (index) => {
+    this.setState({ selectedTcr: index });
+  };
+
   render() {
     const { className } = this.props;
-    const { tcrs } = this.state;
+    const { tcrs, selectedTcr } = this.state;
     return (
       <div>
         <div>
           <Grid container justify="left" spacing={24}>
-            <RegistriesMenu />
+            <RegistriesMenu
+              tcrs={tcrs.map(({ name }) => name)}
+              onSelect={this.handleSelectTcr()}
+              selected={selectedTcr}
+            />
           </Grid>
         </div>
         <div id="settings" className={className}>

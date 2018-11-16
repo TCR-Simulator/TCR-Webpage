@@ -15,25 +15,19 @@ const styles = theme => ({
   },
 });
 
-const options = [
-  'TCR - 1',
-  'TCR - 2',
-  'TCR - 3',
-  'TCR - 4',
-];
-
 class RegistriesMenu extends React.Component {
   state = {
     anchorEl: null,
-    selectedIndex: 1,
   };
 
   handleClickListItem = (event) => {
     this.setState({ anchorEl: event.currentTarget });
   };
 
-  handleMenuItemClick = (event, index) => {
-    this.setState({ selectedIndex: index, anchorEl: null });
+  handleMenuItemClick = (index) => {
+    const { onSelect } = this.props;
+    this.setState({ anchorEl: null });
+    onSelect(index);
   };
 
   handleClose = () => {
@@ -41,8 +35,8 @@ class RegistriesMenu extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
-    const { anchorEl, selectedIndex } = this.state;
+    const { classes, tcrs, selected } = this.props;
+    const { anchorEl } = this.state;
 
     return (
       <div className={classes.root}>
@@ -56,7 +50,7 @@ class RegistriesMenu extends React.Component {
           >
             <ListItemText
               primary="Registries"
-              secondary={options[selectedIndex]}
+              secondary={tcrs[selected]}
             />
           </ListItem>
         </List>
@@ -75,13 +69,13 @@ class RegistriesMenu extends React.Component {
             horizontal: 'left',
           }}
         >
-          {options.map((option, index) => (
+          {tcrs.map((tcr, index) => (
             <MenuItem
-              key={option}
-              selected={index === selectedIndex}
-              onClick={event => this.handleMenuItemClick(event, index)}
+              key={tcr}
+              selected={index === selected}
+              onClick={() => this.handleMenuItemClick(index)}
             >
-              {option}
+              {tcr}
             </MenuItem>
           ))}
         </Menu>
@@ -92,6 +86,13 @@ class RegistriesMenu extends React.Component {
 
 RegistriesMenu.propTypes = {
   classes: PropTypes.object.isRequired, //eslint-disable-line
+  tcrs: PropTypes.arrayOf(PropTypes.object).isRequired,
+  selected: PropTypes.number.isRequired,
+  onSelect: PropTypes.func,
+};
+
+RegistriesMenu.defaultProps = {
+  onSelect: () => {},
 };
 
 export default withStyles(styles)(RegistriesMenu);
