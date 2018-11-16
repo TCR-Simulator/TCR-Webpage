@@ -25,22 +25,31 @@ export default class TcrConnection {
     });
   }
 
+  generateHash(obj) {
+    return keccak('keccak256').update(obj).digest("hex");
+  }
+
+  getPollId(listingHash, listings) {
+    return listings[listingHash].challengeId;
+  }
+
   // Submit Action - Complete
   submit(minDeposit, name, url) {
-    const information = `${name};${url}`;
-    const listingHash = this.generateHash(`${name}${url}`);
+    const infoObj = {
+      name,
+      url,
+    };
+    const information = JSON.stringify(infoObj);
+    const listingHash = this.generateHash(information);
     this.contract.methods.apply().call(listingHash, minDeposit, information);
   }
 
   // Vote Action
-  vote(name, url, numTokens, voteOption, voterAddr) {
+  vote(listingHash, numTokens, voteOption, voterAddr) {
     const votingSalt = Math.getRandomIntInclusive(0, 1000);
-    const listingId = this.getListingId(name, url);
-    if (listingId < 0) {
-      throw new Error("No such listing");
-    }
-    const pollID = this.getPollId(listingId);
-    const voting = this.contract.methods.voting().call((err, res) => res);
+    const listings = this.contract.methods.listings().call();
+    const pollID = this.getPollId(listingHash, listings);
+    const voting = this.contract.methods.voting().call();
     const secretHash = this.generateHash(`${voteOption.toString()}${votingSalt.toString()}`);
     const prevPollID = voting.methods.getInsertPointForNumTokens()
       .call(voterAddr, numTokens, pollID);
@@ -48,59 +57,78 @@ export default class TcrConnection {
   }
 
   // Challenge Action
-  challenge(listingId, description) {
-    this.contract.methods.challenge().call(listingId, description);
+  challenge(listingHash, description) {
+    this.contract.methods.challenge().call(listingHash, description);
   }
 
   // Poke submission into registry by getting updates after application period passes
-  updateStatus(listingId) {
-    this.contract.methods.updateStatus().call(listingId);
-  }
+  // updateStatus(listingHash) {
+  //   this.contract.methods.updateStatus().call(listingHash);
+  // }
 
   // Request voting rights
-  requestVotingRights(numOfWei) {
-    this.contract.methods.requestVotingRights().call(numOfWei);
-  }
+  // requestVotingRights(numOfWei) {
+  //   this.contract.methods.requestVotingRights().call(numOfWei);
+  // }
 
   // Reveal vote
-  revealVote(voteOption, pollId) {
-    const votingSalt = Math.getRandomIntInclusive(0, 1000);
-    this.contract.methods.revealVote().call(pollId, voteOption, votingSalt);
-  }
-
-  generateHash(obj) {
-    return keccak('keccak256').update(obj).digest('hex');
-  }
+  // revealVote(voteOption, listingHash) {
+  //   const votingSalt = Math.getRandomIntInclusive(0, 1000);
+  //   const listings = this.contract.methods.listings().call();
+  //   const pollId = this.getPollId(listingHash, listings);
+  //   this.contract.methods.revealVote().call(pollId, voteOption, votingSalt);
+  // }
 
   // get corresponding listing Id from listings on registry by parsing the listing data
-  getListingId(name, url) {
-    const listings = this.contract.methods.listings().call((err, res) => res);
-    // listings.forEach((v, k) => {
-    //   const data = v.split(';');
-    //   const dataName = data[0];
-    //   const dataURL = data[1];
-    //   if (dataName === name && dataURL === url) {
-    //     return k;
-    //   }
-    // });
-    return -1;
-  }
+  // getListingId(name, url) {
+  //   const listingInfo = {
+  //     name,
+  //     url,
+  //   };
+  //   this.contract.getPastEvents('_Application', {
+  //     fromBlock: 0,
+  //     toBlock: 'latest',
+  //   }).then((events) => {
+  //     events.forEach((e) => {
+  //       if (e.returnValues.data === JSON.stringify(listingInfo)) {
+  //         return e.returnValues.listingHash;
+  //       }
+  //       return -1;
+  //     });
+  //   });
+  // }
 
-  getPollId(listingId) {
-    const listings = this.contract.methods.listings().call((err, res) => res);
-    return listings[listingId].challengeId;
-  }
-
-  getAllRegistryListings() {
-    //TODO
-  }
+  // getAllRegistryListings() {
+  //   //TODO
+  // }
 
   getPendingListings() {
-    //TODO
+    const pastApplicationList = this.getList('_Application');
+    const challengeList = this.getInChallengeListings();
+    const pendingList = [pastApplicationList, challengeList]
+      .reduce((a, b) => a.filter(i => !b.includes(i)));
+    return pendingList;
   }
 
   getInChallengeListings() {
-    //TODO
+    return this.getList('_Challenge');
+  }
+
+  getList(name) {
+    const resultList = [];
+    this.contract.getPastEvents(name, {
+      fromBlock: 0,
+      toBlock: 'latest',
+    }).then((events) => {
+      events.forEach((e) => {
+        const jsonObj = JSON.parse(e.returnValues.data);
+        resultList.push({
+          name: jsonObj.name,
+          url: jsonObj.url,
+        });
+      });
+    });
+    return resultList;
   }
 
   /**
@@ -113,7 +141,6 @@ export default class TcrConnection {
       throw new Error('Invalid address');
     }
     const balance = await this.web3.eth.getBalance(address);
-}
 
     return Number(balance);
   }
