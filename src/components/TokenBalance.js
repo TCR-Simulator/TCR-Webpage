@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import { getToken } from '../config';
+import TokenService from '../api/TokenService';
 
 export default class TokenBalance extends React.Component {
   state = {
