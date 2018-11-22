@@ -9,6 +9,7 @@ import InChallenge from '@material-ui/icons/Autorenew';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Button from '@material-ui/core/Button';
 import CommitVoteDialog from './CommitVoteDialog';
+import RevealVoteDialog from './RevealVoteDialog';
 
 const styles = theme => ({
   root: {
@@ -41,6 +42,7 @@ class ChallengeList extends React.Component {
       }],
       selectedItem: null,
       commitVoteDialogOpened: false,
+      revealVoteDialogOpened: false,
     };
   }
 
@@ -48,17 +50,25 @@ class ChallengeList extends React.Component {
     this.setState({ selectedItem: item, commitVoteDialogOpened: true });
   }
 
+  onRevealBtnClick = item => () => {
+    this.setState({ selectedItem: item, revealVoteDialogOpened: true });
+  }
+
   handleCommit = () => () => {
     this.setState({ commitVoteDialogOpened: false });
   }
 
+  handleReveal = () => () => { 
+    this.setState({ revealVoteDialogOpened: false });
+  }
+
   handleCancel = () => () => {
-    this.setState({ commitVoteDialogOpened: false });
+    this.setState({ commitVoteDialogOpened: false, revealVoteDialogOpened: false });
   }
 
   render() {
     const { classes } = this.props;
-    const { items, commitVoteDialogOpened, selectedItem } = this.state;
+    const { items, commitVoteDialogOpened, revealVoteDialogOpened, selectedItem } = this.state;
 
     return (
       <div className={classes.root}>
@@ -74,11 +84,25 @@ class ChallengeList extends React.Component {
                   <Button variant="outlined" color="default" onClick={this.onCommitBtnClick(item)}>
                     Commit vote
                   </Button>
+                  <Button variant="outlined" color="default" onClick={this.onRevealBtnClick(item)}>
+                    Reveal vote
+                  </Button>
                 </div>
               </ListItemSecondaryAction>
             </ListItem>
           ))}
         </List>
+        {selectedItem
+          && selectedItem.poll
+          && (
+            <RevealVoteDialog
+              open={revealVoteDialogOpened}
+              handleReveal={this.handleReveal()}
+              handleCancel={this.handleCancel()}
+              poll={selectedItem.poll}
+            />  
+            )
+          }
         {selectedItem
           && selectedItem.poll
           && (
