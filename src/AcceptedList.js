@@ -8,6 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Done from '@material-ui/icons/Done';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
+import TcrConnection from './api/VotingConnection';
 
 const styles = theme => ({
   root: {
@@ -64,9 +65,25 @@ class AcceptedList extends React.Component {
             Challenge
         </Button>
       );
-    }
+    } else {
+		   return (
+        <Button
+          variant="outlined"
+          color="secondary"
+          className={classes.challengebutton}
+          onClick={this.handleClaimReward}
+        >
+            Claim Reward
+        </Button>
+      );
+		}
     return (<div />);
   }
+	
+	handleClaimReward() {
+	  new TcrConnection()
+	
+	}
 
   handleToggle = value => () => {
     const { checked } = this.state;

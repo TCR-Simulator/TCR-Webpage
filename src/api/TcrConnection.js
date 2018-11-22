@@ -48,6 +48,11 @@ export default class TcrConnection {
     this.contract.methods.challenge().call(listingHash, description);
   }
 
+	// Claim Reward Action
+	claimReward(challengeId) {
+	  this.contract.methods.claimReward().call(challengeId);
+	}
+
   // Poke submission into registry by getting updates after application period passes
   // updateStatus(listingHash) {
   //   this.contract.methods.updateStatus().call(listingHash);
