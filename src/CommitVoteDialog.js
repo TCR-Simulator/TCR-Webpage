@@ -14,10 +14,10 @@ import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { generateSalt } from './utils';
-import VotingConnection from './api/VotingConnection';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import { generateSalt } from './utils';
+import VotingConnection from './api/VotingConnection';
 
 const styles = theme => ({
   submitWrapper: {

@@ -19,7 +19,7 @@ export default class VotingConnection {
   }
 
   async _callVotingMethod(method, ...args) {
-    console.log(`Calling ${method}(${args.join(', ')})`);
+    console.log(`Calling ${method}(${args.join(', ')})`); // eslint-disable-line no-console
     return new Promise((resolve, reject) => {
       this.voting[method](...args, (error, result) => {
         if (error) {
