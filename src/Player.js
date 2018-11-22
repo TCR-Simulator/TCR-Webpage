@@ -11,6 +11,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuIcon from '@material-ui/icons/Menu';
 import Switch from '@material-ui/core/Switch';
 import SettingsFrame from './SettingsFrame';
+import TokenBalance from './components/TokenBalance';
+import TokenService from './api/TokenService';
 
 const styles = {
   root: {
@@ -70,6 +72,7 @@ class Player extends React.Component {
             <Typography variant="h5" color="inherit" className={classes.grow}>
               TCR Simulator
             </Typography>
+			<TokenBalance tokenService={tokenService} />
             <div>
               <Switch onChange={this.handleSwitch} />
               <IconButton

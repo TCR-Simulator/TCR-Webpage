@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
 
 export default class TokenBalance extends React.Component {
   state = {
@@ -23,7 +24,7 @@ export default class TokenBalance extends React.Component {
     // console.log(await tokenService.currentAccountBalance());
     return (
 		<Typography variant="h6" color="inherit">
-            {balance.toString()}
+            Balance = {balance.toString()}
         </Typography>
     );
   }
