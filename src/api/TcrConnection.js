@@ -61,9 +61,9 @@ export default class TcrConnection {
   }
 
   // Poke submission into registry by getting updates after application period passes
-  // updateStatus(listingHash) {
-  //   this.contract.methods.updateStatus().call(listingHash);
-  // }
+  updateStatus(listingHash) {
+    this.contract.methods.updateStatus().call(listingHash);
+  }
 
   // Request voting rights
   // requestVotingRights(numOfWei) {

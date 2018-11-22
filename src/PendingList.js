@@ -5,6 +5,8 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 
 const styles = theme => ({
   root: {
@@ -37,6 +39,15 @@ const styles = theme => ({
     margin: 10,
     width: 25,
     height: 25,
+  },
+  updateButton: {
+    margin: theme.spacing.unit,
+    backgroundColor: '#FFF',
+    '&:hover': {
+      variant: 'contained',
+      color: '#FFF',
+      backgroundColor: '#195',
+    },
   },
 });
 
@@ -95,6 +106,13 @@ class PendingList extends React.Component {
                 <i className="material-icons md-10">hourglass_empty</i>
               </Avatar>
               <ListItemText primary={`${value}`} />
+              <ListItemSecondaryAction>
+                <div align="right">
+                  <Button variant="outlined" color="default" className={classes.updateButton}>
+                    Update
+                  </Button>
+                </div>
+              </ListItemSecondaryAction>
             </ListItem>
           ))}
         </List>
