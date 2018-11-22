@@ -34,14 +34,24 @@ export default class TokenService {
     });
   }
 
-  async sendToken(to, value) {
+  async sendToken(value) {
     return new Promise((resolve, reject) => {
-      this.token.sendToken(to, value, (error, tx) => {
+      this.token.sendToken(value, (error, tx) => {
         if (error) {
           reject(error);
         }
         resolve(tx);
       });
+    });
+  }
+  
+  async listenForTransfers() {
+	var transferEvent = getToken.Transfer();
+    transferEvent.watch(function(error, result) {
+      if (!error) {
+        
+      } else
+        console.log(error);
     });
   }
 }
