@@ -9,12 +9,9 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { generateSalt } from './utils';
 import VotingConnection from './api/VotingConnection';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -51,14 +48,15 @@ class RevealVoteDialog extends React.Component {
   }
 
   handleReveal = () => async () => {
-    const { handleReveal, poll } = this.props;
-    const { voteOption, salt } = this.state;
+    const { handleReveal, contractAddress, poll } = this.props;
+    const { copiedMessage } = this.state;
     this.setState({ loading: true });
     try {
       const voting = new VotingConnection();
       await voting.init(contractAddress);
+      await voting.revealVote(poll.id, JSON.parse(copiedMessage).voteOption, JSON.parse(copiedMessage).salt);
       // await voting.commitVote(poll.id, Number(tokensToCommit), voteOption, salt);
-      handleCommit();
+      handleReveal();
     } catch (e) {
       this.setState({ snackbarOpen: true, snackbarMessage: e.toString() });
     } finally {
@@ -66,15 +64,15 @@ class RevealVoteDialog extends React.Component {
     }
   };
 
-  handleCopiedMessageToParse = event => this.setState( { copiedMessage: event.target.value });
+  handleCopiedMessage = event => {
+    this.setState( { copiedMessage: event.target.value });
+  }
 
   // handleTokensToCommitChange = event => this.setState({ tokensToCommit: event.target.value });
 
   handleSnackbarClose = () => () => {
     this.setState({ snackbarOpen: false });
   }
-
-  handleVoteOption = (event, voteOption) => this.setState({ voteOption });
 
   render() {
     const { classes, open, poll } = this.props;
@@ -97,7 +95,7 @@ class RevealVoteDialog extends React.Component {
         fullWidth
       >
         <DialogTitle id="form-dialog-title">
-          Commit Vote
+          Reveal Vote
         </DialogTitle>
         <DialogContent>
           <Typography variant="p"><strong>Reveal period ends:</strong></Typography>
@@ -106,32 +104,9 @@ class RevealVoteDialog extends React.Component {
         <Typography variant="p"><strong>Your vote option and salt</strong></Typography>
           <textarea
             value={copiedMessage}
-            onChange={this.handleCopiedMessageToParse}
+            onChange={this.handleCopiedMessage}
           />
 
-          <Typography variant="p"><strong>Vote details:</strong></Typography>
-          {voteOption ? (
-            <div>
-              <Typography variant="p" color="textSecondary" paragraph>
-                <em>
-                  Remember to copy this and store safely -
-                  you&quot;ll need it to reveal your vote!
-                </em>
-              </Typography>
-              <Card>
-                <CardContent>
-                  <pre>
-                    {JSON.stringify({ voteOption, salt }, null, ' ')}
-                  </pre>
-                </CardContent>
-              </Card>
-            </div>
-          ) : (
-            <Typography variant="p" color="textSecondary" paragraph>
-              <em>Please select an option first.</em>
-            </Typography>
-          )
-          }
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleCancel()} color="primary" disabled={loading}>
@@ -139,12 +114,12 @@ class RevealVoteDialog extends React.Component {
           </Button>
           <div className={classes.submitWrapper}>
             <Button
-              onClick={this.handleCommit()}
+              onClick={this.handleReveal()}
               variant="contained"
               color="primary"
-              disabled={!voteOption || loading}
+              disabled={loading}
             >
-              Submit vote
+              Reveal vote
             </Button>
             {loading && <CircularProgress size={24} className={classes.submitButtonProgress} />}
           </div>
@@ -164,7 +139,7 @@ class RevealVoteDialog extends React.Component {
 RevealVoteDialog.propTypes = {
   open: PropTypes.bool,
   handleCancel: PropTypes.func,
-  handleCommit: PropTypes.func,
+  handleReveal: PropTypes.func,
   poll: PropTypes.shape({
     id: PropTypes.number.isRequired,
     revealEndDate: PropTypes.instanceOf(Date).isRequired,
@@ -176,7 +151,7 @@ RevealVoteDialog.propTypes = {
 RevealVoteDialog.defaultProps = {
   open: false,
   handleCancel: () => {},
-  handleCommit: () => {},
+  handleReveal: () => {},
 };
 
 export default withStyles(styles)(RevealVoteDialog);
