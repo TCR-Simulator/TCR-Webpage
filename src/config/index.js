@@ -22,3 +22,9 @@ export const getToken = async () => {
   const { abi, address } = tokenArtifact;
   return web3.eth.contract(abi).at(address);
 };
+
+export const getVotingContractAt = async (address) => {
+  const votingContractArtifact = await getContractInfo('PLCRVoting');
+  const { abi } = votingContractArtifact;
+  return web3.eth.contract(abi).at(address);
+};
