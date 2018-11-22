@@ -53,8 +53,9 @@ class RevealVoteDialog extends React.Component {
     this.setState({ loading: true });
     try {
       const voting = new VotingConnection();
+      console.log(copiedMessage);
       await voting.init(contractAddress);
-      await voting.revealVote(poll.id, JSON.parse(copiedMessage).voteOption, JSON.parse(copiedMessage).salt);
+      await voting.revealVote(poll.id, ((JSON.parse(copiedMessage).voteOption).equals("accept")) ? 1 : 0, JSON.parse(copiedMessage).salt);
       // await voting.commitVote(poll.id, Number(tokensToCommit), voteOption, salt);
       handleReveal();
     } catch (e) {
