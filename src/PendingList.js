@@ -4,7 +4,10 @@ import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import ChalleneBox from './ChalleneBox';
 
 const styles = theme => ({
   root: {
@@ -46,7 +49,22 @@ class PendingList extends React.Component {
     this.state = {
       checked: [],
       items: ['Love Yourself - BTS', 'Fancy - Iggy Azalea', 'Baby - Justin Bieber'],
+      openChallenge: false,
     };
+  }
+
+  getChallengeButton() {
+    const { classes } = this.props;
+    return (
+      <Button
+        variant="outlined"
+        color="secondary"
+        className={classes.challengebutton}
+        onClick={this.handleClick}
+      >
+            Challenge
+      </Button>
+    );
   }
 
   handleToggle = value => () => {
@@ -64,6 +82,10 @@ class PendingList extends React.Component {
       checked: newChecked,
     });
   };
+
+  handleClick() {
+    this.setState({ openChallenge: true });
+  }
 
   addItem(event) {
     const { items: currentItems } = this.state;
@@ -84,7 +106,8 @@ class PendingList extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, tcrConnection } = this.props;
+    const { openChallenge } = this.state;
 
     return (
       <div className={classes.root}>
@@ -95,6 +118,11 @@ class PendingList extends React.Component {
                 <i className="material-icons md-10">hourglass_empty</i>
               </Avatar>
               <ListItemText primary={`${value}`} />
+              <ListItemSecondaryAction>
+                <div align="right">
+                  {this.getChallengeButton()}
+                </div>
+              </ListItemSecondaryAction>
             </ListItem>
           ))}
         </List>
@@ -106,6 +134,7 @@ class PendingList extends React.Component {
           Apply
           </button>
         </nav>
+        <ChalleneBox open={openChallenge} tcrConnection={tcrConnection} />
       </div>
     );
   }
