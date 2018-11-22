@@ -32,8 +32,9 @@ class ChallengeList extends React.Component {
         title: 'Work',
         artist: 'Rihanna',
         url: 'www.example.com',
+        contractAddress: '0x12345',
         poll: {
-          id: 'abcde',
+          id: 0,
           commitEndDate: new Date('December 17, 2018 03:24:00'),
           revealEndDate: new Date('December 20, 2018 03:24:00'),
         },

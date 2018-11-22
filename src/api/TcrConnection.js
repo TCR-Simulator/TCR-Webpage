@@ -43,18 +43,6 @@ export default class TcrConnection {
     this.contract.apply(deposit, information, error => console.error(error));
   }
 
-  // Vote Action
-  vote(listingHash, numTokens, voteOption, voterAddr) {
-    const votingSalt = Math.getRandomIntInclusive(0, 1000);
-    const listings = this.contract.methods.listings().call();
-    const pollID = this.getPollId(listingHash, listings);
-    const voting = this.contract.methods.voting().call();
-    const secretHash = this.generateHash(`${voteOption.toString()}${votingSalt.toString()}`);
-    const prevPollID = voting.methods.getInsertPointForNumTokens()
-      .call(voterAddr, numTokens, pollID);
-    voting.methods.commitVote().call(pollID, secretHash, numTokens, prevPollID);
-  }
-
   // Challenge Action
   challenge(listingHash, description) {
     this.contract.methods.challenge().call(listingHash, description);
@@ -63,19 +51,6 @@ export default class TcrConnection {
   // Poke submission into registry by getting updates after application period passes
   // updateStatus(listingHash) {
   //   this.contract.methods.updateStatus().call(listingHash);
-  // }
-
-  // Request voting rights
-  // requestVotingRights(numOfWei) {
-  //   this.contract.methods.requestVotingRights().call(numOfWei);
-  // }
-
-  // Reveal vote
-  // revealVote(voteOption, listingHash) {
-  //   const votingSalt = Math.getRandomIntInclusive(0, 1000);
-  //   const listings = this.contract.methods.listings().call();
-  //   const pollId = this.getPollId(listingHash, listings);
-  //   this.contract.methods.revealVote().call(pollId, voteOption, votingSalt);
   // }
 
   // get corresponding listing Id from listings on registry by parsing the listing data

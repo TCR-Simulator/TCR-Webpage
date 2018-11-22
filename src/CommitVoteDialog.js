@@ -15,6 +15,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { generateSalt } from './utils';
+import VotingConnection from './api/VotingConnection';
+import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 const styles = theme => ({
   submitWrapper: {
@@ -37,6 +40,7 @@ class CommitVoteDialog extends React.Component {
     snackbarMessage: '',
     voteOption: null,
     salt: generateSalt(),
+    tokensToCommit: 0,
   };
 
   handleCancel = () => () => {
@@ -46,9 +50,13 @@ class CommitVoteDialog extends React.Component {
   }
 
   handleCommit = () => async () => {
-    const { handleCommit } = this.props;
+    const { handleCommit, contractAddress, poll } = this.props;
+    const { voteOption, salt, tokensToCommit } = this.state;
     this.setState({ loading: true });
     try {
+      const voting = new VotingConnection();
+      await voting.init(contractAddress);
+      await voting.commitVote(poll.id, Number(tokensToCommit), voteOption, salt);
       handleCommit();
     } catch (e) {
       this.setState({ snackbarOpen: true, snackbarMessage: e.toString() });
@@ -56,6 +64,8 @@ class CommitVoteDialog extends React.Component {
       this.setState({ loading: false });
     }
   };
+
+  handleTokensToCommitChange = event => this.setState({ tokensToCommit: event.target.value });
 
   handleSnackbarClose = () => () => {
     this.setState({ snackbarOpen: false });
@@ -65,7 +75,14 @@ class CommitVoteDialog extends React.Component {
 
   render() {
     const { classes, open, poll } = this.props;
-    const { loading, snackbarOpen, snackbarMessage, voteOption, salt } = this.state;
+    const {
+      loading,
+      snackbarOpen,
+      snackbarMessage,
+      voteOption,
+      salt,
+      tokensToCommit,
+    } = this.state;
     const { commitEndDate } = poll;
 
     return (
@@ -82,6 +99,13 @@ class CommitVoteDialog extends React.Component {
         <DialogContent>
           <Typography variant="p"><strong>Commit period ends:</strong></Typography>
           <Typography variant="p" paragraph>{commitEndDate.toString()}</Typography>
+
+          <Typography variant="p"><strong>Tokens to commit:</strong></Typography>
+          <Input
+            value={tokensToCommit}
+            onChange={this.handleTokensToCommitChange}
+            endAdornment={<InputAdornment position="end">TST</InputAdornment>}
+          />
 
           <Typography variant="p"><strong>Option:</strong></Typography>
           <RadioGroup value={voteOption} onChange={this.handleVoteOption}>
@@ -154,8 +178,10 @@ CommitVoteDialog.propTypes = {
   handleCancel: PropTypes.func,
   handleCommit: PropTypes.func,
   poll: PropTypes.shape({
-    commitEndDate: PropTypes.instanceOf(Date),
+    id: PropTypes.number.isRequired,
+    commitEndDate: PropTypes.instanceOf(Date).isRequired,
   }).isRequired,
+  contractAddress: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
