@@ -6,19 +6,16 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
-import PageviewIcon from '@material-ui/icons/Pageview';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 import { withStyles } from '@material-ui/core/styles';
+import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import TextField from '@material-ui/core/TextField';
 
 import InputAdornments from './InputAdornments';
 import CustomizedTooltips from './InformationButton';
-
 
 const styles = theme => ({
   subtitle: {
@@ -71,9 +68,10 @@ const styles = theme => ({
   },
 });
 
-class TcrDialog extends React.Component {
+class ChallengeBox extends React.Component {
   state = {
-    description: '',
+    enablePayment: true,
+    subsFeeColor: 'grey',
     loading: false,
     snackbarOpen: false,
     snackbarMessage: '',
@@ -101,11 +99,6 @@ class TcrDialog extends React.Component {
     });
   };
 
-  handleChallengeDescription = () => (event) => {
-    const description = event.target.value;
-    this.setState({ description });
-  }
-
   handleCreate = () => async () => {
     const { handleCreate } = this.props;
     const { name, parameters } = this.state;
@@ -120,27 +113,23 @@ class TcrDialog extends React.Component {
     }
   };
 
-  handleCreateChallenge = () => async () => {
-    const { listingId, handleChallenge } = this.props;
-    const { description } = this.state;
-    this.setState({ loading: true });
-    try {
-      const newChallenge = await hallenge
-    } catch (e) {
-
-    } finally {
-
-    }
-  };
-
   handleSnackbarClose = () => () => {
     this.setState({ snackbarOpen: false });
   }
 
+  handleCheck(enablePayment) {
+    return () => {
+      this.setState({ enablePayment: enablePayment === false,
+        subsFeeColor: enablePayment ? '#212121' : 'grey' });
+    };
+  }
+
   render() {
-    const { classes, open, handleCancel, listingId } = this.props;
+    const { classes, open, handleCancel } = this.props;
     const {
-      description,
+      enablePayment,
+      subsFeeColor,
+      name,
       parameters,
       loading,
       snackbarOpen,
@@ -156,25 +145,159 @@ class TcrDialog extends React.Component {
         fullWidth
       >
         <DialogTitle id="form-dialog-title">
-          Challenge a Submission
+          Create New TCR
         </DialogTitle>
         <DialogContent>
           <div>
-            <div className={classes.section}>
-              <AssignmentIcon className={classes.subtitleIcon} />
-              <Typography variant="subtitle1" className={classes.subtitle}>
-                Reason to Challenge
-              </Typography>
-            </div>
             <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                TCR Name
+                <CustomizedTooltips classes="" content="minimumDeposit" />
+              </ListItemText>
               <div>
                 <TextField
-                  value="Type your reason here"
+                  value={name}
                   margin="normal"
-                  onChange={this.handleChallengeDescription()}
+                  onChange={this.handleNameChange()}
                   autoFocus
                 />
               </div>
+            </ListItem>
+            <div className={classes.section}>
+              <AssignmentIcon className={classes.subtitleIcon} />
+              <Typography variant="subtitle1" className={classes.subtitle}>
+                Submission
+              </Typography>
+            </div>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                Minimum Deposit
+                <CustomizedTooltips classes="" content="minimumDeposit" />
+              </ListItemText>
+              <div>
+                <InputAdornments
+                  unit="wei"
+                  value={parameters.minDeposit}
+                  onChange={this.handleChange('minDeposit')}
+                />
+              </div>
+            </ListItem>
+            <ListItem className={classes.withSection}>
+              <ListItemText className={classes.listItemText}>
+                Submission Length Period
+                <CustomizedTooltips classes="" content="" />
+              </ListItemText>
+              <div>
+                <InputAdornments
+                  unit="day(s)"
+                  value={parameters.applyStageLen}
+                  onChange={this.handleChange('applyStageLen')}
+                />
+              </div>
+            </ListItem>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                Submission could be challenged.
+                <CustomizedTooltips classes="" content="" />
+              </ListItemText>
+              <Checkbox />
+            </ListItem>
+          </div>
+          <div>
+            <div className={classes.section}>
+              <AssignmentTurnedInIcon className={classes.subtitleIcon} />
+              <Typography variant="subtitle1" className={classes.subtitle}>
+                Curation
+              </Typography>
+            </div>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                Commit Stage Length
+                <CustomizedTooltips classes="" content="" />
+              </ListItemText>
+              <div>
+                <InputAdornments
+                  unit="day(s)"
+                  value={parameters.revealStageLen}
+                  onChange={this.handleChange('revealStageLen')}
+                />
+              </div>
+            </ListItem>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                Reveal Stage Length
+                <CustomizedTooltips classes="" content="" />
+              </ListItemText>
+              <div>
+                <InputAdornments
+                  unit="day(s)"
+                  value={parameters.commitStageLen}
+                  onChange={this.handleChange('commitStageLen')}
+                />
+              </div>
+            </ListItem>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                Voting Success Threshold
+                <CustomizedTooltips classes="" content="" />
+              </ListItemText>
+              <div>
+                <InputAdornments
+                  unit="%"
+                  value={parameters.voteQuorum}
+                  onChange={this.handleChange('voteQuorum')}
+                />
+              </div>
+            </ListItem>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                DispensationPct
+                <CustomizedTooltips classes="" content="" />
+              </ListItemText>
+              <div>
+                <InputAdornments
+                  unit="wei"
+                  value={parameters.dispensationPct}
+                  onChange={this.handleChange('dispensationPct')}
+                />
+              </div>
+            </ListItem>
+            <ListItem className={classes.ListItem}>
+              <ListItemText className={classes.listItemText}>
+                Each maintainer holds equal voting rights.
+                <CustomizedTooltips classes="" content="curation" />
+              </ListItemText>
+              <Checkbox
+                defaultChecked
+              />
+            </ListItem>
+          </div>
+          <div>
+            <div className={classes.section}>
+              <PageviewIcon className={classes.subtitleIcon} />
+              <Typography variant="subtitle1" className={classes.subtitle}>
+               Subscription
+              </Typography>
+            </div>
+            <ListItem className={classes.withSection}>
+              <ListItemText className={classes.listItemText}>
+                Consumer pays to subscribe to the list.
+                <CustomizedTooltips classes="" content="access" />
+              </ListItemText>
+              <Checkbox onChange={this.handleCheck(enablePayment)} />
+            </ListItem>
+            <ListItem className={classes.withSection}>
+              <ListItemText
+                disableTypography
+                primary={(
+                  <Typography
+                    variant="subtitle1"
+                    style={{ color: subsFeeColor, marginLeft: 10 }}
+                  >
+                    Subscription Fee
+                  </Typography>)}
+              />
+              <InputAdornments unit="wei" disabled={enablePayment} />
             </ListItem>
           </div>
         </DialogContent>
@@ -184,12 +307,12 @@ class TcrDialog extends React.Component {
           </Button>
           <div className={classes.submitWrapper}>
             <Button
-              onClick={this.handleCreateChallenge()}
+              onClick={this.handleCreate()}
               variant="contained"
               color="primary"
               disabled={loading}
             >
-              Challenge
+              Create
             </Button>
             {loading && <CircularProgress size={24} className={classes.submitButtonProgress} />}
           </div>
@@ -206,18 +329,17 @@ class TcrDialog extends React.Component {
   }
 }
 
-TcrDialog.propTypes = {
+ChallengeBox.propTypes = {
   open: PropTypes.bool,
   handleCancel: PropTypes.func,
   handleCreate: PropTypes.func,
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  tcrConnection: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-TcrDialog.defaultProps = {
+ChallengeBox.defaultProps = {
   open: false,
   handleCancel: () => {},
   handleCreate: () => {},
 };
 
-export default withStyles(styles)(TcrDialog);
+export default withStyles(styles)(ChallengeBox);
