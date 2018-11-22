@@ -10,13 +10,19 @@ export default class TokenBalance extends React.Component {
   componentDidMount = async () => {
     const { tokenService } = this.props;
     const balance = await tokenService.currentAccountBalance();
-	balance = await tokenService.listenForTransfers();
-    this.setState({ balance });
+	const self = this;
+	var transferEvent = getToken.Transfer();
+    transferEvent.watch(function(error, result) {
+      if (!error) {
+        self.setState({ balance });
+      } else
+        console.log(error);
+    });
   }
 
   onClick = () => async () => {
     const { tokenService } = this.props;
-    await tokenService.distributeTokens(500);
+    await tokenService.sendToken(500);
   }
 
   render() {

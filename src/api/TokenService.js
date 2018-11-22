@@ -44,14 +44,4 @@ export default class TokenService {
       });
     });
   }
-  
-  async listenForTransfers() {
-	var transferEvent = getToken.Transfer();
-    transferEvent.watch(function(error, result) {
-      if (!error) {
-        return currentAccountBalance();
-      } else
-        console.log(error);
-    });
-  }
 }
