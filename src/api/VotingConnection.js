@@ -18,8 +18,12 @@ export default class VotingConnection {
     await this._callVotingMethod('commitVote', pollId, secretHash, numTokens, prevPollID);
   }
 
+  async revealVote(pollId, voteOption, voteSalt) {
+    await this._callVotingMethod('revealVote', pollId, voteOption, voteSalt);
+  }
+
   async _callVotingMethod(method, ...args) {
-    console.log(`Calling ${method}(${args.join(', ')})`);
+    console.log(`Calling ${method}(${args.join(', ')})`); // eslint-disable-line no-console
     return new Promise((resolve, reject) => {
       this.voting[method](...args, (error, result) => {
         if (error) {
@@ -29,12 +33,5 @@ export default class VotingConnection {
         }
       });
     });
-  }
-
-  revealVote(voteOption, listingHash) {
-    const votingSalt = Math.getRandomIntInclusive(0, 1000);
-    const listings = this.contract.methods.listings().call();
-    const pollId = this.getPollId(listingHash, listings);
-    this.contract.methods.revealVote().call(pollId, voteOption, votingSalt);
   }
 }
