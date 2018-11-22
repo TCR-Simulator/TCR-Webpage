@@ -1,9 +1,5 @@
-<<<<<<< Updated upstream
 import { getContractInfo } from '../config';
 
-=======
-const Web3 = require('web3');
->>>>>>> Stashed changes
 const keccak = require('keccak');
 
 // const callback = function callback(error, result) {
@@ -14,7 +10,6 @@ const keccak = require('keccak');
 //   }
 // };
 
-<<<<<<< Updated upstream
 export default class TcrConnection {
   constructor() { // eslint-disable-line no-unused-vars
     this.web3 = window.web3;
@@ -34,50 +29,18 @@ export default class TcrConnection {
   }
 
   getPollId(listingHash, listings) { // eslint-disable-line class-methods-use-this
-=======
-function portToAddr(port) {
-  return `http://localhost:${port}`;
-}
-
-export default class TcrConnection {
-  constructor(portNum, contractAddr, contractAbi) { // eslint-disable-line no-unused-vars
-    this.web3 = new Web3(new Web3.providers.HttpProvider(portToAddr(portNum)));
-    this.web3.eth.net.isListening(() => {
-      // TODO: uncomment when ready to integrate with deployed contracts.
-      if (!this.web3.utils.isAddress(contractAddr)) {
-        // throw new Error('Invalid contract address');
-      }
-      // this.contract = this.web3.eth.contract(contractAbi).at(contractAddr);
-    });
-  }
-
-  generateHash(obj) {
-    return keccak('keccak256').update(obj).digest("hex");
-  }
-
-  getPollId(listingHash, listings) {
->>>>>>> Stashed changes
     return listings[listingHash].challengeId;
   }
 
   // Submit Action - Complete
-<<<<<<< Updated upstream
   async submit(deposit, name, url) {
-=======
-  submit(minDeposit, name, url) {
->>>>>>> Stashed changes
     const infoObj = {
       name,
       url,
     };
     const information = JSON.stringify(infoObj);
-<<<<<<< Updated upstream
     // eslint-disable-next-line no-console
     this.contract.apply(deposit, information, error => console.error(error));
-=======
-    const listingHash = this.generateHash(information);
-    this.contract.methods.apply().call(listingHash, minDeposit, information);
->>>>>>> Stashed changes
   }
 
   // Vote Action
@@ -94,7 +57,7 @@ export default class TcrConnection {
 
   // Challenge Action
   challenge(listingHash, description) {
-    this.contract.methods.challenge().call(listingHash, description);
+    this.contract.challenge(listingHash, description, error => console.error(error));
   }
 
   // Poke submission into registry by getting updates after application period passes
