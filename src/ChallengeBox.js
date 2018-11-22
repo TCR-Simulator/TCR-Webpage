@@ -70,8 +70,7 @@ const styles = theme => ({
 
 class ChallengeBox extends React.Component {
   state = {
-    enablePayment: true,
-    subsFeeColor: 'grey',
+    description: "",
     loading: false,
     snackbarOpen: false,
     snackbarMessage: '',
@@ -86,32 +85,37 @@ class ChallengeBox extends React.Component {
     name: 'New TCR',
   };
 
-  handleNameChange = () => (event) => {
-    const name = event.target.value;
-    this.setState({ name });
+  // handleNameChange = () => (event) => {
+  //   const name = event.target.value;
+  //   this.setState({ name });
+  // }
+
+  // handleChange = name => (event) => {
+  //   const newParam = { [name]: event.target.value };
+  //   this.setState((state) => {
+  //     const parameters = Object.assign({}, state.parameters, newParam);
+  //     return { parameters };
+  //   });
+  // };
+
+  // handleCreate = () => async () => {
+  //   const { handleCreate } = this.props;
+  //   const { name, parameters } = this.state;
+  //   this.setState({ loading: true });
+  //   try {
+  //     const newTcr = await createTcr(name, parameters || {});
+  //     handleCreate(newTcr);
+  //   } catch (e) {
+  //     this.setState({ snackbarOpen: true, snackbarMessage: e.toString() });
+  //   } finally {
+  //     this.setState({ loading: false });
+  //   }
+  // };
+
+  handleDescription = () => (event) => {
+    const description = event.target.value;
+    this.setState({description});
   }
-
-  handleChange = name => (event) => {
-    const newParam = { [name]: event.target.value };
-    this.setState((state) => {
-      const parameters = Object.assign({}, state.parameters, newParam);
-      return { parameters };
-    });
-  };
-
-  handleCreate = () => async () => {
-    const { handleCreate } = this.props;
-    const { name, parameters } = this.state;
-    this.setState({ loading: true });
-    try {
-      const newTcr = await createTcr(name, parameters || {});
-      handleCreate(newTcr);
-    } catch (e) {
-      this.setState({ snackbarOpen: true, snackbarMessage: e.toString() });
-    } finally {
-      this.setState({ loading: false });
-    }
-  };
 
   handleSnackbarClose = () => () => {
     this.setState({ snackbarOpen: false });
@@ -145,159 +149,22 @@ class ChallengeBox extends React.Component {
         fullWidth
       >
         <DialogTitle id="form-dialog-title">
-          Create New TCR
+          Challenge a Submission
         </DialogTitle>
         <DialogContent>
           <div>
             <ListItem className={classes.ListItem}>
               <ListItemText className={classes.listItemText}>
-                TCR Name
+                Reason to Challenge
                 <CustomizedTooltips classes="" content="minimumDeposit" />
               </ListItemText>
               <div>
                 <TextField
-                  value={name}
                   margin="normal"
-                  onChange={this.handleNameChange()}
+                  onChange={this.handleDescription()}
                   autoFocus
                 />
               </div>
-            </ListItem>
-            <div className={classes.section}>
-              <AssignmentIcon className={classes.subtitleIcon} />
-              <Typography variant="subtitle1" className={classes.subtitle}>
-                Submission
-              </Typography>
-            </div>
-            <ListItem className={classes.ListItem}>
-              <ListItemText className={classes.listItemText}>
-                Minimum Deposit
-                <CustomizedTooltips classes="" content="minimumDeposit" />
-              </ListItemText>
-              <div>
-                <InputAdornments
-                  unit="wei"
-                  value={parameters.minDeposit}
-                  onChange={this.handleChange('minDeposit')}
-                />
-              </div>
-            </ListItem>
-            <ListItem className={classes.withSection}>
-              <ListItemText className={classes.listItemText}>
-                Submission Length Period
-                <CustomizedTooltips classes="" content="" />
-              </ListItemText>
-              <div>
-                <InputAdornments
-                  unit="day(s)"
-                  value={parameters.applyStageLen}
-                  onChange={this.handleChange('applyStageLen')}
-                />
-              </div>
-            </ListItem>
-            <ListItem className={classes.ListItem}>
-              <ListItemText className={classes.listItemText}>
-                Submission could be challenged.
-                <CustomizedTooltips classes="" content="" />
-              </ListItemText>
-              <Checkbox />
-            </ListItem>
-          </div>
-          <div>
-            <div className={classes.section}>
-              <AssignmentTurnedInIcon className={classes.subtitleIcon} />
-              <Typography variant="subtitle1" className={classes.subtitle}>
-                Curation
-              </Typography>
-            </div>
-            <ListItem className={classes.ListItem}>
-              <ListItemText className={classes.listItemText}>
-                Commit Stage Length
-                <CustomizedTooltips classes="" content="" />
-              </ListItemText>
-              <div>
-                <InputAdornments
-                  unit="day(s)"
-                  value={parameters.revealStageLen}
-                  onChange={this.handleChange('revealStageLen')}
-                />
-              </div>
-            </ListItem>
-            <ListItem className={classes.ListItem}>
-              <ListItemText className={classes.listItemText}>
-                Reveal Stage Length
-                <CustomizedTooltips classes="" content="" />
-              </ListItemText>
-              <div>
-                <InputAdornments
-                  unit="day(s)"
-                  value={parameters.commitStageLen}
-                  onChange={this.handleChange('commitStageLen')}
-                />
-              </div>
-            </ListItem>
-            <ListItem className={classes.ListItem}>
-              <ListItemText className={classes.listItemText}>
-                Voting Success Threshold
-                <CustomizedTooltips classes="" content="" />
-              </ListItemText>
-              <div>
-                <InputAdornments
-                  unit="%"
-                  value={parameters.voteQuorum}
-                  onChange={this.handleChange('voteQuorum')}
-                />
-              </div>
-            </ListItem>
-            <ListItem className={classes.ListItem}>
-              <ListItemText className={classes.listItemText}>
-                DispensationPct
-                <CustomizedTooltips classes="" content="" />
-              </ListItemText>
-              <div>
-                <InputAdornments
-                  unit="wei"
-                  value={parameters.dispensationPct}
-                  onChange={this.handleChange('dispensationPct')}
-                />
-              </div>
-            </ListItem>
-            <ListItem className={classes.ListItem}>
-              <ListItemText className={classes.listItemText}>
-                Each maintainer holds equal voting rights.
-                <CustomizedTooltips classes="" content="curation" />
-              </ListItemText>
-              <Checkbox
-                defaultChecked
-              />
-            </ListItem>
-          </div>
-          <div>
-            <div className={classes.section}>
-              <PageviewIcon className={classes.subtitleIcon} />
-              <Typography variant="subtitle1" className={classes.subtitle}>
-               Subscription
-              </Typography>
-            </div>
-            <ListItem className={classes.withSection}>
-              <ListItemText className={classes.listItemText}>
-                Consumer pays to subscribe to the list.
-                <CustomizedTooltips classes="" content="access" />
-              </ListItemText>
-              <Checkbox onChange={this.handleCheck(enablePayment)} />
-            </ListItem>
-            <ListItem className={classes.withSection}>
-              <ListItemText
-                disableTypography
-                primary={(
-                  <Typography
-                    variant="subtitle1"
-                    style={{ color: subsFeeColor, marginLeft: 10 }}
-                  >
-                    Subscription Fee
-                  </Typography>)}
-              />
-              <InputAdornments unit="wei" disabled={enablePayment} />
             </ListItem>
           </div>
         </DialogContent>
@@ -307,12 +174,12 @@ class ChallengeBox extends React.Component {
           </Button>
           <div className={classes.submitWrapper}>
             <Button
-              onClick={this.handleCreate()}
+              onClick={handleCancel}
               variant="contained"
               color="primary"
               disabled={loading}
             >
-              Create
+              Challenge
             </Button>
             {loading && <CircularProgress size={24} className={classes.submitButtonProgress} />}
           </div>

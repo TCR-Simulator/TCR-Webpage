@@ -7,7 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import ChalleneBox from './ChalleneBox';
+import ChallengeBox from './ChallengeBox';
 
 const styles = theme => ({
   root: {
@@ -60,7 +60,7 @@ class PendingList extends React.Component {
         variant="outlined"
         color="secondary"
         className={classes.challengebutton}
-        onClick={this.handleClick}
+        onClick={() => this.handleClick()}
       >
             Challenge
       </Button>
@@ -85,6 +85,10 @@ class PendingList extends React.Component {
 
   handleClick() {
     this.setState({ openChallenge: true });
+  }
+
+  handleCancel() {
+    this.setState({ openChallenge: false });
   }
 
   addItem(event) {
@@ -134,7 +138,7 @@ class PendingList extends React.Component {
           Apply
           </button>
         </nav>
-        <ChalleneBox open={openChallenge} tcrConnection={tcrConnection} />
+        <ChallengeBox open={openChallenge} tcrConnection={tcrConnection} handleCancel={() => this.handleCancel()} />
       </div>
     );
   }
