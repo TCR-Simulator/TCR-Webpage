@@ -15,7 +15,7 @@ export default class TokenBalance extends React.Component {
     const self = this;
     const address = window.web3.eth.defaultAccount;
     const transferEvent = this.tokenService.token.Transfer({ _from: address, _to: address });
-    transferEvent.watch(async (error, result) => {
+    transferEvent.watch(async (error) => {
       if (!error) {
         await self.refreshBalance();
       } else {
@@ -37,8 +37,10 @@ export default class TokenBalance extends React.Component {
     const { balance } = this.state;
     // console.log(await tokenService.currentAccountBalance());
     return (
-  	  <Typography variant="h6" color="inherit" onClick={this.onClick()}>
-        Balance = {balance.toString()}
+      <Typography variant="h6" color="inherit" onClick={this.onClick()}>
+        Balance =
+        {' '}
+        {balance.toString()}
       </Typography>
     );
   }
