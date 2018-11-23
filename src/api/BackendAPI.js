@@ -3,7 +3,7 @@ import { getRegistryFactory, getToken } from '../config';
 import { PARAM_KEYS, EXPOSED_PARAMS } from './TcrUtils';
 
 const ax = axios.create({
-  baseURL: 'http://localhost:5000/tcrs', // temporary
+  baseURL: 'http://localhost:3000/tcrs', // temporary
 });
 
 /**
@@ -76,4 +76,9 @@ export async function deployTcr(tcrId) {
  */
 export async function deleteTcr(tcrId) {
   ax.delete(`/${tcrId}/`);
+}
+
+export async function getAllSongs(tcrId) {
+  const response = await ax.get(`/${tcrId}/listings`);
+  return response.data;
 }
