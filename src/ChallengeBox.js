@@ -117,6 +117,13 @@ class ChallengeBox extends React.Component {
     this.setState({description});
   }
 
+  handleChallenge = () => async () => {
+    const { tcrConnection } = this.props;
+    const { handleCancel, description } = this.state;
+    tcrConnection.challenge("a;lkdfj;kjf", description);
+    handleCancel()
+  }
+
   handleSnackbarClose = () => () => {
     this.setState({ snackbarOpen: false });
   }

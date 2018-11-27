@@ -48,7 +48,8 @@ class PendingList extends React.Component {
     super(props);
     this.state = {
       checked: [],
-      items: ['Love Yourself - BTS', 'Fancy - Iggy Azalea', 'Baby - Justin Bieber'],
+      items: [
+      'Love Yourself - BTS', 'Fancy - Iggy Azalea', 'Baby - Justin Bieber'],
       openChallenge: false,
     };
   }
@@ -110,13 +111,13 @@ class PendingList extends React.Component {
   }
 
   render() {
-    const { classes, tcrConnection } = this.props;
+    const { classes, tcrConnection, listItems } = this.props;
     const { openChallenge } = this.state;
 
     return (
       <div className={classes.root}>
         <List>
-          {this.state.items.map(value => ( // eslint-disable-line react/destructuring-assignment
+          {listItems.map(value => ( // eslint-disable-line react/destructuring-assignment
             <ListItem key={value} dense button>
               <Avatar className={classes.avatar}>
                 <i className="material-icons md-10">hourglass_empty</i>
@@ -148,6 +149,7 @@ class PendingList extends React.Component {
 PendingList.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   tcrConnection: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  listItems: PropTypes.array
 };
 
 export default withStyles(styles)(PendingList);
