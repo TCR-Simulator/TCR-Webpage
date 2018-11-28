@@ -8,6 +8,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import ChallengeBox from './ChallengeBox';
+import tcrConnection from './api/TcrConnection';
 
 const styles = theme => ({
   root: {
@@ -151,5 +152,9 @@ PendingList.propTypes = {
   tcrConnection: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   listItems: PropTypes.array
 };
+
+PendingList.defaultProps = {
+  listItems : ['Love Yourself - BTS', 'Fancy - Iggy Azalea', 'Baby - Justin Bieber'],
+} 
 
 export default withStyles(styles)(PendingList);

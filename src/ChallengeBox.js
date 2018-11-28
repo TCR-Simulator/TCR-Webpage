@@ -13,7 +13,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import TextField from '@material-ui/core/TextField';
-
+import { updateSong } from './api/BackendAPI';
+ 
 import InputAdornments from './InputAdornments';
 import CustomizedTooltips from './InformationButton';
 
@@ -120,7 +121,16 @@ class ChallengeBox extends React.Component {
   handleChallenge = () => async () => {
     const { tcrConnection } = this.props;
     const { handleCancel, description } = this.state;
-    tcrConnection.challenge("a;lkdfj;kjf", description);
+    const challengeId = tcrConnection.challenge("a;lkdfj;kjf", description);
+    const params = {
+      body: {
+        song: {
+          id: "10",
+          challengeId,
+        }
+      }
+    }
+    updateSong("1", params);
     handleCancel()
   }
 

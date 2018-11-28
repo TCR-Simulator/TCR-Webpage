@@ -78,7 +78,7 @@ export async function deleteTcr(tcrId) {
   ax.delete(`/${tcrId}/`);
 }
 
-export async function getAllSongs(tcrId) {
-  const response = await ax.get(`/${tcrId}/listings`);
+export async function updateSong(tcrId, params) {
+  const response = await ax.put(`/${tcrId}/listings`, params);
   return response.data;
 }
