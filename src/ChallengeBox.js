@@ -5,18 +5,14 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Typography from '@material-ui/core/Typography';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 import { withStyles } from '@material-ui/core/styles';
-import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import TextField from '@material-ui/core/TextField';
-import { updateSong } from './api/BackendAPI';
 import ListingItem from './api/ListingItem';
- 
-import InputAdornments from './InputAdornments';
+
 import CustomizedTooltips from './InformationButton';
 
 const styles = theme => ({
