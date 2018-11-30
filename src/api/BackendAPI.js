@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as tcrUtils from './TcrUtils';
 
 const ax = axios.create({
-  baseURL: 'http://localhost:5000/tcrs', // temporary
+  baseURL: 'http://localhost:3000/tcrs', // temporary
 });
 
 /**
@@ -57,4 +57,9 @@ export async function deployTcr(tcrId) {
  */
 export async function deleteTcr(tcrId) {
   ax.delete(`/${tcrId}/`);
+}
+
+export async function updateSong(tcrId, params) {
+  const response = await ax.put(`/${tcrId}/listings`, params);
+  return response.data;
 }

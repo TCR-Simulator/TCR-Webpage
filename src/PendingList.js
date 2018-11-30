@@ -4,7 +4,11 @@ import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import ChallengeBox from './ChallengeBox';
+import tcrConnection from './api/TcrConnection';
 
 const styles = theme => ({
   root: {
@@ -45,8 +49,24 @@ class PendingList extends React.Component {
     super(props);
     this.state = {
       checked: [],
-      items: ['Love Yourself - BTS', 'Fancy - Iggy Azalea', 'Baby - Justin Bieber'],
+      items: [
+      'Love Yourself - BTS', 'Fancy - Iggy Azalea', 'Baby - Justin Bieber'],
+      openChallenge: false,
     };
+  }
+
+  getChallengeButton() {
+    const { classes } = this.props;
+    return (
+      <Button
+        variant="outlined"
+        color="secondary"
+        className={classes.challengebutton}
+        onClick={() => this.handleClick()}
+      >
+            Challenge
+      </Button>
+    );
   }
 
   handleToggle = value => () => {
@@ -64,6 +84,14 @@ class PendingList extends React.Component {
       checked: newChecked,
     });
   };
+
+  handleClick() {
+    this.setState({ openChallenge: true });
+  }
+
+  handleCancel() {
+    this.setState({ openChallenge: false });
+  }
 
   async addItem(event) {
     const { items: currentItems } = this.state;
@@ -84,17 +112,23 @@ class PendingList extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, tcrConnection, listItems } = this.props;
+    const { openChallenge } = this.state;
 
     return (
       <div className={classes.root}>
         <List>
-          {this.state.items.map(value => ( // eslint-disable-line react/destructuring-assignment
+          {listItems.map(value => ( // eslint-disable-line react/destructuring-assignment
             <ListItem key={value} dense button>
               <Avatar className={classes.avatar}>
                 <i className="material-icons md-10">hourglass_empty</i>
               </Avatar>
               <ListItemText primary={`${value}`} />
+              <ListItemSecondaryAction>
+                <div align="right">
+                  {this.getChallengeButton()}
+                </div>
+              </ListItemSecondaryAction>
             </ListItem>
           ))}
         </List>
@@ -106,6 +140,7 @@ class PendingList extends React.Component {
           Apply
           </button>
         </nav>
+        <ChallengeBox open={openChallenge} tcrConnection={tcrConnection} handleCancel={() => this.handleCancel()} />
       </div>
     );
   }
@@ -115,6 +150,11 @@ class PendingList extends React.Component {
 PendingList.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   tcrConnection: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  listItems: PropTypes.array
 };
+
+PendingList.defaultProps = {
+  listItems : ['Love Yourself - BTS', 'Fancy - Iggy Azalea', 'Baby - Justin Bieber'],
+} 
 
 export default withStyles(styles)(PendingList);

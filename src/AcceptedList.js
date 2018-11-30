@@ -114,7 +114,6 @@ class AcceptedList extends React.Component {
               <ListItemText primary={`${value}`} />
               <ListItemSecondaryAction>
                 <div align="right">
-                  {this.getChallengeButton()}
                   <Button variant="outlined" color="default" className={classes.applybutton}>
                     Withdraw
                   </Button>

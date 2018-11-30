@@ -46,7 +46,7 @@ export default class TcrConnection {
 
   // Challenge Action
   challenge(listingHash, description) {
-    this.contract.methods.challenge().call(listingHash, description);
+    this.contract.challenge(listingHash, description, error => console.error(error));
   }
 
   // Poke submission into registry by getting updates after application period passes
