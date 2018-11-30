@@ -14,6 +14,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import TextField from '@material-ui/core/TextField';
 import { updateSong } from './api/BackendAPI';
+import ListingItem from './api/ListingItem';
  
 import InputAdornments from './InputAdornments';
 import CustomizedTooltips from './InformationButton';
@@ -71,19 +72,10 @@ const styles = theme => ({
 
 class ChallengeBox extends React.Component {
   state = {
-    description: "",
+    description: '',
     loading: false,
     snackbarOpen: false,
     snackbarMessage: '',
-    parameters: {
-      minDeposit: 100,
-      applyStageLen: 7,
-      commitStageLen: 7,
-      revealStageLen: 7,
-      voteQuorum: 50,
-      dispensationPct: 100,
-    },
-    name: 'New TCR',
   };
 
   // handleNameChange = () => (event) => {
@@ -115,47 +107,23 @@ class ChallengeBox extends React.Component {
 
   handleDescription = () => (event) => {
     const description = event.target.value;
-    this.setState({description});
+    this.setState({ description });
   }
 
   handleChallenge = () => async () => {
-    const { tcrConnection } = this.props;
-    const { handleCancel, description } = this.state;
-    const challengeId = tcrConnection.challenge("a;lkdfj;kjf", description);
-    const params = {
-      body: {
-        song: {
-          id: "10",
-          challengeId,
-        }
-      }
-    }
-    updateSong("1", params);
-    handleCancel()
+    const { handleSuccess, tcrConnection, listing } = this.props;
+    const { description } = this.state;
+    await tcrConnection.challenge(listing.listingHash, description);
+    handleSuccess();
   }
 
   handleSnackbarClose = () => () => {
     this.setState({ snackbarOpen: false });
   }
 
-  handleCheck(enablePayment) {
-    return () => {
-      this.setState({ enablePayment: enablePayment === false,
-        subsFeeColor: enablePayment ? '#212121' : 'grey' });
-    };
-  }
-
   render() {
     const { classes, open, handleCancel } = this.props;
-    const {
-      enablePayment,
-      subsFeeColor,
-      name,
-      parameters,
-      loading,
-      snackbarOpen,
-      snackbarMessage,
-    } = this.state;
+    const { loading, snackbarOpen, snackbarMessage } = this.state;
 
     return (
       <Dialog
@@ -191,7 +159,7 @@ class ChallengeBox extends React.Component {
           </Button>
           <div className={classes.submitWrapper}>
             <Button
-              onClick={handleCancel}
+              onClick={this.handleChallenge()}
               variant="contained"
               color="primary"
               disabled={loading}
@@ -216,14 +184,15 @@ class ChallengeBox extends React.Component {
 ChallengeBox.propTypes = {
   open: PropTypes.bool,
   handleCancel: PropTypes.func,
-  handleCreate: PropTypes.func,
+  handleSuccess: PropTypes.func,
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  listing: PropTypes.instanceOf(ListingItem).isRequired,
 };
 
 ChallengeBox.defaultProps = {
   open: false,
   handleCancel: () => {},
-  handleCreate: () => {},
+  handleSuccess: () => {},
 };
 
 export default withStyles(styles)(ChallengeBox);

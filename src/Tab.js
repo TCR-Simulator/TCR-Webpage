@@ -36,6 +36,8 @@ const styles = theme => ({
 class FullWidthTabs extends React.Component {
   state = {
     value: 0,
+    pendingList: [],
+    inChallengeList: [],
   };
 
   componentDidUpdate = async (prevProps) => {
@@ -43,7 +45,10 @@ class FullWidthTabs extends React.Component {
     if (tcr && (!prevProps.tcr || tcr.address !== prevProps.tcr.address)) {
       const tcrConnection = new TcrConnection();
       await tcrConnection.init(tcr.address);
-      this.setState({ tcrConnection }); // eslint-disable-line react/no-did-update-set-state
+      const pendingList = await tcrConnection.getPendingListings();
+      const inChallengeList = await tcrConnection.getInChallengeListings();
+      this.setState({ tcrConnection, pendingList, inChallengeList });
+      window.tcrConnection = tcrConnection;
     }
   }
 
@@ -57,7 +62,7 @@ class FullWidthTabs extends React.Component {
 
   render() {
     const { classes, theme } = this.props;
-    const { tcrConnection } = this.state;
+    const { tcrConnection, pendingList, inChallengeList } = this.state;
 
     return (
       <div className={classes.root}>
@@ -85,11 +90,11 @@ class FullWidthTabs extends React.Component {
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
-            <PendingList tcrConnection={tcrConnection} />
+            <PendingList tcrConnection={tcrConnection} listItems={pendingList} />
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
-            <ChallengeList />
+            <ChallengeList listItems={inChallengeList} />
           </TabContainer>
 
           <TabContainer dir={theme.direction}>

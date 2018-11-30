@@ -8,7 +8,8 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import ChallengeBox from './ChallengeBox';
-import tcrConnection from './api/TcrConnection';
+import ListingItem from './api/ListingItem';
+import TcrConnection from './api/TcrConnection';
 
 const styles = theme => ({
   root: {
@@ -49,20 +50,19 @@ class PendingList extends React.Component {
     super(props);
     this.state = {
       checked: [],
-      items: [
-      'Love Yourself - BTS', 'Fancy - Iggy Azalea', 'Baby - Justin Bieber'],
+      items: ['Love Yourself - BTS', 'Fancy - Iggy Azalea', 'Baby - Justin Bieber'],
       openChallenge: false,
     };
   }
 
-  getChallengeButton() {
+  getChallengeButton(listing) {
     const { classes } = this.props;
     return (
       <Button
         variant="outlined"
         color="secondary"
         className={classes.challengebutton}
-        onClick={() => this.handleClick()}
+        onClick={this.handleClick(listing)}
       >
             Challenge
       </Button>
@@ -85,8 +85,8 @@ class PendingList extends React.Component {
     });
   };
 
-  handleClick() {
-    this.setState({ openChallenge: true });
+  handleClick = listing => () => {
+    this.setState({ openChallenge: true, selectedListing: listing });
   }
 
   handleCancel() {
@@ -100,8 +100,12 @@ class PendingList extends React.Component {
     const urlTextbox = nameTextbox.previousElementSibling;
 
     if (urlTextbox.value) {
-      await tcrConnection.submit(100, nameTextbox.value, urlTextbox.value);
-      currentItems.push(nameTextbox.value);
+      await tcrConnection.submit(
+        100,
+        new ListingItem(nameTextbox.value, urlTextbox.value),
+      );
+      // TODO: change this to actual listing with more info
+      currentItems.push(new ListingItem(nameTextbox.value, urlTextbox.value));
       urlTextbox.value = '';
       nameTextbox.value = '';
 
@@ -113,20 +117,20 @@ class PendingList extends React.Component {
 
   render() {
     const { classes, tcrConnection, listItems } = this.props;
-    const { openChallenge } = this.state;
+    const { openChallenge, selectedListing } = this.state;
 
     return (
       <div className={classes.root}>
         <List>
-          {listItems.map(value => ( // eslint-disable-line react/destructuring-assignment
-            <ListItem key={value} dense button>
+          {listItems.map(listing => (
+            <ListItem key={listing.listingHash} dense button>
               <Avatar className={classes.avatar}>
                 <i className="material-icons md-10">hourglass_empty</i>
               </Avatar>
-              <ListItemText primary={`${value}`} />
+              <ListItemText primary={`${listing.name} (${listing.url})`} />
               <ListItemSecondaryAction>
                 <div align="right">
-                  {this.getChallengeButton()}
+                  {this.getChallengeButton(listing)}
                 </div>
               </ListItemSecondaryAction>
             </ListItem>
@@ -140,7 +144,12 @@ class PendingList extends React.Component {
           Apply
           </button>
         </nav>
-        <ChallengeBox open={openChallenge} tcrConnection={tcrConnection} handleCancel={() => this.handleCancel()} />
+        <ChallengeBox
+          open={openChallenge}
+          tcrConnection={tcrConnection}
+          listing={selectedListing}
+          handleCancel={() => this.handleCancel()}
+        />
       </div>
     );
   }
@@ -149,12 +158,12 @@ class PendingList extends React.Component {
 
 PendingList.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  tcrConnection: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  listItems: PropTypes.array
+  tcrConnection: PropTypes.instanceOf(TcrConnection).isRequired,
+  listItems: PropTypes.arrayOf(PropTypes.instanceOf(ListingItem)),
 };
 
 PendingList.defaultProps = {
-  listItems : ['Love Yourself - BTS', 'Fancy - Iggy Azalea', 'Baby - Justin Bieber'],
-} 
+  listItems: [],
+};
 
 export default withStyles(styles)(PendingList);
