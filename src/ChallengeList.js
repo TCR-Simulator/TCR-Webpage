@@ -6,33 +6,15 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import InChallenge from '@material-ui/icons/Autorenew';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import Button from '@material-ui/core/Button';
+import CommitVoteDialog from './CommitVoteDialog';
 
 const styles = theme => ({
   root: {
     width: '100%',
     maxWidth: 700,
     backgroundColor: theme.palette.background.paper,
-  },
-  challengebutton: {
-    margin: theme.spacing.unit,
-    backgroundColor: '#FFF',
-    '&:hover': {
-      variant: 'cotained',
-      color: '#FFF',
-      backgroundColor: '#F00',
-    },
-  },
-  applybutton: {
-    margin: theme.spacing.unit,
-    backgroundColor: '#FFF',
-    '&:hover': {
-      variant: 'cotained',
-      color: '#FFF',
-      backgroundColor: '#CCC',
-    },
-  },
-  input: {
-    display: 'none',
   },
   avatar: {
     margin: 10,
@@ -45,47 +27,73 @@ class ChallengeList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      checked: [],
-      items: ['Work - Rihanna'],
+      items: [{
+        listingHash: 'a;lkdfj;kjf',
+        title: 'Work',
+        artist: 'Rihanna',
+        url: 'www.example.com',
+        contractAddress: '0x12345',
+        poll: {
+          id: 0,
+          commitEndDate: new Date('December 17, 2018 03:24:00'),
+          revealEndDate: new Date('December 20, 2018 03:24:00'),
+        },
+      }],
+      selectedItem: null,
+      commitVoteDialogOpened: false,
     };
   }
 
-  handleToggle = value => () => {
-    const { checked } = this.state;
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+  onCommitBtnClick = item => () => {
+    this.setState({ selectedItem: item, commitVoteDialogOpened: true });
+  }
 
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
+  handleCommit = () => () => {
+    this.setState({ commitVoteDialogOpened: false });
+  }
 
-    this.setState({
-      checked: newChecked,
-    });
-  };
+  handleCancel = () => () => {
+    this.setState({ commitVoteDialogOpened: false });
+  }
 
   render() {
     const { classes } = this.props;
+    const { items, commitVoteDialogOpened, selectedItem } = this.state;
 
     return (
       <div className={classes.root}>
         <List>
-          {this.state.items.map(value => ( // eslint-disable-line react/destructuring-assignment
-            <ListItem key={value} dense button>
+          {items.map(item => (
+            <ListItem key={item.listingHash} dense button>
               <Avatar className={classes.avatar}>
                 <InChallenge />
               </Avatar>
-              <ListItemText primary={`${value}`} />
+              <ListItemText primary={`${item.title} - ${item.artist}`} />
+              <ListItemSecondaryAction>
+                <div align="right">
+                  <Button variant="outlined" color="default" onClick={this.onCommitBtnClick(item)}>
+                    Commit vote
+                  </Button>
+                </div>
+              </ListItemSecondaryAction>
             </ListItem>
           ))}
         </List>
+        {selectedItem
+          && selectedItem.poll
+          && (
+            <CommitVoteDialog
+              open={commitVoteDialogOpened}
+              handleCommit={this.handleCommit()}
+              handleCancel={this.handleCancel()}
+              poll={selectedItem.poll}
+            />
+          )
+        }
       </div>
     );
   }
 }
-
 
 ChallengeList.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types

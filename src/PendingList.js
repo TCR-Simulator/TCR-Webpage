@@ -93,14 +93,14 @@ class PendingList extends React.Component {
     this.setState({ openChallenge: false });
   }
 
-  addItem(event) {
+  async addItem(event) {
     const { items: currentItems } = this.state;
     const { tcrConnection } = this.props;
     const nameTextbox = event.target.previousElementSibling;
     const urlTextbox = nameTextbox.previousElementSibling;
 
     if (urlTextbox.value) {
-      tcrConnection.submit(100, nameTextbox.value, urlTextbox.value);
+      await tcrConnection.submit(100, nameTextbox.value, urlTextbox.value);
       currentItems.push(nameTextbox.value);
       urlTextbox.value = '';
       nameTextbox.value = '';

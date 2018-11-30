@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { getRegistryFactory, getToken } from '../config';
-import { PARAM_KEYS, EXPOSED_PARAMS } from './TcrUtils';
+import * as tcrUtils from './TcrUtils';
 
 const ax = axios.create({
   baseURL: 'http://localhost:3000/tcrs', // temporary
@@ -33,31 +32,13 @@ export async function getTcrById(tcrId) {
  * @return {TCR} The TCR created, null if creation fails
  */
 export async function createTcr(name, parameters) {
-  const token = await getToken();
-  const registryFactory = await getRegistryFactory();
-
-  const params = PARAM_KEYS.map(({ key, defaultVal }) => (
-    { key, value: parameters[key] || defaultVal }
-  ));
-
-  return new Promise((resolve, reject) => {
-    registryFactory.newRegistryBYOToken(
-      token.address,
-      params.map(({ value }) => value),
-      name,
-      (error) => {
-        if (error) {
-          console.error(error); // eslint-disable-line no-console
-          reject(error);
-        } else {
-          resolve({
-            name,
-            parameters: params.filter(({ key }) => EXPOSED_PARAMS.includes(key)),
-          });
-        }
-      },
-    );
-  });
+  const result = await tcrUtils.deploy(name, parameters);
+  // const data = {
+  //   name,
+  //   parameters,
+  // };
+  // await ax.post('/', data);
+  return result;
 }
 
 /**

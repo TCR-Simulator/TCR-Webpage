@@ -38,11 +38,11 @@ class FullWidthTabs extends React.Component {
     value: 0,
   };
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate = async (prevProps) => {
     const { tcr } = this.props;
     if (tcr && (!prevProps.tcr || tcr.address !== prevProps.tcr.address)) {
       const tcrConnection = new TcrConnection();
-      tcrConnection.init(tcr);
+      await tcrConnection.init(tcr.address);
       this.setState({ tcrConnection }); // eslint-disable-line react/no-did-update-set-state
     }
   }
