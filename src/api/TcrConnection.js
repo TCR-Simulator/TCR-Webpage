@@ -76,13 +76,13 @@ export default class TcrConnection {
   async getPendingListings() {
     const pastApplicationList = await this.getAllApplications();
     const challengeList = await this.getInChallengeListingHashes();
-    return pastApplicationList.filter(({ listingHash }) => challengeList.includes(listingHash));
+    return pastApplicationList.filter(({ listingHash }) => !challengeList.includes(listingHash));
   }
 
   async getInChallengeListings() {
     const pastApplicationList = await this.getAllApplications();
     const challengeList = await this.getInChallengeListingHashes();
-    return pastApplicationList.filter(({ listingHash }) => !challengeList.includes(listingHash));
+    return pastApplicationList.filter(({ listingHash }) => challengeList.includes(listingHash));
   }
 
   async getInChallengeListingHashes() {
