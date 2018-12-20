@@ -60,6 +60,12 @@ class FullWidthTabs extends React.Component {
     this.setState({ value: index });
   };
 
+  handleApplySuccess = (listing) => {
+    this.setState(prevState => ({
+      pendingList: [...prevState.pendingList, listing],
+    }));
+  }
+
   render() {
     const { classes, theme } = this.props;
     const { tcrConnection, pendingList, inChallengeList } = this.state;
@@ -90,7 +96,11 @@ class FullWidthTabs extends React.Component {
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
-            <PendingList tcrConnection={tcrConnection} listItems={pendingList} />
+            <PendingList
+              tcrConnection={tcrConnection}
+              listItems={pendingList}
+              onApplySuccess={this.handleApplySuccess}
+            />
           </TabContainer>
 
           <TabContainer dir={theme.direction}>

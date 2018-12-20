@@ -50,7 +50,6 @@ class PendingList extends React.Component {
     super(props);
     this.state = {
       checked: [],
-      items: ['Love Yourself - BTS', 'Fancy - Iggy Azalea', 'Baby - Justin Bieber'],
       openChallenge: false,
     };
   }
@@ -94,24 +93,19 @@ class PendingList extends React.Component {
   }
 
   async addItem(event) {
-    const { items: currentItems } = this.state;
-    const { tcrConnection } = this.props;
-    const nameTextbox = event.target.previousElementSibling;
+    const { tcrConnection, onApplySuccess } = this.props;
+    const artistTextbox = event.target.previousElementSibling;
+    const nameTextbox = artistTextbox.previousElementSibling;
     const urlTextbox = nameTextbox.previousElementSibling;
 
-    if (urlTextbox.value) {
-      await tcrConnection.submit(
-        100,
-        new ListingItem(nameTextbox.value, urlTextbox.value),
-      );
-      // TODO: change this to actual listing with more info
-      currentItems.push(new ListingItem(nameTextbox.value, urlTextbox.value));
+    if (nameTextbox.value) {
+      const listing = new ListingItem(nameTextbox.value, artistTextbox.value, urlTextbox.value);
+      await tcrConnection.submit(100, listing);
       urlTextbox.value = '';
       nameTextbox.value = '';
+      artistTextbox.value = '';
 
-      this.setState({
-        items: currentItems,
-      });
+      onApplySuccess(listing);
     }
   }
 
@@ -127,7 +121,7 @@ class PendingList extends React.Component {
               <Avatar className={classes.avatar}>
                 <i className="material-icons md-10">hourglass_empty</i>
               </Avatar>
-              <ListItemText primary={`${listing.name} (${listing.url})`} />
+              <ListItemText primary={`${listing.name} - ${listing.artist} (${listing.url})`} />
               <ListItemSecondaryAction>
                 <div align="right">
                   {this.getChallengeButton(listing)}
@@ -140,6 +134,7 @@ class PendingList extends React.Component {
         <nav className="nav-add">
           <input type="text" id="urlinput" placeholder="URL" />
           <input type="text" id="nameinput" placeholder="Name" />
+          <input type="text" id="artistinput" placeholder="Artist" />
           <button type="submit" id="new-item" onClick={this.addItem.bind(this)}>
           Apply
           </button>
@@ -155,15 +150,16 @@ class PendingList extends React.Component {
   }
 }
 
-
 PendingList.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   tcrConnection: PropTypes.instanceOf(TcrConnection).isRequired,
   listItems: PropTypes.arrayOf(PropTypes.instanceOf(ListingItem)),
+  onApplySuccess: PropTypes.func,
 };
 
 PendingList.defaultProps = {
   listItems: [],
+  onApplySuccess: () => {},
 };
 
 export default withStyles(styles)(PendingList);

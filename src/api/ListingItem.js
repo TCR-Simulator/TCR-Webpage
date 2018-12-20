@@ -1,7 +1,8 @@
 export default class ListingItem {
-  constructor(name, url) {
+  constructor(name, artist, url) {
     this.name = name;
     this.url = url;
+    this.artist = artist;
     this.listingHash = null;
     this.appEndDate = null;
     this.applicant = null;
@@ -9,8 +10,8 @@ export default class ListingItem {
   }
 
   static fromObject({ listingHash, appEndDate, applicant, deposit, data }) {
-    const { name, url } = JSON.parse(data);
-    const listingItem = new ListingItem(name, url);
+    const { name, artist, url } = JSON.parse(data);
+    const listingItem = new ListingItem(name, artist, url);
     listingItem.listingHash = listingHash;
     listingItem.appEndDate = appEndDate;
     listingItem.applicant = applicant;
@@ -26,6 +27,7 @@ export default class ListingItem {
   toObject() {
     return {
       name: this.name,
+      artist: this.artist,
       url: this.url,
     };
   }
