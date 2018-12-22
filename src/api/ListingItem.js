@@ -1,3 +1,5 @@
+import { bigNumber2Date } from '../utils';
+
 export default class ListingItem {
   constructor(name, artist, url) {
     this.name = name;
@@ -7,13 +9,14 @@ export default class ListingItem {
     this.appEndDate = null;
     this.applicant = null;
     this.deposit = 0;
+    this.challengePoll = null;
   }
 
   static fromObject({ listingHash, appEndDate, applicant, deposit, data }) {
     const { name, artist, url } = JSON.parse(data);
     const listingItem = new ListingItem(name, artist, url);
     listingItem.listingHash = listingHash;
-    listingItem.appEndDate = appEndDate;
+    listingItem.appEndDate = bigNumber2Date(appEndDate);
     listingItem.applicant = applicant;
     listingItem.deposit = deposit;
     listingItem.data = data;

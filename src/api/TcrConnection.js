@@ -1,5 +1,6 @@
 import { getContractInfo } from '../config';
 import ListingItem from './ListingItem';
+import Poll from './Poll';
 
 // const callback = function callback(error, result) {
 //   if (error) {
@@ -81,8 +82,16 @@ export default class TcrConnection {
 
   async getInChallengeListings() {
     const pastApplicationList = await this.getAllApplications();
-    const challengeList = await this.getInChallengeListingHashes();
-    return pastApplicationList.filter(({ listingHash }) => challengeList.includes(listingHash));
+    const challengeEvents = await this.getAllEvents('_Challenge');
+    const inChallenge = [];
+    pastApplicationList.forEach((listing) => {
+      const challenge = challengeEvents.find(evt => evt.args.listingHash === listing.listingHash);
+      if (challenge) {
+        listing.challengePoll = Poll.fromObject(challenge.args);
+        inChallenge.push(listing);
+      }
+    });
+    return inChallenge;
   }
 
   async getInChallengeListingHashes() {

@@ -15,7 +15,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import Switch from '@material-ui/core/Switch';
 import AdminTCRPage from './AdminTCRPage';
-import TcrDialog from '../TcrDialog';
+import TcrDialog from './TcrDialog';
 import { getAllTcrs } from '../api/TcrUtils';
 
 const drawerWidth = 240;
