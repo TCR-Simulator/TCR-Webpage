@@ -73,6 +73,19 @@ const styles = theme => ({
   },
 });
 
+const convertParameters = (parameters) => {
+  const newParams = {};
+  Object.keys(parameters).map((key) => {
+    if (['applyStageLength', 'commitStageLength', 'revealStageLength'].includes(key)) {
+      newParams[key] = parameters[key] * 24 * 60 * 60; // days to seconds
+    } else {
+      newParams[key] = parameters[key];
+    }
+    return null;
+  });
+  return newParams;
+};
+
 class TcrDialog extends React.Component {
   state = {
     enablePayment: true,
@@ -82,9 +95,9 @@ class TcrDialog extends React.Component {
     snackbarMessage: '',
     parameters: {
       minDeposit: 100,
-      applyStageLen: 7,
-      commitStageLen: 7,
-      revealStageLen: 7,
+      applyStageLength: 7,
+      commitStageLength: 7,
+      revealStageLength: 7,
       voteQuorum: 50,
       dispensationPct: 100,
     },
@@ -109,7 +122,7 @@ class TcrDialog extends React.Component {
     const { name, parameters } = this.state;
     this.setState({ loading: true });
     try {
-      const newTcr = await createTcr(name, parameters || {});
+      const newTcr = await createTcr(name, convertParameters(parameters) || {});
       handleCreate(newTcr);
     } catch (e) {
       this.setState({ snackbarOpen: true, snackbarMessage: e.toString() });
