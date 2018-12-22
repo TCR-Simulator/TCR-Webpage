@@ -112,13 +112,6 @@ class AcceptedList extends React.Component {
                 <Done />
               </Avatar>
               <ListItemText primary={`${value}`} />
-              <ListItemSecondaryAction>
-                <div align="right">
-                  <Button variant="outlined" color="default" className={classes.applybutton}>
-                    Withdraw
-                  </Button>
-                </div>
-              </ListItemSecondaryAction>
             </ListItem>
           ))}
         </List>
