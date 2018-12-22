@@ -66,6 +66,13 @@ class FullWidthTabs extends React.Component {
     }));
   }
 
+  handleChallenge = (listing) => {
+    this.setState(prevState => ({
+      pendingList: prevState.inChallengeList.filter(l => listing.getHash() !== l.getHash()),
+      inChallengeList: [...prevState.inChallengeList, listing],
+    }));
+  }
+
   render() {
     const { classes, theme } = this.props;
     const { tcrConnection, pendingList, inChallengeList } = this.state;
@@ -100,6 +107,7 @@ class FullWidthTabs extends React.Component {
               tcrConnection={tcrConnection}
               listItems={pendingList}
               onApplySuccess={this.handleApplySuccess}
+              onChallenge={this.handleChallenge}
             />
           </TabContainer>
 

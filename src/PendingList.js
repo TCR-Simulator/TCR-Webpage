@@ -61,7 +61,7 @@ class PendingList extends React.Component {
         variant="outlined"
         color="secondary"
         className={classes.challengebutton}
-        onClick={this.handleClick(listing)}
+        onClick={this.handleChallengeClick(listing)}
       >
             Challenge
       </Button>
@@ -84,11 +84,17 @@ class PendingList extends React.Component {
     });
   };
 
-  handleClick = listing => () => {
+  handleChallengeClick = listing => () => {
     this.setState({ openChallenge: true, selectedListing: listing });
   }
 
-  handleCancel() {
+  handleCancelChallenge = () => () => {
+    this.setState({ openChallenge: false });
+  }
+
+  handleChallenge = () => (listing) => {
+    const { onChallenge } = this.props;
+    onChallenge(listing);
     this.setState({ openChallenge: false });
   }
 
@@ -143,7 +149,8 @@ class PendingList extends React.Component {
           open={openChallenge}
           tcrConnection={tcrConnection}
           listing={selectedListing}
-          handleCancel={() => this.handleCancel()}
+          handleCancel={this.handleCancelChallenge()}
+          handleSuccess={this.handleChallenge()}
         />
       </div>
     );
@@ -155,11 +162,13 @@ PendingList.propTypes = {
   tcrConnection: PropTypes.instanceOf(TcrConnection).isRequired,
   listItems: PropTypes.arrayOf(PropTypes.instanceOf(ListingItem)),
   onApplySuccess: PropTypes.func,
+  onChallenge: PropTypes.func,
 };
 
 PendingList.defaultProps = {
   listItems: [],
   onApplySuccess: () => {},
+  onChallenge: () => {},
 };
 
 export default withStyles(styles)(PendingList);

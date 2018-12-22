@@ -110,7 +110,7 @@ class ChallengeBox extends React.Component {
     const { handleSuccess, tcrConnection, listing } = this.props;
     const { description } = this.state;
     await tcrConnection.challenge(listing.listingHash, description);
-    handleSuccess();
+    handleSuccess(listing);
   }
 
   handleSnackbarClose = () => () => {
