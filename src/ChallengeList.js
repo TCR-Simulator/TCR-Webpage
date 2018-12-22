@@ -10,6 +10,8 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Button from '@material-ui/core/Button';
 import CommitVoteDialog from './CommitVoteDialog';
 import RevealVoteDialog from './RevealVoteDialog';
+import ListingItem from './api/ListingItem';
+import TcrConnection from './api/TcrConnection';
 
 const styles = theme => ({
   root: {
@@ -28,18 +30,6 @@ class ChallengeList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [{
-        listingHash: 'a;lkdfj;kjf',
-        title: 'Work',
-        artist: 'Rihanna',
-        url: 'www.example.com',
-        contractAddress: '0x12345',
-        poll: {
-          id: 0,
-          commitEndDate: new Date('December 17, 2018 03:24:00'),
-          revealEndDate: new Date('December 20, 2018 03:24:00'),
-        },
-      }],
       selectedItem: null,
       commitVoteDialogOpened: false,
       revealVoteDialogOpened: false,
@@ -58,7 +48,7 @@ class ChallengeList extends React.Component {
     this.setState({ commitVoteDialogOpened: false });
   }
 
-  handleReveal = () => () => { 
+  handleReveal = () => () => {
     this.setState({ revealVoteDialogOpened: false });
   }
 
@@ -67,18 +57,18 @@ class ChallengeList extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
-    const { items, commitVoteDialogOpened, revealVoteDialogOpened, selectedItem } = this.state;
+    const { classes, listings, tcrConnection } = this.props;
+    const { commitVoteDialogOpened, revealVoteDialogOpened, selectedItem } = this.state;
 
     return (
       <div className={classes.root}>
         <List>
-          {items.map(item => (
+          {listings.map(item => (
             <ListItem key={item.listingHash} dense button>
               <Avatar className={classes.avatar}>
                 <InChallenge />
               </Avatar>
-              <ListItemText primary={`${item.title} - ${item.artist}`} />
+              <ListItemText primary={`${item.name} - ${item.artist} (${item.url})`} />
               <ListItemSecondaryAction>
                 <div align="right">
                   <Button variant="outlined" color="default" onClick={this.onCommitBtnClick(item)}>
@@ -93,24 +83,26 @@ class ChallengeList extends React.Component {
           ))}
         </List>
         {selectedItem
-          && selectedItem.poll
+          && selectedItem.challengePoll
           && (
             <RevealVoteDialog
               open={revealVoteDialogOpened}
               handleReveal={this.handleReveal()}
               handleCancel={this.handleCancel()}
-              poll={selectedItem.poll}
-            />  
-            )
+              poll={selectedItem.challengePoll}
+              votingConnection={tcrConnection.voting}
+            />
+          )
           }
         {selectedItem
-          && selectedItem.poll
+          && selectedItem.challengePoll
           && (
             <CommitVoteDialog
               open={commitVoteDialogOpened}
               handleCommit={this.handleCommit()}
               handleCancel={this.handleCancel()}
-              poll={selectedItem.poll}
+              poll={selectedItem.challengePoll}
+              votingConnection={tcrConnection.voting}
             />
           )
         }
@@ -120,7 +112,13 @@ class ChallengeList extends React.Component {
 }
 
 ChallengeList.propTypes = {
+  tcrConnection: PropTypes.instanceOf(TcrConnection).isRequired,
+  listings: PropTypes.arrayOf(PropTypes.instanceOf(ListingItem)),
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+};
+
+ChallengeList.defaultProps = {
+  listings: [],
 };
 
 export default withStyles(styles)(ChallengeList);

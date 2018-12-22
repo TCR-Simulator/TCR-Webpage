@@ -111,7 +111,10 @@ class FullWidthTabs extends React.Component {
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
-            <ChallengeList listItems={inChallengeList} />
+            <ChallengeList
+              tcrConnection={tcrConnection}
+              listings={inChallengeList}
+            />
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
