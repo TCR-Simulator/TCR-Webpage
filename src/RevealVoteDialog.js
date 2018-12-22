@@ -9,13 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import VotingConnection from './api/VotingConnection';
-import Input from '@material-ui/core/Input';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import TextField from '@material-ui/core/TextField';
 
 const styles = theme => ({
   submitWrapper: {
@@ -37,13 +31,11 @@ class RevealVoteDialog extends React.Component {
     snackbarOpen: false,
     snackbarMessage: '',
     copiedMessage: '',
-    voteOption: null,
-    salt: null,
   };
 
   handleCancel = () => () => {
     const { handleCancel } = this.props;
-    this.setState({ voteOption: null, salt: null });
+    this.setState({ copiedMessage: '' });
     handleCancel();
   }
 
@@ -53,10 +45,8 @@ class RevealVoteDialog extends React.Component {
     this.setState({ loading: true });
     try {
       const voting = new VotingConnection();
-      console.log(copiedMessage);
       await voting.init(contractAddress);
-      await voting.revealVote(poll.id, ((JSON.parse(copiedMessage).voteOption).equals("accept")) ? 1 : 0, JSON.parse(copiedMessage).salt);
-      // await voting.commitVote(poll.id, Number(tokensToCommit), voteOption, salt);
+      await voting.revealVote(poll.id, ((JSON.parse(copiedMessage).voteOption).equals('accept')) ? 1 : 0, JSON.parse(copiedMessage).salt);
       handleReveal();
     } catch (e) {
       this.setState({ snackbarOpen: true, snackbarMessage: e.toString() });
@@ -65,8 +55,8 @@ class RevealVoteDialog extends React.Component {
     }
   };
 
-  handleCopiedMessage = event => {
-    this.setState( { copiedMessage: event.target.value });
+  handleCopiedMessage = (event) => {
+    this.setState({ copiedMessage: event.target.value });
   }
 
   // handleTokensToCommitChange = event => this.setState({ tokensToCommit: event.target.value });
@@ -77,14 +67,7 @@ class RevealVoteDialog extends React.Component {
 
   render() {
     const { classes, open, poll } = this.props;
-    const {
-      loading,
-      snackbarOpen,
-      snackbarMessage,
-      voteOption,
-      salt,
-      copiedMessage,
-    } = this.state;
+    const { loading, snackbarOpen, snackbarMessage, copiedMessage } = this.state;
     const { revealEndDate } = poll;
 
     return (
@@ -102,7 +85,7 @@ class RevealVoteDialog extends React.Component {
           <Typography variant="p"><strong>Reveal period ends:</strong></Typography>
           <Typography variant="p" paragraph>{revealEndDate.toString()}</Typography>
 
-        <Typography variant="p"><strong>Your vote option and salt</strong></Typography>
+          <Typography variant="p"><strong>Your vote option and salt</strong></Typography>
           <textarea
             value={copiedMessage}
             onChange={this.handleCopiedMessage}

@@ -58,7 +58,7 @@ class ChallengeList extends React.Component {
     this.setState({ commitVoteDialogOpened: false });
   }
 
-  handleReveal = () => () => { 
+  handleReveal = () => () => {
     this.setState({ revealVoteDialogOpened: false });
   }
 
@@ -100,8 +100,8 @@ class ChallengeList extends React.Component {
               handleReveal={this.handleReveal()}
               handleCancel={this.handleCancel()}
               poll={selectedItem.poll}
-            />  
-            )
+            />
+          )
           }
         {selectedItem
           && selectedItem.poll
