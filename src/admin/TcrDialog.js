@@ -194,7 +194,7 @@ class TcrDialog extends React.Component {
               </ListItemText>
               <div>
                 <InputAdornments
-                  unit="wei"
+                  unit="tst"
                   value={parameters.minDeposit}
                   onChange={this.handleChange('minDeposit')}
                 />
@@ -274,7 +274,7 @@ class TcrDialog extends React.Component {
               </ListItemText>
               <div>
                 <InputAdornments
-                  unit="wei"
+                  unit="tst"
                   value={parameters.dispensationPct}
                   onChange={this.handleChange('dispensationPct')}
                 />
@@ -315,7 +315,7 @@ class TcrDialog extends React.Component {
                     Subscription Fee
                   </Typography>)}
               />
-              <InputAdornments unit="wei" disabled={enablePayment} />
+              <InputAdornments unit="tst" disabled={enablePayment} />
             </ListItem>
           </div>
         </DialogContent>
