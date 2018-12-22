@@ -74,6 +74,13 @@ export default class TcrConnection {
   //   //TODO
   // }
 
+  async getAcceptedListings() {
+    const allApplications = await this.getAllApplications();
+    const whitelistedEvents = await this.getAllEvents('_ApplicationWhitelisted');
+    const whitelistedListings = whitelistedEvents.map(event => event.args.listingHash);
+    return allApplications.filter(({ listingHash }) => whitelistedListings.includes(listingHash));
+  }
+
   async getPendingListings() {
     const pastApplicationList = await this.getAllApplications();
     const challengeList = await this.getInChallengeListingHashes();
