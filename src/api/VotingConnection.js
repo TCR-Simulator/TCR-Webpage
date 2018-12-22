@@ -1,12 +1,13 @@
 import { getVotingContractAt } from '../config';
 
 export default class VotingConnection {
-  constructor() {
-    this.voting = null;
+  constructor(voting) {
+    this.voting = voting;
   }
 
-  async init(contractAddress) {
-    this.voting = await getVotingContractAt(contractAddress);
+  static async create(contractAddress) {
+    const voting = await getVotingContractAt(contractAddress);
+    return new VotingConnection(voting);
   }
 
   async commitVote(pollId, numTokens, voteOption, voteSalt) {

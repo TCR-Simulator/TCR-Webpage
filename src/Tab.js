@@ -43,8 +43,7 @@ class FullWidthTabs extends React.Component {
   componentDidUpdate = async (prevProps) => {
     const { tcr } = this.props;
     if (tcr && (!prevProps.tcr || tcr.address !== prevProps.tcr.address)) {
-      const tcrConnection = new TcrConnection();
-      await tcrConnection.init(tcr.address);
+      const tcrConnection = await TcrConnection.create(tcr.address, tcr.votingAddress);
       const pendingList = await tcrConnection.getPendingListings();
       const inChallengeList = await tcrConnection.getInChallengeListings();
       this.setState({ tcrConnection, pendingList, inChallengeList });
