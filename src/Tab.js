@@ -75,6 +75,12 @@ class FullWidthTabs extends React.Component {
     }));
   }
 
+  handleWithdraw = (listing) => {
+    this.setState(prevState => ({
+      pendingList: prevState.pendingList.filter(l => listing.getHash() !== l.getHash()),
+    }));
+  }
+
   render() {
     const { classes, theme } = this.props;
     const { tcrConnection, acceptedList, pendingList, inChallengeList } = this.state;
@@ -110,6 +116,7 @@ class FullWidthTabs extends React.Component {
               listItems={pendingList}
               onApplySuccess={this.handleApplySuccess}
               onChallenge={this.handleChallenge}
+              onWithdraw={this.handleWithdraw}
             />
           </TabContainer>
 

@@ -66,50 +66,23 @@ const styles = theme => ({
   },
 });
 
-class ChallengeBox extends React.Component {
+class WithdrawBox extends React.Component {
   state = {
-    description: '',
+    amount: 0,
     loading: false,
     snackbarOpen: false,
     snackbarMessage: '',
   };
 
-  // handleNameChange = () => (event) => {
-  //   const name = event.target.value;
-  //   this.setState({ name });
-  // }
-
-  // handleChange = name => (event) => {
-  //   const newParam = { [name]: event.target.value };
-  //   this.setState((state) => {
-  //     const parameters = Object.assign({}, state.parameters, newParam);
-  //     return { parameters };
-  //   });
-  // };
-
-  // handleCreate = () => async () => {
-  //   const { handleCreate } = this.props;
-  //   const { name, parameters } = this.state;
-  //   this.setState({ loading: true });
-  //   try {
-  //     const newTcr = await createTcr(name, parameters || {});
-  //     handleCreate(newTcr);
-  //   } catch (e) {
-  //     this.setState({ snackbarOpen: true, snackbarMessage: e.toString() });
-  //   } finally {
-  //     this.setState({ loading: false });
-  //   }
-  // };
-
-  handleDescription = () => (event) => {
-    const description = event.target.value;
-    this.setState({ description });
+  handleAmount = () => (event) => {
+    const amount = event.target.value;
+    this.setState({ amount });
   }
 
-  handleChallenge = () => async () => {
+  handleWithdraw = () => async () => {
     const { handleSuccess, tcrConnection, listing } = this.props;
-    const { description } = this.state;
-    await tcrConnection.challenge(listing.listingHash, description);
+    const { amount } = this.state;
+    await tcrConnection.withdraw(listing.listingHash, amount);
     handleSuccess(listing);
   }
 
@@ -130,19 +103,19 @@ class ChallengeBox extends React.Component {
         fullWidth
       >
         <DialogTitle id="form-dialog-title">
-          Challenge a Submission
+          Withdraw your Submission
         </DialogTitle>
         <DialogContent>
           <div>
             <ListItem className={classes.ListItem}>
               <ListItemText className={classes.listItemText}>
-                Reason to Challenge
+                Enter number of tokens to withdraw from the unstaked deposit
                 <CustomizedTooltips classes="" content="minimumDeposit" />
               </ListItemText>
               <div>
                 <TextField
                   margin="normal"
-                  onChange={this.handleDescription()}
+                  onChange={this.handleAmount()}
                   autoFocus
                 />
               </div>
@@ -155,12 +128,12 @@ class ChallengeBox extends React.Component {
           </Button>
           <div className={classes.submitWrapper}>
             <Button
-              onClick={this.handleChallenge()}
+              onClick={this.handleWithdraw()}
               variant="contained"
               color="primary"
               disabled={loading}
             >
-              Challenge
+              Withdraw
             </Button>
             {loading && <CircularProgress size={24} className={classes.submitButtonProgress} />}
           </div>
@@ -177,7 +150,7 @@ class ChallengeBox extends React.Component {
   }
 }
 
-ChallengeBox.propTypes = {
+WithdrawBox.propTypes = {
   open: PropTypes.bool,
   handleCancel: PropTypes.func,
   handleSuccess: PropTypes.func,
@@ -185,11 +158,11 @@ ChallengeBox.propTypes = {
   listing: PropTypes.instanceOf(ListingItem),
 };
 
-ChallengeBox.defaultProps = {
+WithdrawBox.defaultProps = {
   open: false,
   handleCancel: () => {},
   handleSuccess: () => {},
   listing: [],
 };
 
-export default withStyles(styles)(ChallengeBox);
+export default withStyles(styles)(WithdrawBox);
