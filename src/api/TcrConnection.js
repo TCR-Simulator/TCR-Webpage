@@ -46,6 +46,11 @@ export default class TcrConnection {
     return this._callRegistryMethod('challenge', listingHash, description);
   }
 
+  // Withdraw Action
+  async withdraw(listingHash, amount) {
+    return this._callRegistryMethod('withdraw', listingHash, amount);
+  }
+
   // Poke submission into registry by getting updates after application period passes
   // updateStatus(listingHash) {
   //   this.contract.methods.updateStatus().call(listingHash);
