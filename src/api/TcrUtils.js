@@ -57,9 +57,6 @@ export async function deploy(name, parameters) {
   const params = PARAM_KEYS.map(({ key, defaultVal }) => (
     { key, value: parameters[key] || defaultVal }
   ));
-  console.log(parameters);
-  console.log(params);
-  return null;
 
   return new Promise((resolve, reject) => {
     registryFactory.newRegistryBYOToken(

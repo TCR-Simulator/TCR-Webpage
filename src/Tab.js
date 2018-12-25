@@ -36,6 +36,7 @@ const styles = theme => ({
 class FullWidthTabs extends React.Component {
   state = {
     value: 0,
+    acceptedList: [],
     pendingList: [],
     inChallengeList: [],
   };
@@ -44,9 +45,10 @@ class FullWidthTabs extends React.Component {
     const { tcr } = this.props;
     if (tcr && (!prevProps.tcr || tcr.address !== prevProps.tcr.address)) {
       const tcrConnection = await TcrConnection.create(tcr.address, tcr.votingAddress);
+      const acceptedList = await tcrConnection.getAcceptedListings();
       const pendingList = await tcrConnection.getPendingListings();
       const inChallengeList = await tcrConnection.getInChallengeListings();
-      this.setState({ tcrConnection, pendingList, inChallengeList });
+      this.setState({ tcrConnection, acceptedList, pendingList, inChallengeList });
       window.tcrConnection = tcrConnection;
     }
   }
@@ -72,9 +74,15 @@ class FullWidthTabs extends React.Component {
     }));
   }
 
+  handleWithdraw = (listing) => {
+    this.setState(prevState => ({
+      pendingList: prevState.pendingList.filter(l => listing.getHash() !== l.getHash()),
+    }));
+  }
+
   render() {
     const { classes, theme } = this.props;
-    const { tcrConnection, pendingList, inChallengeList } = this.state;
+    const { tcrConnection, acceptedList, pendingList, inChallengeList } = this.state;
 
     return (
       <div className={classes.root}>
@@ -98,7 +106,7 @@ class FullWidthTabs extends React.Component {
           onChangeIndex={this.handleChangeIndex}
         >
           <TabContainer dir={theme.direction}>
-            <AcceptedList />
+            <AcceptedList listings={acceptedList} />
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
@@ -107,6 +115,7 @@ class FullWidthTabs extends React.Component {
               listItems={pendingList}
               onApplySuccess={this.handleApplySuccess}
               onChallenge={this.handleChallenge}
+              onWithdraw={this.handleWithdraw}
             />
           </TabContainer>
 

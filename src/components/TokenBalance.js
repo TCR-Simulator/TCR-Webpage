@@ -19,7 +19,7 @@ export default class TokenBalance extends React.Component {
       if (!error) {
         await self.refreshBalance();
       } else {
-        console.log(error);
+        console.log(error); // eslint-disable-line no-console
       }
     });
   }

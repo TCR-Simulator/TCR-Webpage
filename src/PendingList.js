@@ -8,6 +8,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import ChallengeBox from './ChallengeBox';
+import WithdrawBox from './WithdrawBox';
 import ListingItem from './api/ListingItem';
 import TcrConnection from './api/TcrConnection';
 
@@ -51,19 +52,32 @@ class PendingList extends React.Component {
     this.state = {
       checked: [],
       openChallenge: false,
+      openWithdraw: false,
     };
   }
 
-  getChallengeButton(listing) {
+  getChallengeOrWithdrawButton(listing) {
     const { classes } = this.props;
+    if (listing.applicant !== window.web3.eth.defaultAccount) {
+      return (
+        <Button
+          variant="outlined"
+          color="secondary"
+          className={classes.challengebutton}
+          onClick={this.handleChallengeClick(listing)}
+        >
+              Challenge
+        </Button>
+      );
+    }
     return (
       <Button
         variant="outlined"
         color="secondary"
         className={classes.challengebutton}
-        onClick={this.handleChallengeClick(listing)}
+        onClick={this.handleWithdrawClick(listing)}
       >
-            Challenge
+            Withdraw
       </Button>
     );
   }
@@ -84,6 +98,8 @@ class PendingList extends React.Component {
     });
   };
 
+  // CHALLENGE BOX
+
   handleChallengeClick = listing => () => {
     this.setState({ openChallenge: true, selectedListing: listing });
   }
@@ -96,6 +112,22 @@ class PendingList extends React.Component {
     const { onChallenge } = this.props;
     onChallenge(listing);
     this.setState({ openChallenge: false });
+  }
+
+  // WITHDRAW BOX
+
+  handleWithdrawClick = listing => () => {
+    this.setState({ openWithdraw: true, selectedListing: listing });
+  }
+
+  handleCancelWithdraw = () => () => {
+    this.setState({ openWithdraw: false });
+  }
+
+  handleWithdraw = () => (listing) => {
+    const { onWithdraw } = this.props;
+    onWithdraw(listing);
+    this.setState({ openWithdraw: false });
   }
 
   async addItem(event) {
@@ -117,7 +149,7 @@ class PendingList extends React.Component {
 
   render() {
     const { classes, tcrConnection, listItems } = this.props;
-    const { openChallenge, selectedListing } = this.state;
+    const { openChallenge, openWithdraw, selectedListing } = this.state;
 
     return (
       <div className={classes.root}>
@@ -130,7 +162,7 @@ class PendingList extends React.Component {
               <ListItemText primary={`${listing.name} - ${listing.artist} (${listing.url})`} />
               <ListItemSecondaryAction>
                 <div align="right">
-                  {this.getChallengeButton(listing)}
+                  {this.getChallengeOrWithdrawButton(listing)}
                 </div>
               </ListItemSecondaryAction>
             </ListItem>
@@ -152,6 +184,13 @@ class PendingList extends React.Component {
           handleCancel={this.handleCancelChallenge()}
           handleSuccess={this.handleChallenge()}
         />
+        <WithdrawBox
+          open={openWithdraw}
+          tcrConnection={tcrConnection}
+          listing={selectedListing}
+          handleCancel={this.handleCancelWithdraw()}
+          handleSuccess={this.handleWithdraw()}
+        />
       </div>
     );
   }
@@ -163,12 +202,14 @@ PendingList.propTypes = {
   listItems: PropTypes.arrayOf(PropTypes.instanceOf(ListingItem)),
   onApplySuccess: PropTypes.func,
   onChallenge: PropTypes.func,
+  onWithdraw: PropTypes.func,
 };
 
 PendingList.defaultProps = {
   listItems: [],
   onApplySuccess: () => {},
   onChallenge: () => {},
+  onWithdraw: () => {},
 };
 
 export default withStyles(styles)(PendingList);

@@ -46,6 +46,11 @@ export default class TcrConnection {
     return this._callRegistryMethod('challenge', listingHash, description);
   }
 
+  // Withdraw Action
+  async withdraw(listingHash, amount) {
+    return this._callRegistryMethod('withdraw', listingHash, amount);
+  }
+
   // Poke submission into registry by getting updates after application period passes
   // updateStatus(listingHash) {
   //   this.contract.methods.updateStatus().call(listingHash);
@@ -73,6 +78,13 @@ export default class TcrConnection {
   // getAllRegistryListings() {
   //   //TODO
   // }
+
+  async getAcceptedListings() {
+    const allApplications = await this.getAllApplications();
+    const whitelistedEvents = await this.getAllEvents('_ApplicationWhitelisted');
+    const whitelistedListings = whitelistedEvents.map(event => event.args.listingHash);
+    return allApplications.filter(({ listingHash }) => whitelistedListings.includes(listingHash));
+  }
 
   async getPendingListings() {
     const pastApplicationList = await this.getAllApplications();
