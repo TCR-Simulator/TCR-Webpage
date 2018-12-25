@@ -63,24 +63,27 @@ class ChallengeList extends React.Component {
     return (
       <div className={classes.root}>
         <List>
-          {listings.map(({ listingHash, name, artist, url, challengePoll }) => (
-            <ListItem key={listingHash} dense button>
+          {listings.map(listing => (
+            <ListItem key={listing.listingHash} dense button>
               <Avatar className={classes.avatar}>
                 <InChallenge />
               </Avatar>
-              <ListItemText primary={`${name} - ${artist} (${url})`} />
+              <ListItemText primary={`${listing.name} - ${listing.artist} (${listing.url})`} />
               <ListItemSecondaryAction>
                 <div align="right">
-                  {challengePoll && Date.now() < challengePoll.commitEndDate && (
-                    <Button variant="outlined" color="default" onClick={this.onCommitBtnClick()}>
+                  {listing.challengePoll && Date.now() < listing.challengePoll.commitEndDate && (
+                    <Button variant="outlined" color="default" onClick={this.onCommitBtnClick(listing)}>
                       Commit vote
                     </Button>
                   )}
-                  {challengePoll && Date.now() < challengePoll.revealEndDate && (
-                    <Button variant="outlined" color="default" onClick={this.onRevealBtnClick()}>
+                  {listing.challengePoll
+                    && Date.now() > listing.challengePoll.commitEndDate
+                    && Date.now() < listing.challengePoll.revealEndDate
+                    && (
+                    <Button variant="outlined" color="default" onClick={this.onRevealBtnClick(listing)}>
                       Reveal vote
                     </Button>
-                  )}
+                    )}
                 </div>
               </ListItemSecondaryAction>
             </ListItem>

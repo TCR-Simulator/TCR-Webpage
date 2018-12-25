@@ -16,6 +16,7 @@ import VotingConnection from './api/VotingConnection';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
+import Poll from './api/Poll';
 
 const styles = theme => ({
   submitWrapper: {
@@ -48,14 +49,14 @@ class RevealVoteDialog extends React.Component {
   }
 
   handleReveal = () => async () => {
-    const { handleReveal, contractAddress, poll } = this.props;
+    const { handleReveal, poll, votingConnection } = this.props;
     const { copiedMessage } = this.state;
     this.setState({ loading: true });
     try {
-      const voting = new VotingConnection();
       console.log(copiedMessage);
-      await voting.init(contractAddress);
-      await voting.revealVote(poll.id, ((JSON.parse(copiedMessage).voteOption).equals("accept")) ? 1 : 0, JSON.parse(copiedMessage).salt);
+      const message = JSON.parse(copiedMessage);
+      const voteOption = message.voteOption === 'accept' ? 1 : 0;
+      await votingConnection.revealVote(poll.id, voteOption, message.salt);
       // await voting.commitVote(poll.id, Number(tokensToCommit), voteOption, salt);
       handleReveal();
     } catch (e) {
@@ -141,11 +142,8 @@ RevealVoteDialog.propTypes = {
   open: PropTypes.bool,
   handleCancel: PropTypes.func,
   handleReveal: PropTypes.func,
-  poll: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    revealEndDate: PropTypes.instanceOf(Date).isRequired,
-  }).isRequired,
-  contractAddress: PropTypes.string.isRequired,
+  poll: PropTypes.instanceOf(Poll).isRequired,
+  votingConnection: PropTypes.instanceOf(VotingConnection).isRequired,
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
