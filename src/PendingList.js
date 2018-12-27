@@ -40,15 +40,6 @@ const styles = theme => ({
     width: 25,
     height: 25,
   },
-  updateButton: {
-    margin: theme.spacing.unit,
-    backgroundColor: '#FFF',
-    '&:hover': {
-      variant: 'contained',
-      color: '#FFF',
-      backgroundColor: '#195',
-    },
-  },
 });
 
 class PendingList extends React.Component {
@@ -108,9 +99,6 @@ class PendingList extends React.Component {
               <ListItemText primary={`${value}`} />
               <ListItemSecondaryAction>
                 <div align="right">
-                  <Button variant="outlined" color="default" className={classes.updateButton}>
-                    Update
-                  </Button>
                 </div>
               </ListItemSecondaryAction>
             </ListItem>
