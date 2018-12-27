@@ -1,6 +1,6 @@
 import { getContractInfo } from '../config';
-
-const keccak = require('keccak');
+import ListingItem from './ListingItem';
+import Poll from './Poll';
 
 // const callback = function callback(error, result) {
 //   if (error) {
@@ -15,68 +15,46 @@ export default class TcrConnection {
     this.web3 = window.web3;
   }
 
-  async init(tcr) {
+  async init(address) {
     const registryAbi = (await getContractInfo('Registry')).abi;
-    if (!this.web3.isAddress(tcr.address)) {
+    if (!this.web3.isAddress(address)) {
       throw new Error('Invalid contract address');
     }
-    this.contract = this.web3.eth.contract(registryAbi).at(tcr.address);
+    this.contract = this.web3.eth.contract(registryAbi).at(address);
   }
 
-  generateHash(obj) { // eslint-disable-line class-methods-use-this
-    const hash = keccak('keccak256').update(obj).digest('hex');
-    return `0x${hash}`;
-  }
-
-  getPollId(listingHash, listings) { // eslint-disable-line class-methods-use-this
-    return listings[listingHash].challengeId;
+  async _callRegistryMethod(method, ...args) {
+    console.log(`Calling ${method}(${args.join(', ')})`); // eslint-disable-line no-console
+    return new Promise((resolve, reject) => {
+      this.contract[method](...args, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
   }
 
   // Submit Action - Complete
-  async submit(deposit, name, url) {
-    const infoObj = {
-      name,
-      url,
-    };
-    const information = JSON.stringify(infoObj);
-    // eslint-disable-next-line no-console
-    this.contract.apply(deposit, information, error => console.error(error));
-  }
-
-  // Vote Action
-  vote(listingHash, numTokens, voteOption, voterAddr) {
-    const votingSalt = Math.getRandomIntInclusive(0, 1000);
-    const listings = this.contract.methods.listings().call();
-    const pollID = this.getPollId(listingHash, listings);
-    const voting = this.contract.methods.voting().call();
-    const secretHash = this.generateHash(`${voteOption.toString()}${votingSalt.toString()}`);
-    const prevPollID = voting.methods.getInsertPointForNumTokens()
-      .call(voterAddr, numTokens, pollID);
-    voting.methods.commitVote().call(pollID, secretHash, numTokens, prevPollID);
+  async submit(deposit, listing) {
+    return this._callRegistryMethod('apply', listing.getHash(), deposit, listing.toString());
   }
 
   // Challenge Action
-  challenge(listingHash, description) {
-    this.contract.methods.challenge().call(listingHash, description);
+  async challenge(listingHash, description) {
+    return this._callRegistryMethod('challenge', listingHash, description);
+  }
+
+  // Withdraw Action
+  async withdraw(listingHash, amount) {
+    return this._callRegistryMethod('withdraw', listingHash, amount);
   }
 
   // Poke submission into registry by getting updates after application period passes
   updateStatus(listingHash) {
     this.contract.methods.updateStatus().call(listingHash);
   }
-
-  // Request voting rights
-  // requestVotingRights(numOfWei) {
-  //   this.contract.methods.requestVotingRights().call(numOfWei);
-  // }
-
-  // Reveal vote
-  // revealVote(voteOption, listingHash) {
-  //   const votingSalt = Math.getRandomIntInclusive(0, 1000);
-  //   const listings = this.contract.methods.listings().call();
-  //   const pollId = this.getPollId(listingHash, listings);
-  //   this.contract.methods.revealVote().call(pollId, voteOption, votingSalt);
-  // }
 
   // get corresponding listing Id from listings on registry by parsing the listing data
   // getListingId(name, url) {
@@ -101,33 +79,54 @@ export default class TcrConnection {
   //   //TODO
   // }
 
-  getPendingListings() {
-    const pastApplicationList = this.getList('_Application');
-    const challengeList = this.getInChallengeListings();
-    const pendingList = [pastApplicationList, challengeList]
-      .reduce((a, b) => a.filter(i => !b.includes(i)));
-    return pendingList;
+  async getAcceptedListings() {
+    const allApplications = await this.getAllApplications();
+    const whitelistedEvents = await this.getAllEvents('_ApplicationWhitelisted');
+    const whitelistedListings = whitelistedEvents.map(event => event.args.listingHash);
+    return allApplications.filter(({ listingHash }) => whitelistedListings.includes(listingHash));
   }
 
-  getInChallengeListings() {
-    return this.getList('_Challenge');
+  async getPendingListings() {
+    const pastApplicationList = await this.getAllApplications();
+    const challengeList = await this.getInChallengeListingHashes();
+    return pastApplicationList.filter(({ listingHash }) => !challengeList.includes(listingHash));
   }
 
-  getList(name) {
-    const resultList = [];
-    this.contract.getPastEvents(name, {
-      fromBlock: 0,
-      toBlock: 'latest',
-    }).then((events) => {
-      events.forEach((e) => {
-        const jsonObj = JSON.parse(e.returnValues.data);
-        resultList.push({
-          name: jsonObj.name,
-          url: jsonObj.url,
-        });
+  async getInChallengeListings() {
+    const pastApplicationList = await this.getAllApplications();
+    const challengeEvents = await this.getAllEvents('_Challenge');
+    const inChallenge = [];
+    pastApplicationList.forEach((listing) => {
+      const challenge = challengeEvents.find(evt => evt.args.listingHash === listing.listingHash);
+      if (challenge) {
+        listing.challengePoll = Poll.fromObject(challenge.args);
+        inChallenge.push(listing);
+      }
+    });
+    return inChallenge;
+  }
+
+  async getInChallengeListingHashes() {
+    const events = await this.getAllEvents('_Challenge');
+    return events.map(event => event.args.listingHash);
+  }
+
+  async getAllApplications() {
+    const events = await this.getAllEvents('_Application');
+    return events.map(event => ListingItem.fromObject(event.args));
+  }
+
+  async getAllEvents(name) {
+    return new Promise((resolve, reject) => {
+      this.contract[name]({}, { fromBlock: 0, toBlock: 'latest' }).get((error, events) => {
+        if (error) {
+          console.error(error); // eslint-disable-line no-console
+          reject(error);
+        } else {
+          resolve(events);
+        }
       });
     });
-    return resultList;
   }
 
   /**

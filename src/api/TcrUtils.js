@@ -1,4 +1,4 @@
-import { getRegistryFactory } from '../config';
+import { getToken, getRegistryFactory } from '../config';
 
 export const PARAM_KEYS = [
   { key: 'minDeposit', defaultVal: 10000000000000000000 },
@@ -47,5 +47,33 @@ export async function getAllTcrs() {
         resolve(tcrs);
       }
     });
+  });
+}
+
+export async function deploy(name, parameters) {
+  const token = await getToken();
+  const registryFactory = await getRegistryFactory();
+
+  const params = PARAM_KEYS.map(({ key, defaultVal }) => (
+    { key, value: parameters[key] || defaultVal }
+  ));
+
+  return new Promise((resolve, reject) => {
+    registryFactory.newRegistryBYOToken(
+      token.address,
+      params.map(({ value }) => value),
+      name,
+      (error) => {
+        if (error) {
+          console.error(error); // eslint-disable-line no-console
+          reject(error);
+        } else {
+          resolve({
+            name,
+            parameters: params.filter(({ key }) => EXPOSED_PARAMS.includes(key)),
+          });
+        }
+      },
+    );
   });
 }

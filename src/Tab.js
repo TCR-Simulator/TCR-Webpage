@@ -36,14 +36,21 @@ const styles = theme => ({
 class FullWidthTabs extends React.Component {
   state = {
     value: 0,
+    acceptedList: [],
+    pendingList: [],
+    inChallengeList: [],
   };
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate = async (prevProps) => {
     const { tcr } = this.props;
     if (tcr && (!prevProps.tcr || tcr.address !== prevProps.tcr.address)) {
       const tcrConnection = new TcrConnection();
-      tcrConnection.init(tcr);
-      this.setState({ tcrConnection }); // eslint-disable-line react/no-did-update-set-state
+      await tcrConnection.init(tcr.address);
+      const acceptedList = await tcrConnection.getAcceptedListings();
+      const pendingList = await tcrConnection.getPendingListings();
+      const inChallengeList = await tcrConnection.getInChallengeListings();
+      this.setState({ tcrConnection, acceptedList, pendingList, inChallengeList });
+      window.tcrConnection = tcrConnection;
     }
   }
 
@@ -55,9 +62,28 @@ class FullWidthTabs extends React.Component {
     this.setState({ value: index });
   };
 
+  handleApplySuccess = (listing) => {
+    this.setState(prevState => ({
+      pendingList: [...prevState.pendingList, listing],
+    }));
+  }
+
+  handleChallenge = (listing) => {
+    this.setState(prevState => ({
+      pendingList: prevState.inChallengeList.filter(l => listing.getHash() !== l.getHash()),
+      inChallengeList: [...prevState.inChallengeList, listing],
+    }));
+  }
+
+  handleWithdraw = (listing) => {
+    this.setState(prevState => ({
+      pendingList: prevState.pendingList.filter(l => listing.getHash() !== l.getHash()),
+    }));
+  }
+
   render() {
     const { classes, theme } = this.props;
-    const { tcrConnection } = this.state;
+    const { tcrConnection, acceptedList, pendingList, inChallengeList } = this.state;
 
     return (
       <div className={classes.root}>
@@ -81,15 +107,21 @@ class FullWidthTabs extends React.Component {
           onChangeIndex={this.handleChangeIndex}
         >
           <TabContainer dir={theme.direction}>
-            <AcceptedList />
+            <AcceptedList listings={acceptedList} />
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
-            <PendingList tcrConnection={tcrConnection} />
+            <PendingList
+              tcrConnection={tcrConnection}
+              listItems={pendingList}
+              onApplySuccess={this.handleApplySuccess}
+              onChallenge={this.handleChallenge}
+              onWithdraw={this.handleWithdraw}
+            />
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
-            <ChallengeList />
+            <ChallengeList listItems={inChallengeList} />
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
