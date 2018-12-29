@@ -1,26 +1,26 @@
 import { getContractInfo } from '../config';
 import ListingItem from './ListingItem';
 import Poll from './Poll';
-
-// const callback = function callback(error, result) {
-//   if (error) {
-//     throw new Error(error.toString());
-//   } else {
-//     results.push(result);
-//   }
-// };
+import VotingConnection from './VotingConnection';
 
 export default class TcrConnection {
-  constructor() { // eslint-disable-line no-unused-vars
-    this.web3 = window.web3;
+  constructor(contract, voting) {
+    this.contract = contract;
+    this.voting = voting;
   }
 
-  async init(address) {
-    const registryAbi = (await getContractInfo('Registry')).abi;
-    if (!this.web3.isAddress(address)) {
+  static async create(address, votingAddress) {
+    if (!window.web3.isAddress(address)) {
       throw new Error('Invalid contract address');
     }
-    this.contract = this.web3.eth.contract(registryAbi).at(address);
+    if (!window.web3.isAddress(votingAddress)) {
+      throw new Error('Invalid voting contract address');
+    }
+
+    const registryAbi = (await getContractInfo('Registry')).abi;
+    const contract = window.web3.eth.contract(registryAbi).at(address);
+    const voting = await VotingConnection.create(votingAddress);
+    return new TcrConnection(contract, voting);
   }
 
   async _callRegistryMethod(method, ...args) {
@@ -36,7 +36,7 @@ export default class TcrConnection {
     });
   }
 
-  // Submit Action - Complete
+  // Submit Action
   async submit(deposit, listing) {
     return this._callRegistryMethod('apply', listing.getHash(), deposit, listing.toString());
   }

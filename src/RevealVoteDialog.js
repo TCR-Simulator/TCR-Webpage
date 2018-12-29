@@ -10,6 +10,7 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import VotingConnection from './api/VotingConnection';
+import Poll from './api/Poll';
 
 const styles = theme => ({
   submitWrapper: {
@@ -40,13 +41,13 @@ class RevealVoteDialog extends React.Component {
   }
 
   handleReveal = () => async () => {
-    const { handleReveal, contractAddress, poll } = this.props;
+    const { handleReveal, poll, votingConnection } = this.props;
     const { copiedMessage } = this.state;
     this.setState({ loading: true });
     try {
-      const voting = new VotingConnection();
-      await voting.init(contractAddress);
-      await voting.revealVote(poll.id, ((JSON.parse(copiedMessage).voteOption).equals('accept')) ? 1 : 0, JSON.parse(copiedMessage).salt);
+      const message = JSON.parse(copiedMessage);
+      const voteOption = message.voteOption === 'accept' ? 1 : 0;
+      await votingConnection.revealVote(poll.id, voteOption, message.salt);
       handleReveal();
     } catch (e) {
       this.setState({ snackbarOpen: true, snackbarMessage: e.toString() });
@@ -124,11 +125,8 @@ RevealVoteDialog.propTypes = {
   open: PropTypes.bool,
   handleCancel: PropTypes.func,
   handleReveal: PropTypes.func,
-  poll: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    revealEndDate: PropTypes.instanceOf(Date).isRequired,
-  }).isRequired,
-  contractAddress: PropTypes.string.isRequired,
+  poll: PropTypes.instanceOf(Poll).isRequired,
+  votingConnection: PropTypes.instanceOf(VotingConnection).isRequired,
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
