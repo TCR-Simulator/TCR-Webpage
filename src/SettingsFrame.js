@@ -44,7 +44,7 @@ class SettingsFrame extends React.Component {
         </div>
         <div id="settings" className={className}>
           <Grid container justify="center">
-            <FullWidthTabs tcr={tcrs[0]} />
+            <FullWidthTabs tcr={tcrs[selectedTcr]} />
           </Grid>
         </div>
       </div>

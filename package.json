@@ -9,6 +9,7 @@
     "@material-ui/lab": "^3.0.0-alpha.20",
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
+    "ethereumjs-abi": "^0.6.5",
     "gh-pages": "^2.0.1",
     "keccak": "^1.4.0",
     "prop-types": "^15.6.2",

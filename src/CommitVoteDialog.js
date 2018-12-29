@@ -53,9 +53,10 @@ class CommitVoteDialog extends React.Component {
   handleCommit = () => async () => {
     const { handleCommit, votingConnection, poll } = this.props;
     const { voteOption, salt, tokensToCommit } = this.state;
+    const option = voteOption === 'accept' ? 1 : 0;
     this.setState({ loading: true });
     try {
-      await votingConnection.commitVote(poll.id, Number(tokensToCommit), voteOption, salt);
+      await votingConnection.commitVote(poll.id, Number(tokensToCommit), option, salt);
       handleCommit();
     } catch (e) {
       this.setState({ snackbarOpen: true, snackbarMessage: e.toString() });
