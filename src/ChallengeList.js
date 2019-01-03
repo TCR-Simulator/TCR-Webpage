@@ -12,6 +12,7 @@ import CommitVoteDialog from './CommitVoteDialog';
 import RevealVoteDialog from './RevealVoteDialog';
 import ListingItem from './api/ListingItem';
 import TcrConnection from './api/TcrConnection';
+import { getCurrentTime } from './utils';
 
 const styles = theme => ({
   root: {
@@ -33,7 +34,12 @@ class ChallengeList extends React.Component {
       selectedItem: null,
       commitVoteDialogOpened: false,
       revealVoteDialogOpened: false,
+      currTime: null,
     };
+  }
+
+  async componentDidMount() {
+    this.setState({ currTime: await getCurrentTime() });
   }
 
   onCommitBtnClick = item => () => {
@@ -58,7 +64,7 @@ class ChallengeList extends React.Component {
 
   render() {
     const { classes, listings, tcrConnection } = this.props;
-    const { commitVoteDialogOpened, revealVoteDialogOpened, selectedItem } = this.state;
+    const { commitVoteDialogOpened, revealVoteDialogOpened, selectedItem, currTime } = this.state;
 
     return (
       <div className={classes.root}>
@@ -71,14 +77,15 @@ class ChallengeList extends React.Component {
               <ListItemText primary={`${listing.name} - ${listing.artist} (${listing.url})`} />
               <ListItemSecondaryAction>
                 <div align="right">
-                  {listing.challengePoll && Date.now() < listing.challengePoll.commitEndDate && (
+                  {listing.challengePoll
+                    && listing.challengePoll.inCommitStage(currTime)
+                    && (
                     <Button variant="outlined" color="default" onClick={this.onCommitBtnClick(listing)}>
                       Commit vote
                     </Button>
-                  )}
+                    )}
                   {listing.challengePoll
-                    && Date.now() > listing.challengePoll.commitEndDate
-                    && Date.now() < listing.challengePoll.revealEndDate
+                    && listing.challengePoll.inRevealStage(currTime)
                     && (
                     <Button variant="outlined" color="default" onClick={this.onRevealBtnClick(listing)}>
                       Reveal vote
