@@ -159,7 +159,7 @@ class PendingList extends React.Component {
               <Avatar className={classes.avatar}>
                 <i className="material-icons md-10">hourglass_empty</i>
               </Avatar>
-             <ListItemText primary={`${listing.name} - ${listing.artist} (${listing.url})`} />
+              <ListItemText primary={`${listing.name} - ${listing.artist} (${listing.url})`} />
               <ListItemSecondaryAction>
                 <div align="right">
                   {this.getChallengeOrWithdrawButton(listing)}

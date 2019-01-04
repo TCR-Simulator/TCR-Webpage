@@ -15,38 +15,38 @@ const styles = theme => ({
       backgroundColor: '#195',
     },
   },
-}) 
+});
 
 class UpdateStatus extends React.Component {
-  
   handleUpdateStatus = () => {
     const { tcrConnection, listing } = this.props;
     tcrConnection.updateStatus(listing.listingHash);
   }
 
   render() {
-    const { classes, tcrConnection, listing } = this.props;
+    const { classes } = this.props;
 
     return (
-    <Button 
-    variant="outlined" 
-    color="default" 
-    className={classes.updateButton}
-    onClick={this.handleUppdateStatus}
-    >
+      <Button
+        variant="outlined"
+        color="default"
+        className={classes.updateButton}
+        onClick={this.handleUppdateStatus}
+      >
     Update Status
-    </Button>
-    )
+      </Button>
+    );
   }
 }
 
 UpdateStatus.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   listing: PropTypes.instanceOf(ListingItem),
+  tcrConnection: PropTypes.instanceOf(TcrConnection).isRequired,
 };
 
 UpdateStatus.defaultProps = {
   listing: [],
-}
+};
 
 export default withStyles(styles)(UpdateStatus);
