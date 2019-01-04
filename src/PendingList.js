@@ -9,8 +9,10 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import ChallengeBox from './ChallengeBox';
 import WithdrawBox from './WithdrawBox';
+import UpdateButton from './updateStatus';
 import ListingItem from './api/ListingItem';
 import TcrConnection from './api/TcrConnection';
+import { getCurrentTime } from './utils';
 
 const styles = theme => ({
   root: {
@@ -53,11 +55,22 @@ class PendingList extends React.Component {
       checked: [],
       openChallenge: false,
       openWithdraw: false,
+      currTime: null,
     };
   }
 
-  getChallengeOrWithdrawButton(listing) {
-    const { classes } = this.props;
+  async componentDidMount() {
+    this.setState({ currTime: await getCurrentTime() });
+  }
+
+  getListeeActionButtons(listing) {
+    const { classes, tcrConnection } = this.props;
+    const { currTime } = this.state;
+
+    if (listing.isExpired(currTime)) {
+      return <UpdateButton tcrConnection={tcrConnection} listing={listing} />;
+    }
+
     if (listing.applicant !== window.web3.eth.defaultAccount) {
       return (
         <Button
@@ -66,10 +79,11 @@ class PendingList extends React.Component {
           className={classes.challengebutton}
           onClick={this.handleChallengeClick(listing)}
         >
-              Challenge
+          Challenge
         </Button>
       );
     }
+
     return (
       <Button
         variant="outlined"
@@ -77,7 +91,7 @@ class PendingList extends React.Component {
         className={classes.challengebutton}
         onClick={this.handleWithdrawClick(listing)}
       >
-            Withdraw
+        Withdraw
       </Button>
     );
   }
@@ -162,7 +176,7 @@ class PendingList extends React.Component {
               <ListItemText primary={`${listing.name} - ${listing.artist} (${listing.url})`} />
               <ListItemSecondaryAction>
                 <div align="right">
-                  {this.getChallengeOrWithdrawButton(listing)}
+                  {this.getListeeActionButtons(listing)}
                 </div>
               </ListItemSecondaryAction>
             </ListItem>

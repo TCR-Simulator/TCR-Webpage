@@ -31,9 +31,9 @@ class UpdateStatus extends React.Component {
         variant="outlined"
         color="default"
         className={classes.updateButton}
-        onClick={this.handleUppdateStatus}
+        onClick={this.handleUpdateStatus}
       >
-    Update Status
+        Update
       </Button>
     );
   }
@@ -41,12 +41,8 @@ class UpdateStatus extends React.Component {
 
 UpdateStatus.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
-  listing: PropTypes.instanceOf(ListingItem),
+  listing: PropTypes.instanceOf(ListingItem).isRequired,
   tcrConnection: PropTypes.instanceOf(TcrConnection).isRequired,
-};
-
-UpdateStatus.defaultProps = {
-  listing: [],
 };
 
 export default withStyles(styles)(UpdateStatus);

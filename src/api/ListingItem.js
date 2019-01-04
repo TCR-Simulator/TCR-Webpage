@@ -23,6 +23,10 @@ export default class ListingItem {
     return listingItem;
   }
 
+  isExpired(time) {
+    return time > this.appEndDate;
+  }
+
   getHash() {
     return window.web3.sha3(this.toString());
   }

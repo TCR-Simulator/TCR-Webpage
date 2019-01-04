@@ -52,8 +52,8 @@ export default class TcrConnection {
   }
 
   // Poke submission into registry by getting updates after application period passes
-  updateStatus(listingHash) {
-    this.contract.methods.updateStatus().call(listingHash);
+  async updateStatus(listingHash) {
+    return this._callRegistryMethod('updateStatus', listingHash);
   }
 
   // get corresponding listing Id from listings on registry by parsing the listing data
