@@ -25,6 +25,15 @@ const styles = theme => ({
     width: 25,
     height: 25,
   },
+  updateButton: {
+    margin: theme.spacing.unit,
+    backgroundColor: '#FFF',
+    '&:hover': {
+      variant: 'contained',
+      color: '#FFF',
+      backgroundColor: '#195',
+    },
+  },
 });
 
 class ChallengeList extends React.Component {
