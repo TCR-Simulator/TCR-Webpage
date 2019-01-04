@@ -194,7 +194,7 @@ class TcrDialog extends React.Component {
               </ListItemText>
               <div>
                 <InputAdornments
-                  unit="tst"
+                  unit="TST"
                   value={parameters.minDeposit}
                   onChange={this.handleChange('minDeposit')}
                 />
@@ -208,8 +208,8 @@ class TcrDialog extends React.Component {
               <div>
                 <InputAdornments
                   unit="day(s)"
-                  value={parameters.applyStageLen}
-                  onChange={this.handleChange('applyStageLen')}
+                  value={parameters.applyStageLength}
+                  onChange={this.handleChange('applyStageLength')}
                 />
               </div>
             </ListItem>
@@ -236,8 +236,8 @@ class TcrDialog extends React.Component {
               <div>
                 <InputAdornments
                   unit="day(s)"
-                  value={parameters.revealStageLen}
-                  onChange={this.handleChange('revealStageLen')}
+                  value={parameters.commitStageLength}
+                  onChange={this.handleChange('commitStageLength')}
                 />
               </div>
             </ListItem>
@@ -249,8 +249,8 @@ class TcrDialog extends React.Component {
               <div>
                 <InputAdornments
                   unit="day(s)"
-                  value={parameters.commitStageLen}
-                  onChange={this.handleChange('commitStageLen')}
+                  value={parameters.revealStageLength}
+                  onChange={this.handleChange('revealStageLength')}
                 />
               </div>
             </ListItem>
@@ -274,7 +274,7 @@ class TcrDialog extends React.Component {
               </ListItemText>
               <div>
                 <InputAdornments
-                  unit="tst"
+                  unit="TST"
                   value={parameters.dispensationPct}
                   onChange={this.handleChange('dispensationPct')}
                 />
@@ -315,7 +315,7 @@ class TcrDialog extends React.Component {
                     Subscription Fee
                   </Typography>)}
               />
-              <InputAdornments unit="tst" disabled={enablePayment} />
+              <InputAdornments unit="TST" disabled={enablePayment} />
             </ListItem>
           </div>
         </DialogContent>

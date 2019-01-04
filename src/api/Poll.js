@@ -8,6 +8,14 @@ export default class Poll {
     this.reason = reason;
   }
 
+  inCommitStage(time) {
+    return time < this.commitEndDate;
+  }
+
+  inRevealStage(time) {
+    return time > this.commitEndDate && time < this.revealEndDate;
+  }
+
   static fromObject({ challengeID, commitEndDate, revealEndDate, data }) {
     const commitEnd = bigNumber2Date(commitEndDate);
     const revealEnd = bigNumber2Date(revealEndDate);

@@ -18,6 +18,7 @@ import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { generateSalt } from './utils';
 import VotingConnection from './api/VotingConnection';
+import Poll from './api/Poll';
 
 const styles = theme => ({
   submitWrapper: {
@@ -50,13 +51,12 @@ class CommitVoteDialog extends React.Component {
   }
 
   handleCommit = () => async () => {
-    const { handleCommit, contractAddress, poll } = this.props;
+    const { handleCommit, votingConnection, poll } = this.props;
     const { voteOption, salt, tokensToCommit } = this.state;
+    const option = voteOption === 'accept' ? 1 : 0;
     this.setState({ loading: true });
     try {
-      const voting = new VotingConnection();
-      await voting.init(contractAddress);
-      await voting.commitVote(poll.id, Number(tokensToCommit), voteOption, salt);
+      await votingConnection.commitVote(poll.id, Number(tokensToCommit), option, salt);
       handleCommit();
     } catch (e) {
       this.setState({ snackbarOpen: true, snackbarMessage: e.toString() });
@@ -177,11 +177,8 @@ CommitVoteDialog.propTypes = {
   open: PropTypes.bool,
   handleCancel: PropTypes.func,
   handleCommit: PropTypes.func,
-  poll: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    commitEndDate: PropTypes.instanceOf(Date).isRequired,
-  }).isRequired,
-  contractAddress: PropTypes.string.isRequired,
+  poll: PropTypes.instanceOf(Poll).isRequired,
+  votingConnection: PropTypes.instanceOf(VotingConnection).isRequired,
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 

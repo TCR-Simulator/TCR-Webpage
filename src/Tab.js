@@ -44,8 +44,7 @@ class FullWidthTabs extends React.Component {
   componentDidUpdate = async (prevProps) => {
     const { tcr } = this.props;
     if (tcr && (!prevProps.tcr || tcr.address !== prevProps.tcr.address)) {
-      const tcrConnection = new TcrConnection();
-      await tcrConnection.init(tcr.address);
+      const tcrConnection = await TcrConnection.create(tcr.address, tcr.votingAddress);
       const acceptedList = await tcrConnection.getAcceptedListings();
       const pendingList = await tcrConnection.getPendingListings();
       const inChallengeList = await tcrConnection.getInChallengeListings();
@@ -121,7 +120,10 @@ class FullWidthTabs extends React.Component {
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
-            <ChallengeList listItems={inChallengeList} />
+            <ChallengeList
+              tcrConnection={tcrConnection}
+              listings={inChallengeList}
+            />
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
