@@ -81,15 +81,16 @@ export default class TcrConnection {
 
   async getAcceptedListings() {
     const allApplications = await this.getAllApplications();
-    const whitelistedEvents = await this.getAllEvents('_ApplicationWhitelisted');
-    const whitelistedListings = whitelistedEvents.map(event => event.args.listingHash);
-    return allApplications.filter(({ listingHash }) => whitelistedListings.includes(listingHash));
+    const whitelisted = await this.getEventListingHashes('_ApplicationWhitelisted');
+    return allApplications.filter(({ listingHash }) => whitelisted.includes(listingHash));
   }
 
   async getPendingListings() {
-    const pastApplicationList = await this.getAllApplications();
+    const allApplications = await this.getAllApplications();
     const challengeList = await this.getInChallengeListingHashes();
-    return pastApplicationList.filter(({ listingHash }) => !challengeList.includes(listingHash));
+    const whitelisted = await this.getEventListingHashes('_ApplicationWhitelisted');
+    const nonPending = challengeList + whitelisted;
+    return allApplications.filter(({ listingHash }) => !nonPending.includes(listingHash));
   }
 
   async getInChallengeListings() {
@@ -107,7 +108,11 @@ export default class TcrConnection {
   }
 
   async getInChallengeListingHashes() {
-    const events = await this.getAllEvents('_Challenge');
+    return this.getEventListingHashes('_Challenge');
+  }
+
+  async getEventListingHashes(eventName) {
+    const events = await this.getAllEvents(eventName);
     return events.map(event => event.args.listingHash);
   }
 
