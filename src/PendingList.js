@@ -146,16 +146,18 @@ class PendingList extends React.Component {
 
   async addItem(event) {
     const { tcrConnection, onApplySuccess } = this.props;
-    const artistTextbox = event.target.previousElementSibling;
+    const depositTextbox = event.target.previousElementSibling;
+    const artistTextbox = depositTextbox.previousElementSibling;
     const nameTextbox = artistTextbox.previousElementSibling;
     const urlTextbox = nameTextbox.previousElementSibling;
 
     if (nameTextbox.value) {
       const listing = new ListingItem(nameTextbox.value, artistTextbox.value, urlTextbox.value);
-      await tcrConnection.submit(100, listing);
+      await tcrConnection.submit(Number(depositTextbox.value), listing);
       urlTextbox.value = '';
       nameTextbox.value = '';
       artistTextbox.value = '';
+      depositTextbox.value = '';
 
       onApplySuccess(listing);
     }
@@ -187,6 +189,7 @@ class PendingList extends React.Component {
           <input type="text" id="urlinput" placeholder="URL" />
           <input type="text" id="nameinput" placeholder="Name" />
           <input type="text" id="artistinput" placeholder="Artist" />
+          <input type="text" id="depositinput" placeholder="Deposit" />
           <button type="submit" id="new-item" onClick={this.addItem.bind(this)}>
           Apply
           </button>
