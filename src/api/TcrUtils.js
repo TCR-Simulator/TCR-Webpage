@@ -63,14 +63,25 @@ export async function deploy(name, parameters) {
       token.address,
       params.map(({ value }) => value),
       name,
-      (error) => {
+      (error, transaction) => {
         if (error) {
           console.error(error); // eslint-disable-line no-console
           reject(error);
         } else {
-          resolve({
-            name,
-            parameters: params.filter(({ key }) => EXPOSED_PARAMS.includes(key)),
+          const event = registryFactory.NewRegistry({}, { fromBlock: 0, toBlock: 'latest' });
+          event.watch((err, res) => {
+            if (err) {
+              console.error(err); // eslint-disable-line no-console
+              reject(err);
+            } else if (res.transactionHash === transaction) {
+              event.stopWatching();
+              resolve({
+                name: res.args.name,
+                address: res.args.registry,
+                votingAddress: res.args.plcr,
+                parameters: params.filter(({ key }) => EXPOSED_PARAMS.includes(key)),
+              });
+            }
           });
         }
       },
