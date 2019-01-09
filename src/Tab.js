@@ -39,6 +39,7 @@ class FullWidthTabs extends React.Component {
     acceptedList: [],
     pendingList: [],
     inChallengeList: [],
+    rejectedList: [],
   };
 
   componentDidUpdate = async (prevProps) => {
@@ -48,7 +49,8 @@ class FullWidthTabs extends React.Component {
       const acceptedList = await tcrConnection.getAcceptedListings();
       const pendingList = await tcrConnection.getPendingListings();
       const inChallengeList = await tcrConnection.getInChallengeListings();
-      this.setState({ tcrConnection, acceptedList, pendingList, inChallengeList });
+      const rejectedList = await tcrConnection.getRejectedListings();
+      this.setState({ tcrConnection, acceptedList, pendingList, inChallengeList, rejectedList });
       window.tcrConnection = tcrConnection;
     }
   }
@@ -82,7 +84,7 @@ class FullWidthTabs extends React.Component {
 
   render() {
     const { classes, theme } = this.props;
-    const { tcrConnection, acceptedList, pendingList, inChallengeList } = this.state;
+    const { tcrConnection, acceptedList, pendingList, inChallengeList, rejectedList } = this.state;
 
     return (
       <div className={classes.root}>
@@ -127,7 +129,9 @@ class FullWidthTabs extends React.Component {
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
-            <RejectedList />
+            <RejectedList
+              listings={rejectedList}
+            />
           </TabContainer>
         </SwipeableViews>
       </div>

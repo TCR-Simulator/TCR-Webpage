@@ -107,6 +107,12 @@ export default class TcrConnection {
     return inChallenge;
   }
 
+  async getRejectedListings() {
+    const applications = await this.getAllApplications();
+    const removed = await this.getEventListingHashes('_ApplicationRemoved');
+    return applications.filter(({ listingHash }) => removed.includes(listingHash));
+  }
+
   async getInChallengeListingHashes() {
     return this.getEventListingHashes('_Challenge');
   }
