@@ -12,6 +12,7 @@ import CommitVoteDialog from './CommitVoteDialog';
 import RevealVoteDialog from './RevealVoteDialog';
 import ListingItem from './api/ListingItem';
 import TcrConnection from './api/TcrConnection';
+import UpdateButton from './updateStatus';
 import { getCurrentTime } from './utils';
 
 const styles = theme => ({
@@ -71,6 +72,28 @@ class ChallengeList extends React.Component {
     this.setState({ commitVoteDialogOpened: false, revealVoteDialogOpened: false });
   }
 
+  getListingActionButton = (listing) => {
+    const { tcrConnection } = this.props;
+    const { currTime } = this.state;
+
+    if (listing.challengePoll.inCommitStage(currTime)) {
+      return (
+        <Button variant="outlined" color="default" onClick={this.onCommitBtnClick(listing)}>
+          Commit vote
+        </Button>
+      );
+    }
+    if (listing.challengePoll.inRevealStage(currTime)) {
+      return (
+        <Button variant="outlined" color="default" onClick={this.onRevealBtnClick(listing)}>
+          Reveal vote
+        </Button>
+      );
+    }
+
+    return <UpdateButton listing={listing} tcrConnection={tcrConnection} />;
+  }
+
   render() {
     const { classes, listings, tcrConnection } = this.props;
     const { commitVoteDialogOpened, revealVoteDialogOpened, selectedItem, currTime } = this.state;
@@ -86,20 +109,7 @@ class ChallengeList extends React.Component {
               <ListItemText primary={`${listing.name} - ${listing.artist} (${listing.url})`} />
               <ListItemSecondaryAction>
                 <div align="right">
-                  {listing.challengePoll
-                    && listing.challengePoll.inCommitStage(currTime)
-                    && (
-                    <Button variant="outlined" color="default" onClick={this.onCommitBtnClick(listing)}>
-                      Commit vote
-                    </Button>
-                    )}
-                  {listing.challengePoll
-                    && listing.challengePoll.inRevealStage(currTime)
-                    && (
-                    <Button variant="outlined" color="default" onClick={this.onRevealBtnClick(listing)}>
-                      Reveal vote
-                    </Button>
-                    )}
+                  {listing.challengePoll && this.getListingActionButton(listing, currTime)}
                 </div>
               </ListItemSecondaryAction>
             </ListItem>
