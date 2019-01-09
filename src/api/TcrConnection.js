@@ -56,29 +56,6 @@ export default class TcrConnection {
     return this._callRegistryMethod('updateStatus', listingHash);
   }
 
-  // get corresponding listing Id from listings on registry by parsing the listing data
-  // getListingId(name, url) {
-  //   const listingInfo = {
-  //     name,
-  //     url,
-  //   };
-  //   this.contract.getPastEvents('_Application', {
-  //     fromBlock: 0,
-  //     toBlock: 'latest',
-  //   }).then((events) => {
-  //     events.forEach((e) => {
-  //       if (e.returnValues.data === JSON.stringify(listingInfo)) {
-  //         return e.returnValues.listingHash;
-  //       }
-  //       return -1;
-  //     });
-  //   });
-  // }
-
-  // getAllRegistryListings() {
-  //   //TODO
-  // }
-
   async getAcceptedListings() {
     const allApplications = await this.getAllApplications();
     const whitelisted = await this.getEventListingHashes('_ApplicationWhitelisted');
