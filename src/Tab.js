@@ -46,11 +46,14 @@ class FullWidthTabs extends React.Component {
     const { tcr } = this.props;
     if (tcr && (!prevProps.tcr || tcr.address !== prevProps.tcr.address)) {
       const tcrConnection = await TcrConnection.create(tcr.address, tcr.votingAddress);
-      const acceptedList = await tcrConnection.getAcceptedListings();
-      const pendingList = await tcrConnection.getPendingListings();
-      const inChallengeList = await tcrConnection.getInChallengeListings();
-      const rejectedList = await tcrConnection.getRejectedListings();
-      this.setState({ tcrConnection, acceptedList, pendingList, inChallengeList, rejectedList });
+      const allListings = await tcrConnection.getAllListings();
+      this.setState({
+        tcrConnection,
+        acceptedList: allListings.filter(({ status }) => status === 'Accepted'),
+        pendingList: allListings.filter(({ status }) => status === 'Pending'),
+        inChallengeList: allListings.filter(({ status }) => status === 'InChallenge'),
+        rejectedList: allListings.filter(({ status }) => status === 'Rejected'),
+      });
       window.tcrConnection = tcrConnection;
     }
   }

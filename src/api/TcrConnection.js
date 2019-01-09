@@ -56,18 +56,29 @@ export default class TcrConnection {
     return this._callRegistryMethod('updateStatus', listingHash);
   }
 
-  async getAcceptedListings() {
-    const allApplications = await this.getAllApplications();
+  async getAllListings() {
+    const applications = await this.getAllApplications();
     const whitelisted = await this.getEventListingHashes('_ApplicationWhitelisted');
-    return allApplications.filter(({ listingHash }) => whitelisted.includes(listingHash));
-  }
+    const rejected = await this.getEventListingHashes('_ApplicationRemoved');
+    const challenges = await this.getAllEvents('_Challenge');
 
-  async getPendingListings() {
-    const allApplications = await this.getAllApplications();
-    const challengeList = await this.getInChallengeListingHashes();
-    const whitelisted = await this.getEventListingHashes('_ApplicationWhitelisted');
-    const nonPending = challengeList + whitelisted;
-    return allApplications.filter(({ listingHash }) => !nonPending.includes(listingHash));
+    challenges.forEach(({ args }) => {
+      const listing = applications.find(({ listingHash }) => listingHash === args.listingHash);
+      listing.challengePoll = Poll.fromObject(args);
+      listing.status = 'InChallenge';
+    });
+
+    whitelisted.forEach((whitelistedHash) => {
+      const listing = applications.find(({ listingHash }) => listingHash === whitelistedHash);
+      listing.status = 'Accepted';
+    });
+
+    rejected.forEach((rejectedHash) => {
+      const listing = applications.find(({ listingHash }) => listingHash === rejectedHash);
+      listing.status = 'Rejected';
+    });
+
+    return applications;
   }
 
   async getInChallengeListings() {
@@ -82,12 +93,6 @@ export default class TcrConnection {
       }
     });
     return inChallenge;
-  }
-
-  async getRejectedListings() {
-    const applications = await this.getAllApplications();
-    const removed = await this.getEventListingHashes('_ApplicationRemoved');
-    return applications.filter(({ listingHash }) => removed.includes(listingHash));
   }
 
   async getInChallengeListingHashes() {

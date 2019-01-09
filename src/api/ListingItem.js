@@ -10,6 +10,7 @@ export default class ListingItem {
     this.applicant = null;
     this.deposit = 0;
     this.challengePoll = null;
+    this.status = 'Pending';
   }
 
   static fromObject({ listingHash, appEndDate, applicant, deposit, data }) {
