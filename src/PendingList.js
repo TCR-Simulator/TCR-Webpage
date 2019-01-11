@@ -52,7 +52,6 @@ class PendingList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      checked: [],
       openChallenge: false,
       openWithdraw: false,
       currTime: null,
@@ -95,22 +94,6 @@ class PendingList extends React.Component {
       </Button>
     );
   }
-
-  handleToggle = value => () => {
-    const { checked } = this.state;
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    this.setState({
-      checked: newChecked,
-    });
-  };
 
   // CHALLENGE BOX
 

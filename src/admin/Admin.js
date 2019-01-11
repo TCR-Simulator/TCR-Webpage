@@ -18,7 +18,7 @@ import AdminTCRPage from './AdminTCRPage';
 import TcrDialog from './TcrDialog';
 import { getAllTcrs } from '../api/TcrUtils';
 
-const drawerWidth = 240;
+const drawerWidth = 300;
 
 const styles = theme => ({
   root: {
@@ -26,6 +26,9 @@ const styles = theme => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
+  },
+  grow: {
+    flexGrow: 1,
   },
   drawer: {
     width: drawerWidth,
@@ -93,8 +96,8 @@ class Admin extends React.Component {
         <CssBaseline />
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar>
-            <Typography variant="h6" color="inherit" noWrap>
-              TCR Playground
+            <Typography variant="h6" color="inherit" className={classes.grow}>
+              TCR Simulator
             </Typography>
             <Switch onChange={this.handleSwitch} />
           </Toolbar>

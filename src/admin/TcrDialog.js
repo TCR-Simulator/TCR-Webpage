@@ -202,7 +202,7 @@ class TcrDialog extends React.Component {
             </ListItem>
             <ListItem className={classes.withSection}>
               <ListItemText className={classes.listItemText}>
-                Submission Length Period
+                Submission Period Length
                 <CustomizedTooltips classes="" content="" />
               </ListItemText>
               <div>
